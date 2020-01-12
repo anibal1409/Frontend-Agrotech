@@ -1,1 +1,89 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$Frontend-agrotech-primary: mat-palette($mat-indigo);
+$Frontend-agrotech-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$Frontend-agrotech-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$Frontend-agrotech-theme: mat-light-theme($Frontend-agrotech-primary, $Frontend-agrotech-accent, $Frontend-agrotech-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($Frontend-agrotech-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+
+
+.content-lobby {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background: beige;
+  height: 100%;
+}
+.icon-xl {
+  font-size: 9.5rem !important;
+  width: 9.5rem !important;
+  height: 9.5rem !important;
+}
+
+
+.width-100 {
+  width: 100% !important;
+}
+
+mat-form-field {
+  font-size: 1rem !important;
+}
+
+.end-h {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-h {
+  display: flex;
+  justify-content: center;
+}
+.row {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.content-login {
+  max-width: 25rem;
+  max-height: 25rem;
+}
+.icon-input {
+  font-size: 1.5rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  margin-right: 0.5rem !important;
+}
