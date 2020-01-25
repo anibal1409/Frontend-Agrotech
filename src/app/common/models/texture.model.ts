@@ -1,4 +1,4 @@
-export class SectorTemperature {
+export class Texture {
 
   public _id: string;
   public name: string;
