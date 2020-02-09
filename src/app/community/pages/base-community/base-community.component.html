@@ -1,0 +1,57 @@
+<mat-drawer-container class="admin-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p [routerLink]="routeHome" class="link-primary cursor">Inicio</p>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <mat-toolbar color="primary">
+
+      <mat-toolbar-row>
+        <div matRipple class="center-all icon-toolbar cursor">
+          <mat-icon mat-button  (click)="drawer.toggle()">menu</mat-icon>
+        </div>
+        <span>
+          {{ nameApp }}
+        </span>
+        <span class="example-spacer"></span>
+        <div matRipple class="center-all icon-toolbar cursor">
+          <mat-icon [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon">person</mat-icon>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="content-admin">
+      <div class="row">
+        <div class="col-12 height-100">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-drawer-container>
+<mat-menu #menu="matMenu">
+  <div mat-menu-item class="height-auto" matRipple  [matRippleDisabled]="true">
+    <div class="row center-h margin-bt-1">
+      <mat-icon class="avatar">account_circle</mat-icon>
+      <!-- <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+    </div>
+    <div class="row center-h margin-bt-1  cursor">
+      <span class="link-primary" matRipple>
+        {{ User.name}}
+      </span>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <button mat-icon-button color="primary" class="cursor" matRipple>
+          <mat-icon color="primary">lock</mat-icon>
+          <!-- <span>Salir</span> -->
+        </button>
+      </div>
+      <div class="col-6">
+        <button mat-icon-button color="primary" class="cursor" (click)="Logout()" matRipple>
+          <mat-icon color="primary">exit_to_app</mat-icon>
+          <!-- <span>Salir</span> -->
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-menu>

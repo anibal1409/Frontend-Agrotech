@@ -2,20 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NoWhiteSpace } from '../../../common/validators/no-whithe-space.validator';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
+import { RoutesLogin } from 'src/app/common/enum/routes/routes-login.enum';
+import { textFieldAppearance } from 'src/app/common/constants/apaperance.constant';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { UserSignIn } from 'src/app/auth/models/user-sign-in.model';
+import { RoutesAdmin } from 'src/app/common/enum/routes/routes-admin.enum';
 
 @Component({
-  selector: 'app-sign-up',
+  selector: 'sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
 
-  seePassword = false;
   form: FormGroup;
   noWhiteSpace =  new NoWhiteSpace();
+  visibility = false;
+
+  routeForgotPassword = RoutesLogin.FORGOT_PASSWORD;
+  routeSignIn = RoutesLogin.SIGN_IN;
+  inputAppearance: string = textFieldAppearance;
 
   constructor(
     private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
   ) {
     this.Form();
   }
@@ -25,12 +37,6 @@ export class SignUpComponent implements OnInit {
 
   private Form() {
     this.form = this.formBuilder.group({
-      name: new FormControl( null,  [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(30),
-        this.noWhiteSpace.Validator
-      ]),
       email: new FormControl( null,  [
         Validators.required,
         Validators.email,
@@ -39,17 +45,25 @@ export class SignUpComponent implements OnInit {
         this.noWhiteSpace.Validator
       ]),
       password: new FormControl( null, [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(16),
-          this.noWhiteSpace.Validator
-        ]),
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(8),
+        this.noWhiteSpace.Validator
+      ]),
+      name: new FormControl( null, [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(50),
+        this.noWhiteSpace.Validator
+      ]),
     });
 
   }
 
   OnSubmit() {
-
+    if (this.form.valid) {
+      this.SignUp();
+    }
   }
 
   MessageError(input: string) {
@@ -78,6 +92,21 @@ export class SignUpComponent implements OnInit {
         }
       }
     }
+  }
+
+  async SignUp() {
+    try {
+      const response = await this.authService.SignUp(new UserSignIn(this.form.value));
+      if (response) {
+        this.router.navigate([RoutesAdmin.HOME]);
+      }
+    } catch (error) {
+
+    }
+  }
+
+  ChangeVisibility() {
+    this.visibility = !this.visibility;
   }
 
 }

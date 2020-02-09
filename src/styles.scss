@@ -8,23 +8,31 @@
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat-core();
+@import 'src/my-colors.scss';
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$Frontend-agrotech-primary: mat-palette($mat-indigo);
-$Frontend-agrotech-accent: mat-palette($mat-pink, A200, A100, A400);
+$color-primary: mat-palette($mat-indigo);
+$color-accent: mat-palette($mat-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$Frontend-agrotech-warn: mat-palette($mat-red);
+$color-warn: mat-palette($mat-red);
+$color-success: mat-palette($success);
+$color-info: mat-palette($info);
+$color-danger: mat-palette($danger);
+$color-warning: mat-palette($warning);
+$color-pego: mat-palette($pego);
+$color-pego-back: mat-palette($pego-back);
+$color-gray: mat-palette($gray);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$Frontend-agrotech-theme: mat-light-theme($Frontend-agrotech-primary, $Frontend-agrotech-accent, $Frontend-agrotech-warn);
+$theme: mat-light-theme($color-primary, $color-accent, $color-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($Frontend-agrotech-theme);
+@include angular-material-theme($theme);
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -37,22 +45,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .content-lobby {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 10rem;
+  padding-bottom: 10rem;
   background: #eee;
   height: 100%;
+}
+.content-admin {
+  background: #eee;
+  height: 90%;
 }
 .icon-xl {
   font-size: 9.5rem !important;
   width: 9.5rem !important;
   height: 9.5rem !important;
 }
-
-
 .width-100 {
   width: 100% !important;
 }
-
+.height-100 {
+  height: 100% !important;
+}
+.height-90 {
+  height: 90% !important;
+}
 mat-form-field {
   font-size: 1rem !important;
 }
@@ -87,10 +102,136 @@ mat-form-field {
   height: 1.5rem !important;
   margin-right: 0.5rem !important;
 }
+.margin-top-1 {
+  margin-top: 1rem;
+}
+.cursor {
+  cursor: pointer;
+}
+.gray {
+  color: mat-color($color-gray);
+}
+.background-gray {
+  background: mat-color($color-gray);
+}
+.primary {
+  color: mat-color($color-primary);
+}
+.background-primary {
+  background: mat-color($color-primary);
+}
+.danger {
+  color: mat-color($color-danger);
+}
+.background-danger {
+  background: mat-color($color-danger);
+}
+.success {
+  color: mat-color($color-success);
+}
+.background-success {
+  background: mat-color($color-success);
+}
+.info {
+  color: mat-color($color-info);
+}
+.background-info {
+  background: mat-color($color-info);
+}
+.warning {
+  color: mat-color($color-warning);
+}
+.background-warning {
+  background: mat-color($color-warning);
+}
+.bold {
+  font-weight: bold;
+}
 
-.margin-top-025 {
-  margin-top: 0.25rem;
+.contrast {
+  color: mat-color($color-pego-back);
+}
+.pego {
+  color: mat-color($color-pego);
+}
+.text-center {
+  text-align: center !important;
+}
+.fab-button-br {
+  position: fixed !important;
+  bottom: 1rem;
+  right: 1rem;
 }
 mat-form-field {
-  font-size: 1.5rem !important;
+  width: 100%;
 }
+.margin-lr-1 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.columns {
+  display: flex;
+  flex-direction: column;
+}
+.avatar {
+  height: 5rem !important;
+  width: 5rem !important;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  font-size: 5rem !important;
+}
+.height-auto {
+  height: auto !important;
+}
+.link-primary {
+  color: mat-color($color-primary);
+  font-weight: bold;
+  text-decoration: underline;
+}
+.link {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.margin-bt-1 {
+  margin-bottom: -1rem;
+}
+mat-icon {
+  margin: 0px !important;
+}
+.icon-toolbar {
+  border-radius: 50%;
+  height: 2rem !important;
+  width: 2rem !important;
+  line-height: 2rem;
+}
+.mat-header-table {
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
+//MENU
+.admin-container {
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.example-sidenav-content {
+  height: 100%;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+//FIN MENU

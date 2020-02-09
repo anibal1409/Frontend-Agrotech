@@ -1,1 +1,1 @@
-export const textFieldAppearance = 'fill';
+export const textFieldAppearance = 'legacy';

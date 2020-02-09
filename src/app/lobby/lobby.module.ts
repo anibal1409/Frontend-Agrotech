@@ -9,14 +9,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { LobbyComponent } from './pages/lobby/lobby.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
-
-
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { PasswordResetComponent } from './pages/password-reset/password-reset.component';
 
 
 @NgModule({
-  declarations: [SignInComponent, SignUpComponent, LobbyComponent],
+  declarations: [
+    SignInComponent,
+    SignUpComponent,
+    LobbyComponent,
+    ForgotPasswordComponent,
+    PasswordResetComponent
+  ],
   imports: [
     CommonModule,
     LobbyRoutingModule,

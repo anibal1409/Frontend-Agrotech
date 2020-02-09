@@ -1,35 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NoWhiteSpace } from 'src/app/common/validators/no-whithe-space.validator';
-import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
-import { RoutesLogin } from 'src/app/common/enum/routes/routes-login.enum';
 import { textFieldAppearance } from 'src/app/common/constants/apaperance.constant';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { SnackBarService } from 'src/app/core/services/snack-bar.service';
-import { RoutesAdmin } from 'src/app/common/enum/routes/routes-admin.enum';
-import { RoutesCommunity } from 'src/app/common/enum/routes/routes-community.enum';
+import { RoutesLogin } from 'src/app/common/enum/routes/routes-login.enum';
+import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 
 @Component({
-  selector: 'sign-in',
-  templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
+  selector: 'forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
 
   form: FormGroup;
   noWhiteSpace =  new NoWhiteSpace();
   visibility = false;
-
-  routeForgotPassword = RoutesLogin.FORGOT_PASSWORD;
-  routeSignUp = RoutesLogin.SIGN_UP;
   inputAppearance: string = textFieldAppearance;
+
+  routeSignIn = RoutesLogin.SIGN_IN;
+  routeSignUp = RoutesLogin.SIGN_UP;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private snackBarService: SnackBarService,
   ) {
     this.Form();
   }
@@ -46,20 +42,20 @@ export class SignInComponent implements OnInit {
         Validators.maxLength(30),
         this.noWhiteSpace.Validator
       ]),
-      password: new FormControl( null, [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(8),
-          this.noWhiteSpace.Validator
-        ]),
     });
 
   }
 
-  OnSubmit() {
+  async OnSubmit() {
     if (this.form.valid) {
-      this.Login();
+      try {
+        await this.authService.ForgotPassword(this.form.value.email);
+      } catch (error) {
+        
+      }
+      
     }
+
   }
 
   MessageError(input: string) {
@@ -88,35 +84,6 @@ export class SignInComponent implements OnInit {
         }
       }
     }
-  }
-
-  async Login() {
-    try {
-      const response = await this.authService.SignIn(this.form.value);
-      if (response) {
-        this.snackBarService.Success('Login exitoso.');
-        setTimeout(
-          () => {
-            if(response.user && response.user.role) {
-              switch (response.user.role) {
-                case 'admin': 
-                this.router.navigate([RoutesAdmin.HOME]);
-                break;
-                case 'basic': 
-                this.router.navigate([RoutesCommunity.HOME]);
-                break;
-              }
-            }
-            
-          }, 3000);
-      }
-    } catch (error) {
-
-    }
-  }
-
-  ChangeVisibility() {
-    this.visibility = !this.visibility;
   }
 
 }
