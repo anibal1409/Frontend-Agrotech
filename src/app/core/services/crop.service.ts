@@ -12,8 +12,8 @@ export class CropService  {
   private nameService = "CropService";
   private crops: Crop[] = [];
   private cropsTrashed: Crop[] = [];
-  cropsChanged = new Subject<Crop[]>();
-  cropsTrashedChanged = new Subject<Crop[]>();
+  itemsChanged = new Subject<Crop[]>();
+  itemsTrashedChanged = new Subject<Crop[]>();
   private index: number;
   private indexTrashed: number;
 
@@ -105,7 +105,7 @@ export class CropService  {
             reject({message: 'No data back'});
           }
           this.crops = response;
-          this.cropsChanged.next(this.crops);
+          this.itemsChanged.next(this.crops);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error List: ' + err);
@@ -126,7 +126,7 @@ export class CropService  {
             reject({message: 'No data back'});
           }
           this.cropsTrashed = response;
-          this.cropsTrashedChanged.next(this.cropsTrashed);
+          this.itemsTrashedChanged.next(this.cropsTrashed);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error ListTrashed: ' + err);
@@ -170,10 +170,10 @@ export class CropService  {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
       this.crops[this.index] = item;
-      this.cropsChanged.next(this.crops);
+      this.itemsChanged.next(this.crops);
     } else {
       this.crops.push(item);
-      this.cropsChanged.next(this.crops);
+      this.itemsChanged.next(this.crops);
     }
   }
 
@@ -181,10 +181,10 @@ export class CropService  {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
       this.cropsTrashed[this.indexTrashed] = itemTrashed;
-      this.cropsTrashedChanged.next(this.cropsTrashed);
+      this.itemsTrashedChanged.next(this.cropsTrashed);
     } else {
       this.cropsTrashed.push(itemTrashed);
-      this.cropsTrashedChanged.next(this.cropsTrashed);
+      this.itemsTrashedChanged.next(this.cropsTrashed);
     }
   }
 
@@ -193,7 +193,7 @@ export class CropService  {
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
       this.crops.splice(this.index, 1);
-      this.cropsChanged.next(this.crops);
+      this.itemsChanged.next(this.crops);
     }
   }
 
@@ -201,7 +201,7 @@ export class CropService  {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
       this.cropsTrashed.splice(this.indexTrashed, 1);
-      this.cropsTrashedChanged.next(this.cropsTrashed);
+      this.itemsTrashedChanged.next(this.cropsTrashed);
     }
   }
 }

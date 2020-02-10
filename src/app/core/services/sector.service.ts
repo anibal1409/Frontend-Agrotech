@@ -13,8 +13,8 @@ export class SectorService  {
   private nameService = "SectorService";
   private sectors: Sector[] = [];
   private sectorsTrashed: Sector[] = [];
-  sectorsChanged = new Subject<Sector[]>();
-  sectorsTrashedChanged = new Subject<Sector[]>();
+  itemsChanged = new Subject<Sector[]>();
+  itemsTrashedChanged = new Subject<Sector[]>();
   private index: number;
   private indexTrashed: number;
 
@@ -106,7 +106,7 @@ export class SectorService  {
             reject({message: 'No data back'});
           }
           this.sectors = response;
-          this.sectorsChanged.next(this.sectors);
+          this.itemsChanged.next(this.sectors);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error List: ' + err);
@@ -127,7 +127,7 @@ export class SectorService  {
             reject({message: 'No data back'});
           }
           this.sectorsTrashed = response;
-          this.sectorsTrashedChanged.next(this.sectorsTrashed);
+          this.itemsTrashedChanged.next(this.sectorsTrashed);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error ListTrashed: ' + err);
@@ -171,10 +171,10 @@ export class SectorService  {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
       this.sectors[this.index] = item;
-      this.sectorsChanged.next(this.sectors);
+      this.itemsChanged.next(this.sectors);
     } else {
       this.sectors.push(item);
-      this.sectorsChanged.next(this.sectors);
+      this.itemsChanged.next(this.sectors);
     }
   }
 
@@ -182,10 +182,10 @@ export class SectorService  {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
       this.sectorsTrashed[this.indexTrashed] = itemTrashed;
-      this.sectorsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashedChanged.next(this.sectorsTrashed);
     } else {
       this.sectorsTrashed.push(itemTrashed);
-      this.sectorsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashedChanged.next(this.sectorsTrashed);
     }
   }
 
@@ -194,7 +194,7 @@ export class SectorService  {
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
       this.sectors.splice(this.index, 1);
-      this.sectorsChanged.next(this.sectors);
+      this.itemsChanged.next(this.sectors);
     }
   }
 
@@ -202,7 +202,7 @@ export class SectorService  {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
       this.sectorsTrashed.splice(this.indexTrashed, 1);
-      this.sectorsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashedChanged.next(this.sectorsTrashed);
     }
   }
 }

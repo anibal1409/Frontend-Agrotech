@@ -12,8 +12,8 @@ export class WeatherService {
   private nameService = "WeatherService";
   private weathers: Weather[] = [];
   private weathersTrashed: Weather[] = [];
-  weathersChanged = new Subject<Weather[]>();
-  weathersTrashedChanged = new Subject<Weather[]>();
+  itemsChanged = new Subject<Weather[]>();
+  itemsTrashedChanged = new Subject<Weather[]>();
   private index: number;
   private indexTrashed: number;
 
@@ -105,7 +105,7 @@ export class WeatherService {
             reject({message: 'No data back'});
           }
           this.weathers = response;
-          this.weathersChanged.next(this.weathers);
+          this.itemsChanged.next(this.weathers);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error List: ' + err);
@@ -126,7 +126,7 @@ export class WeatherService {
             reject({message: 'No data back'});
           }
           this.weathersTrashed = response;
-          this.weathersTrashedChanged.next(this.weathersTrashed);
+          this.itemsTrashedChanged.next(this.weathersTrashed);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error ListTrashed: ' + err);
@@ -170,10 +170,10 @@ export class WeatherService {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
       this.weathers[this.index] = item;
-      this.weathersChanged.next(this.weathers);
+      this.itemsChanged.next(this.weathers);
     } else {
       this.weathers.push(item);
-      this.weathersChanged.next(this.weathers);
+      this.itemsChanged.next(this.weathers);
     }
   }
 
@@ -181,10 +181,10 @@ export class WeatherService {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
       this.weathersTrashed[this.indexTrashed] = itemTrashed;
-      this.weathersTrashedChanged.next(this.weathersTrashed);
+      this.itemsTrashedChanged.next(this.weathersTrashed);
     } else {
       this.weathersTrashed.push(itemTrashed);
-      this.weathersTrashedChanged.next(this.weathersTrashed);
+      this.itemsTrashedChanged.next(this.weathersTrashed);
     }
   }
 
@@ -193,7 +193,7 @@ export class WeatherService {
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
       this.weathers.splice(this.index, 1);
-      this.weathersChanged.next(this.weathers);
+      this.itemsChanged.next(this.weathers);
     }
   }
 
@@ -201,7 +201,7 @@ export class WeatherService {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
       this.weathersTrashed.splice(this.indexTrashed, 1);
-      this.weathersTrashedChanged.next(this.weathersTrashed);
+      this.itemsTrashedChanged.next(this.weathersTrashed);
     }
   }
 }

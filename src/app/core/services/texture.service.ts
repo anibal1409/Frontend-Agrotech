@@ -12,8 +12,8 @@ export class TextureService {
   private nameService = "TextureService";
   private textures: Texture[] = [];
   private texturesTrashed: Texture[] = [];
-  texturesChanged = new Subject<Texture[]>();
-  texturesTrashedChanged = new Subject<Texture[]>();
+  itemsChanged = new Subject<Texture[]>();
+  itemsTrashedChanged = new Subject<Texture[]>();
   private index: number;
   private indexTrashed: number;
 
@@ -105,7 +105,7 @@ export class TextureService {
             reject({message: 'No data back'});
           }
           this.textures = response;
-          this.texturesChanged.next(this.textures);
+          this.itemsChanged.next(this.textures);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error List: ' + err);
@@ -126,7 +126,7 @@ export class TextureService {
             reject({message: 'No data back'});
           }
           this.texturesTrashed = response;
-          this.texturesTrashedChanged.next(this.texturesTrashed);
+          this.itemsTrashedChanged.next(this.texturesTrashed);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error ListTrashed: ' + err);
@@ -170,10 +170,10 @@ export class TextureService {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
       this.textures[this.index] = item;
-      this.texturesChanged.next(this.textures);
+      this.itemsChanged.next(this.textures);
     } else {
       this.textures.push(item);
-      this.texturesChanged.next(this.textures);
+      this.itemsChanged.next(this.textures);
     }
   }
 
@@ -181,10 +181,10 @@ export class TextureService {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
       this.texturesTrashed[this.indexTrashed] = itemTrashed;
-      this.texturesTrashedChanged.next(this.texturesTrashed);
+      this.itemsTrashedChanged.next(this.texturesTrashed);
     } else {
       this.texturesTrashed.push(itemTrashed);
-      this.texturesTrashedChanged.next(this.texturesTrashed);
+      this.itemsTrashedChanged.next(this.texturesTrashed);
     }
   }
 
@@ -193,7 +193,7 @@ export class TextureService {
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
       this.textures.splice(this.index, 1);
-      this.texturesChanged.next(this.textures);
+      this.itemsChanged.next(this.textures);
     }
   }
 
@@ -201,7 +201,7 @@ export class TextureService {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
       this.texturesTrashed.splice(this.indexTrashed, 1);
-      this.texturesTrashedChanged.next(this.texturesTrashed);
+      this.itemsTrashedChanged.next(this.texturesTrashed);
     }
   }
 }
