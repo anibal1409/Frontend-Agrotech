@@ -24,6 +24,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MomentModule as MomentModule2 } from 'angular2-moment';
 import { MatMenuModule } from '@angular/material/menu';
 import { AlertComponent } from '../common/alert/alert.component';
+import { CropFormComponent } from './pages/crop/form/form.component';
+import { CropListComponent } from './pages/crop/list/list.component';
+import { TextureFormComponent } from './pages/texture/form/form.component';
+import { WeatherFormComponent } from './pages/weather/form/form.component';
+import { UserFormComponent } from './pages/user/form/form.component';
+import { WeatherListComponent } from './pages/weather/list/list.component';
+import { UserListComponent } from './pages/user/list/list.component';
+import { TextureListComponent } from './pages/texture/list/list.component';
 
 
 export const DateFormats = {
@@ -41,6 +49,14 @@ export const DateFormats = {
 @NgModule({
   declarations: [
     BaseAdminComponent,
+    CropFormComponent,
+    CropListComponent,
+    TextureFormComponent,
+    WeatherFormComponent,
+    UserFormComponent,
+    WeatherListComponent,
+    UserListComponent,
+    TextureListComponent,
   ],
   imports: [
     CommonModule,
@@ -72,6 +88,11 @@ export const DateFormats = {
   ],
   entryComponents: [
     AlertComponent,
+    CropFormComponent,
+    TextureFormComponent,
+    WeatherFormComponent,
+    UserFormComponent,
+
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

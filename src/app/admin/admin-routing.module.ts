@@ -3,6 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { BaseAdminComponent } from './pages/base-admin/base-admin.component';
 import { HomeComponent } from '../core/pages/home/home.component';
 import { RoutesAdmin } from '../common/enum/routes/routes-admin.enum';
+import { CropListComponent } from './pages/crop/list/list.component';
+import { TextureListComponent } from './pages/texture/list/list.component';
+import { UserListComponent } from './pages/user/list/list.component';
+import { WeatherListComponent } from './pages/weather/list/list.component';
 
 
 export const adminRoutes: Routes = [
@@ -13,6 +17,22 @@ export const adminRoutes: Routes = [
       {
         path: 'home',
         component: HomeComponent
+      },
+      {
+        path: 'crop',
+        component: CropListComponent
+      },
+      {
+        path: 'texture',
+        component: TextureListComponent
+      },
+      {
+        path: 'user',
+        component: UserListComponent
+      },
+      {
+        path: 'weather',
+        component: WeatherListComponent
       },
       {
         path: '',

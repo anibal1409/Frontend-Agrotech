@@ -1,0 +1,40 @@
+<form  [formGroup]="form" (ngSubmit)="OnSubmit()">
+  <h1 mat-dialog-title>{{ data == undefined ? 'Registar usuario' : 'Modificar usuario'}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Código</mat-label>
+      <input matInput type="text" formControlName="code" name="code">
+      <mat-error *ngIf="MessageError('code')">
+        {{ MessageError('code') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Marca</mat-label>
+      <input matInput type="text" name="brand" formControlName="brand">
+      <mat-error *ngIf="MessageError('brand')">
+        {{ MessageError('brand') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Modelo</mat-label>
+      <input matInput type="text" name="modell" formControlName="modell">
+      <mat-error *ngIf="MessageError('modell')">
+        {{ MessageError('modell') }}
+      </mat-error>
+    </mat-form-field>
+    
+  </div>
+  <div mat-dialog-actions class="">
+    <div class="row width-100">
+      <div class="col-sm-12 end-h">
+        <button mat-button class="gray" mat-dialog-close type="button">
+          <span>CANCELAR</span>
+        </button>
+        <button mat-button color="primary" type="submit" [disabled]="form.invalid">
+          <span>ACEPTAR</span>
+        </button>
+      </div>
+    </div>
+    
+  </div>
+</form>

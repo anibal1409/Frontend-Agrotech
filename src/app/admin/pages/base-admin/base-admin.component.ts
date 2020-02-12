@@ -14,6 +14,9 @@ export class BaseAdminComponent implements OnInit {
 
   nameApp = nameApp;
   routeHome = RoutesAdmin.HOME;
+  routeCrop = RoutesAdmin.CROP;
+  routeTexture = RoutesAdmin.TEXTURE;
+  routeWeather = RoutesAdmin.WEATHER;
 
   constructor(
     private authService: AuthService,

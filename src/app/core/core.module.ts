@@ -16,6 +16,8 @@ import { CommunityModule } from '../community/community.module';
 import { AdminModule } from '../admin/admin.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountService } from './services/account.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from '../auth/services/auth-interceptor.service';
 
 
 
@@ -43,6 +45,8 @@ import { AccountService } from './services/account.service';
     UserService,
     WeatherService,
     AccountService,
+
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
   ]
 })
 export class CoreModule { }
