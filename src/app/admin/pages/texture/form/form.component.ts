@@ -3,11 +3,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { NoWhiteSpace } from 'src/app/common/validators/no-whithe-space.validator';
 import { textFieldAppearance } from 'src/app/common/constants/apaperance.constant';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CropFormComponent } from '../../crop/form/form.component';
 import { TextureService } from 'src/app/core/services/texture.service';
-import { CropService } from 'src/app/core/services/crop.service';
-import { WeatherService } from 'src/app/core/services/weather.service';
-import { Crop } from 'src/app/common/models/crop.model';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { Texture } from 'src/app/common/models/texture.model';
 
@@ -38,22 +34,10 @@ export class TextureFormComponent implements OnInit {
 
   private Form() {
     this.form = this.formBuilder.group({
-      code: new FormControl( this.data ? this.data.code : null, [
+      name: new FormControl( this.data ? this.data.name : null, [
         Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(16),
-        this.noWhiteSpace.Validator
-      ]),
-      modell: new FormControl( this.data ? this.data.modell :  null, [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50),
-        this.noWhiteSpace.Validator
-      ]),
-      brand: new FormControl( this.data ? this.data.brand :  null, [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50),
+        Validators.minLength(2),
+        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
     });

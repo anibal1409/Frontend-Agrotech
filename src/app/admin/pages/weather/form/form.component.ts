@@ -34,22 +34,10 @@ export class WeatherFormComponent implements OnInit {
 
   private Form() {
     this.form = this.formBuilder.group({
-      code: new FormControl( this.data ? this.data.code : null, [
+      name: new FormControl( this.data ? this.data.name : null, [
         Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(16),
-        this.noWhiteSpace.Validator
-      ]),
-      modell: new FormControl( this.data ? this.data.modell :  null, [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50),
-        this.noWhiteSpace.Validator
-      ]),
-      brand: new FormControl( this.data ? this.data.brand :  null, [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(50),
+        Validators.minLength(2),
+        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
     });

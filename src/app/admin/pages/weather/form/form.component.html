@@ -1,25 +1,11 @@
 <form  [formGroup]="form" (ngSubmit)="OnSubmit()">
-  <h1 mat-dialog-title>{{ data == undefined ? 'Registar cultivo' : 'Modificar cultivo'}}</h1>
+  <h1 mat-dialog-title>{{ data == undefined ? 'Registar clima' : 'Modificar clima'}}</h1>
   <div mat-dialog-content>
     <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Código</mat-label>
-      <input matInput type="text" formControlName="code" name="code">
-      <mat-error *ngIf="MessageError('code')">
-        {{ MessageError('code') }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Marca</mat-label>
-      <input matInput type="text" name="brand" formControlName="brand">
-      <mat-error *ngIf="MessageError('brand')">
-        {{ MessageError('brand') }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Modelo</mat-label>
-      <input matInput type="text" name="modell" formControlName="modell">
-      <mat-error *ngIf="MessageError('modell')">
-        {{ MessageError('modell') }}
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" formControlName="name" name="name">
+      <mat-error *ngIf="MessageError('name')">
+        {{ MessageError('name') }}
       </mat-error>
     </mat-form-field>
     
@@ -27,9 +13,9 @@
   <div mat-dialog-actions class="">
     <div class="row width-100">
       <div class="col-sm-4">
-        <button *ngIf="data != undefined " mat-button class="danger" type="button">
+        <!-- <button *ngIf="data != undefined " mat-button class="danger" type="button">
           <span>ELIMINAR</span>
-        </button>
+        </button> -->
       </div>
       <div class="col-sm-8 end-h">
         <button mat-button class="gray" mat-dialog-close type="button">

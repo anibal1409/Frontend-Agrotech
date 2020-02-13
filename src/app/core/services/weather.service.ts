@@ -30,7 +30,7 @@ export class WeatherService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_CREATE,
+            RoutesHttp.BASE + RoutesHttp.WEATHER_CREATE,
             item
             ).toPromise();
           if (!response) {
@@ -54,7 +54,7 @@ export class WeatherService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_UPDATE,
+            RoutesHttp.BASE + RoutesHttp.WEATHER_UPDATE,
             item
             ).toPromise();
           if (!response) {
@@ -78,7 +78,7 @@ export class WeatherService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_DELETE,
+            RoutesHttp.BASE + RoutesHttp.WEATHER_DELETE,
             item._id
             ).toPromise();
           if (!response) {
@@ -99,7 +99,7 @@ export class WeatherService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Weather[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST
+            RoutesHttp.BASE + RoutesHttp.WEATHER_LIST
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -120,7 +120,7 @@ export class WeatherService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Weather[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST_TRASHED
+            RoutesHttp.BASE + RoutesHttp.WEATHER_LIST_TRASHED
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});

@@ -15,7 +15,7 @@ import { TextureFormComponent } from '../form/form.component';
 })
 export class TextureListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'scientificName', 'weather'];
+  displayedColumns: string[] = ['name'];
   dataSource: MatTableDataSource<Texture>;
   items: Texture[] = [];
   itemsSubs = new Subscription();

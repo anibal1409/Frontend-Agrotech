@@ -15,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class WeatherListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'scientificName', 'weather'];
+  displayedColumns: string[] = ['name'];
   dataSource: MatTableDataSource<Weather>;
   items: Weather[] = [];
   itemsSubs = new Subscription();

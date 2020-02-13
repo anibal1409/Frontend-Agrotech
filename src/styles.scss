@@ -161,6 +161,7 @@ mat-form-field {
   position: fixed !important;
   bottom: 1rem;
   right: 1rem;
+  color: #ffffff !important;
 }
 mat-form-field {
   width: 100%;
@@ -251,4 +252,10 @@ table {
 
 td, th {
   width: 25%;
+}
+.padding-0 {
+  padding: 0px !important;
+}
+.double-input {
+  padding: 0 0 0 1rem;
 }

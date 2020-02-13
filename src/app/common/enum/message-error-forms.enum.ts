@@ -1,9 +1,9 @@
 export enum MessageErrorForms {
-  REQUIRED = 'WINK.FORMS.ERROR.REQUIRED',
-  MAXIMUM = 'WINK.FORMS.ERROR.MAXIMUM',
-  EMAIL = 'WINK.FORMS.ERROR.EMAIL',
-  URL = 'WINK.FORMS.ERROR.URL',
-  MINIMUM = 'WINK.FORMS.ERROR.MINIMUM',
-  CHARACTER = 'WINK.FORMS.ERROR.CHARACTER',
-  WHITE_SPACE = 'WINK.FORMS.ERROR.WHITE_SPACE'
+  REQUIRED = 'Campo requerido.',
+  MAXIMUM = 'Supera el límite de caracteres.',
+  EMAIL = 'Email inválido.',
+  URL = 'URL invalida.',
+  MINIMUM = 'No cumple con los caracteres mínimos.',
+  CHARACTER = 'Carácter no permitido.',
+  WHITE_SPACE = 'Por favor, introduzca datos válidos.'
 }

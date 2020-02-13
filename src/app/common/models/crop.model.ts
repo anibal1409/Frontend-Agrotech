@@ -17,8 +17,8 @@ export class Crop {
   public humidityUntil: number;
   public conductivitySince: number;
   public conductivityUntil: number;
-  public organicMaterialPercentageSince: number;
-  public organicMaterialPercentageUntil: number;
+  public organicMaterialMinPercentage: number;
+  public organicMaterialMaxPercentage: number;
   public texturesId: string[];
   public weatherId: string;
 

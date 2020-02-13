@@ -2,24 +2,199 @@
   <h1 mat-dialog-title>{{ data == undefined ? 'Registar cultivo' : 'Modificar cultivo'}}</h1>
   <div mat-dialog-content>
     <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Código</mat-label>
-      <input matInput type="text" formControlName="code" name="code">
-      <mat-error *ngIf="MessageError('code')">
-        {{ MessageError('code') }}
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" formControlName="name" name="name">
+      <mat-error *ngIf="MessageError('name')">
+        {{ MessageError('name') }}
       </mat-error>
     </mat-form-field>
     <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Marca</mat-label>
-      <input matInput type="text" name="brand" formControlName="brand">
-      <mat-error *ngIf="MessageError('brand')">
-        {{ MessageError('brand') }}
+      <mat-label>Nombre científico</mat-label>
+      <input matInput type="text" name="scientificName" formControlName="scientificName">
+      <mat-error *ngIf="MessageError('scientificName')">
+        {{ MessageError('scientificName') }}
+      </mat-error>
+    </mat-form-field>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>ph mínimo</mat-label>
+          <input matInput type="number" name="phSince" formControlName="phSince">
+          <mat-error *ngIf="MessageError('phSince')">
+            {{ MessageError('phSince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>ph máximo</mat-label>
+          <input matInput type="number" name="phUntil" formControlName="phUntil">
+          <mat-error *ngIf="MessageError('phUntil')">
+            {{ MessageError('phUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Temperatura mínima</mat-label>
+          <input matInput type="number" name="temperatureSince" formControlName="temperatureSince">
+          <mat-error *ngIf="MessageError('temperatureSince')">
+            {{ MessageError('temperatureSince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Temperatura máxima</mat-label>
+          <input matInput type="number" name="temperatureUntil" formControlName="temperatureUntil">
+          <mat-error *ngIf="MessageError('temperatureUntil')">
+            {{ MessageError('temperatureUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Altitud mínima</mat-label>
+          <input matInput type="number" name="altitudeSince" formControlName="altitudeSince">
+          <mat-error *ngIf="MessageError('altitudeSince')">
+            {{ MessageError('altitudeSince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Altitud máxima</mat-label>
+          <input matInput type="number" name="altitudeUntil" formControlName="altitudeUntil">
+          <mat-error *ngIf="MessageError('altitudeUntil')">
+            {{ MessageError('altitudeUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Horas mínimas</mat-label>
+          <input matInput type="number" name="hoursSince" formControlName="hoursSince">
+          <mat-error *ngIf="MessageError('hoursSince')">
+            {{ MessageError('hoursSince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Horas máximas</mat-label>
+          <input matInput type="number" name="hoursUntil" formControlName="hoursUntil">
+          <mat-error *ngIf="MessageError('hoursUntil')">
+            {{ MessageError('hoursUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Topografía mínima</mat-label>
+          <input matInput type="number" name="typographySince" formControlName="typographySince">
+          <mat-error *ngIf="MessageError('typographySince')">
+            {{ MessageError('typographySince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Topografía máximo</mat-label>
+          <input matInput type="number" name="typographyUntil" formControlName="typographyUntil">
+          <mat-error *ngIf="MessageError('typographyUntil')">
+            {{ MessageError('typographyUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Humedad mínima</mat-label>
+          <input matInput type="number" name="humiditySince" formControlName="humiditySince">
+          <mat-error *ngIf="MessageError('humiditySince')">
+            {{ MessageError('humiditySince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Humedad máximo</mat-label>
+          <input matInput type="number" name="humidityUntil" formControlName="humidityUntil">
+          <mat-error *ngIf="MessageError('humidityUntil')">
+            {{ MessageError('humidityUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Conductividad eléctrica  mínima</mat-label>
+          <input matInput type="number" name="conductivitySince" formControlName="conductivitySince">
+          <mat-error *ngIf="MessageError('conductivitySince')">
+            {{ MessageError('conductivitySince') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>Conductividad eléctrica máxima</mat-label>
+          <input matInput type="number" name="conductivityUntil" formControlName="conductivityUntil">
+          <mat-error *ngIf="MessageError('conductivityUntil')">
+            {{ MessageError('conductivityUntil') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 padding-0">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>% de materia orgánica mínimo</mat-label>
+          <input matInput type="number" name="organicMaterialMinPercentage" formControlName="organicMaterialMinPercentage">
+          <mat-error *ngIf="MessageError('organicMaterialMinPercentage')">
+            {{ MessageError('organicMaterialMinPercentage') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6 double-input">
+        <mat-form-field [appearance]="inputAppearance">
+          <mat-label>% de materia orgánica máximo</mat-label>
+          <input matInput type="number" name="organicMaterialMaxPercentage" formControlName="organicMaterialMaxPercentage">
+          <mat-error *ngIf="MessageError('organicMaterialMaxPercentage')">
+            {{ MessageError('organicMaterialMaxPercentage') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Clima</mat-label>
+      <mat-select  name="weatherId" formControlName="weatherId" (selectionChange)="true">
+        <mat-option *ngFor="let weatherV of weathers" [value]="weatherV._id" >
+          {{ weatherV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('weatherId')">
+        {{ MessageError('weatherId') }}
       </mat-error>
     </mat-form-field>
     <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Modelo</mat-label>
-      <input matInput type="text" name="modell" formControlName="modell">
-      <mat-error *ngIf="MessageError('modell')">
-        {{ MessageError('modell') }}
+      <mat-label>Textura(s)</mat-label>
+      <mat-select name="texturesId" formControlName="texturesId"  (selectionChange)="true" multiple>
+        <mat-option *ngFor="let textureV of textures" [value]="textureV._id" >
+          {{ textureV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('texturesId')">
+        {{ MessageError('texturesId') }}
       </mat-error>
     </mat-form-field>
     
@@ -35,11 +210,11 @@
         <button mat-button class="gray" mat-dialog-close type="button">
           <span>CANCELAR</span>
         </button>
-        <button mat-button color="primary" type="submit" [disabled]="form.invalid">
+        <button mat-button color="primary" type="submit" >
           <span>ACEPTAR</span>
         </button>
       </div>
     </div>
-    
+    <!-- [disabled]="form.invalid" -->
   </div>
 </form>

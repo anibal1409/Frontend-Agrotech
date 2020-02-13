@@ -14,14 +14,17 @@
 
       <mat-toolbar-row>
         <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon mat-button  (click)="drawer.toggle()">menu</mat-icon>
+          <mat-icon mat-button  (click)="drawer.toggle()" class="white">menu</mat-icon>
         </div>
-        <span>
+        <span class="white" >
           {{ nameApp }}
         </span>
         <span class="example-spacer"></span>
+        <span class="white" >
+          {{ User.name}}
+        </span>
         <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon">person</mat-icon>
+          <mat-icon [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon" class="white">more_vert</mat-icon>
         </div>
       </mat-toolbar-row>
     </mat-toolbar>
@@ -41,8 +44,9 @@
       <!-- <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
     </div>
     <div class="row center-h margin-bt-1  cursor">
-      <span class="link-primary" matRipple>
-        {{ User.name}}
+      <span class="primary" matRipple>
+        <!-- {{ User.name}} -->
+        Mi cuenta
       </span>
     </div>
     <div class="row">
