@@ -32,6 +32,11 @@ import { UserFormComponent } from './pages/user/form/form.component';
 import { WeatherListComponent } from './pages/weather/list/list.component';
 import { UserListComponent } from './pages/user/list/list.component';
 import { TextureListComponent } from './pages/texture/list/list.component';
+import { SectorListComponent } from './pages/sector/list/list.component';
+import { SectorWizardComponent } from './pages/sector/wizard/wizard.component';
+import { StudyFormComponent } from './pages/study/form/form.component';
+import { StudyListComponent } from './pages/study/list/list.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 
 export const DateFormats = {
@@ -57,6 +62,10 @@ export const DateFormats = {
     WeatherListComponent,
     UserListComponent,
     TextureListComponent,
+    StudyFormComponent,
+    StudyListComponent,
+    SectorListComponent,
+    SectorWizardComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +91,7 @@ export const DateFormats = {
     MomentModule2,
     MatMenuModule,
     MatRippleModule,
+    MatStepperModule,
   ],
   exports: [
     AdminRoutingModule,
@@ -92,7 +102,7 @@ export const DateFormats = {
     TextureFormComponent,
     WeatherFormComponent,
     UserFormComponent,
-
+    SectorWizardComponent,
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

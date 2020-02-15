@@ -23,7 +23,7 @@ export class TextureFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<TextureFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: Texture,
     private textureService: TextureService,
   ) {
     this.Form();

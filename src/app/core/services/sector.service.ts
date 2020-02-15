@@ -3,6 +3,7 @@ import { Sector } from 'src/app/common/models/sector.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
+import { Month } from 'src/app/common/models/month.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,71 @@ export class SectorService  {
   itemsTrashedChanged = new Subject<Sector[]>();
   private index: number;
   private indexTrashed: number;
+  private requesetHttp = false;
+  private months: Month[] = [
+    new Month({
+      name: 'Enero',
+      numValue: '1'
+    }),
+    new Month({
+      name: 'Febrero',
+      numValue: '2'
+    }),
+    new Month({
+      name: 'Marzo',
+      numValue: '3'
+    }),
+    new Month({
+      name: 'Abril',
+      numValue: '4'
+    }),
+    new Month({
+      name: 'Mayo',
+      numValue: '5'
+    }),
+    new Month({
+      name: 'Junio',
+      numValue: '6'
+    }),
+    new Month({
+      name: 'Julio',
+      numValue: '7'
+    }),
+    new Month({
+      name: 'Agosto',
+      numValue: '8'
+    }),
+    new Month({
+      name: 'Septiembre',
+      numValue: '9'
+    }),
+    new Month({
+      name: 'Octubre',
+      numValue: '10'
+    }),
+    new Month({
+      name: 'Noviembre',
+      numValue: '11'
+    }),
+    new Month({
+      name: 'Diciembre',
+      numValue: '12'
+    }),
+
+  ];
 
   constructor(
     private http: HttpClient,
-  ) { }
+  ) {
+    this.Init();
+  }
+
+  async Init() {
+    if(!this.requesetHttp) {
+      await this.List();
+      await this.ListTrashed();
+    }
+  }
 
 
   Create(item: Sector) {
@@ -143,6 +205,10 @@ export class SectorService  {
 
   get ItemsTrashed() {
     return this.sectorsTrashed.slice();
+  }
+
+  get Months() {
+    return this.months.slice();
   }
 
   GetItemtID(idItem: String) {

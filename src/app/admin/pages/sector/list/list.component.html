@@ -1,4 +1,4 @@
-<mat-toolbar>Cultivos</mat-toolbar>
+<mat-toolbar>Climas</mat-toolbar>
 <mat-form-field >
   <mat-icon matPrefix class="primary icon-input">search</mat-icon>
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
@@ -12,14 +12,14 @@
       <td mat-cell *matCellDef="let row" (click)="DialogeForm(row)" class="link-primary cursor" matRipple> {{row.name}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="scientificName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Nombre científico</th>
-      <td mat-cell *matCellDef="let row"> {{row.scientificName}}</td>
+    <ng-container matColumnDef="pending">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Pendiente</th>
+      <td mat-cell *matCellDef="let row" > {{row.pendingSince + ' - ' + row.pendingUntil}} </td>
     </ng-container>
 
     <ng-container matColumnDef="weather">
       <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Clima</th>
-      <td mat-cell *matCellDef="let row"> {{Weather(row.weatherId)}} </td>
+      <td mat-cell *matCellDef="let row" > {{Weather(row.weatherId)}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -29,6 +29,6 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
-<button mat-fab class="fab-button-br" color="primary"  (click)="DialogeForm()">
-  <mat-icon  class="white">add</mat-icon>
+<button mat-fab class="fab-button-br" color="primary" (click)="DialogeForm()">
+  <mat-icon>add</mat-icon>
 </button>

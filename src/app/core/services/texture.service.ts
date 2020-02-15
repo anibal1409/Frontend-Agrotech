@@ -16,10 +16,20 @@ export class TextureService {
   itemsTrashedChanged = new Subject<Texture[]>();
   private index: number;
   private indexTrashed: number;
+  private requesetHttp = false;
 
   constructor(
     private http: HttpClient,
-  ) { }
+  ) {
+    this.Init();
+  }
+
+  async Init() {
+    if(!this.requesetHttp) {
+      await this.List();
+      await this.ListTrashed();
+    }
+  }
 
 
   Create(item: Texture) {

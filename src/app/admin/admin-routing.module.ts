@@ -7,6 +7,8 @@ import { CropListComponent } from './pages/crop/list/list.component';
 import { TextureListComponent } from './pages/texture/list/list.component';
 import { UserListComponent } from './pages/user/list/list.component';
 import { WeatherListComponent } from './pages/weather/list/list.component';
+import { SectorListComponent } from './pages/sector/list/list.component';
+import { StudyListComponent } from './pages/study/list/list.component';
 
 
 export const adminRoutes: Routes = [
@@ -33,6 +35,14 @@ export const adminRoutes: Routes = [
       {
         path: 'weather',
         component: WeatherListComponent
+      },
+      {
+        path: 'sector',
+        component: SectorListComponent
+      },
+      {
+        path: 'study',
+        component: StudyListComponent
       },
       {
         path: '',

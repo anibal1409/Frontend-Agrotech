@@ -1,24 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Sector } from 'src/app/common/models/sector.model';
 import { Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { Crop } from 'src/app/common/models/crop.model';
-import { CropService } from 'src/app/core/services/crop.service';
-import { CropFormComponent } from '../form/form.component';
+import { SectorService } from 'src/app/core/services/sector.service';
+import { SectorWizardComponent } from '../wizard/wizard.component';
 import { WeatherService } from 'src/app/core/services/weather.service';
 
 @Component({
-  selector: 'crop-list',
+  selector: 'sector-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class CropListComponent implements OnInit {
+export class SectorListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'scientificName', 'weather'];
-  dataSource: MatTableDataSource<Crop>;
-  items: Crop[] = [];
+  displayedColumns: string[] = ['name', 'pending', 'weather'];
+  dataSource: MatTableDataSource<Sector>;
+  items: Sector[] = [];
   itemsSubs = new Subscription();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -26,19 +26,19 @@ export class CropListComponent implements OnInit {
 
   constructor(
     private dialoge: MatDialog,
-    private cropService: CropService,
+    private sectorService: SectorService,
     private weatherService: WeatherService,
   ) {
-    this.cropService.List();
-    this.items = this.cropService.Items;
+    this.sectorService.List();
+    this.items = this.sectorService.Items;
     this.dataSource = new MatTableDataSource(this.items);
    }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.itemsSubs = this.cropService.itemsChanged.subscribe(
-      (newItems: Crop[]) => {
+    this.itemsSubs = this.sectorService.itemsChanged.subscribe(
+      (newItems: Sector[]) => {
         if (newItems) {
           this.items = newItems;
           this.dataSource = new MatTableDataSource(newItems);
@@ -53,8 +53,8 @@ export class CropListComponent implements OnInit {
     this.itemsSubs.unsubscribe();
   }
 
-  DialogeForm(dataUpd?: Crop) {
-    const dialogRef = this.dialoge.open(CropFormComponent, {
+  DialogeForm(dataUpd?: Sector) {
+    const dialogRef = this.dialoge.open(SectorWizardComponent, {
       width: '40rem',
       disableClose: true,
       data: dataUpd ? dataUpd : null
