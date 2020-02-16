@@ -4,7 +4,7 @@ export class SectorLocation {
   public sectorId: string;
   public name: string;
   public ASNM: number;
-  public texturesId: string[];
+  public texturesIds: string[];
 
   constructor(data: any) {
     Object.assign(this, data);

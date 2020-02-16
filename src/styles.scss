@@ -261,5 +261,8 @@ td, th {
 }
 .scroll-65 {
   overflow-y: auto;
-  max-height: 65vh;
+  max-height: 45vh;
+}
+.mat-horizontal-content-container {
+  max-height: 50vh;
 }

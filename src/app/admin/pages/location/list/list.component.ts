@@ -1,24 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Sector } from 'src/app/common/models/sector.model';
-import { Subscription } from 'rxjs';
+import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { LocationService } from 'src/app/core/services/location.service';
+import { LocationFormComponent } from '../form/form.component';
 import { SectorService } from 'src/app/core/services/sector.service';
-import { SectorWizardComponent } from '../wizard/wizard.component';
-import { WeatherService } from 'src/app/core/services/weather.service';
 
 @Component({
-  selector: 'sector-list',
+  selector: 'location-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class SectorListComponent implements OnInit {
+export class LocationListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'pending', 'weather'];
-  dataSource: MatTableDataSource<Sector>;
-  items: Sector[] = [];
+  displayedColumns: string[] = ['name', 'asnm', 'sector'];
+  dataSource: MatTableDataSource<SectorLocation>;
+  items: SectorLocation[] = [];
   itemsSubs = new Subscription();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -26,19 +26,19 @@ export class SectorListComponent implements OnInit {
 
   constructor(
     private dialoge: MatDialog,
+    private locationService: LocationService,
     private sectorService: SectorService,
-    private weatherService: WeatherService,
   ) {
-    this.sectorService.List();
-    this.items = this.sectorService.Items;
+    this.locationService.List();
+    this.items = this.locationService.Items;
     this.dataSource = new MatTableDataSource(this.items);
    }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.itemsSubs = this.sectorService.itemsChanged.subscribe(
-      (newItems: Sector[]) => {
+    this.itemsSubs = this.locationService.itemsChanged.subscribe(
+      (newItems: SectorLocation[]) => {
         if (newItems) {
           this.items = newItems;
           this.dataSource = new MatTableDataSource(newItems);
@@ -49,13 +49,13 @@ export class SectorListComponent implements OnInit {
     );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.itemsSubs.unsubscribe();
   }
 
-  DialogeForm(dataUpd?: Sector) {
-    const dialogRef = this.dialoge.open(SectorWizardComponent, {
-      // width: '40rem',
+  DialogeForm(dataUpd?: SectorLocation) {
+    const dialogRef = this.dialoge.open(LocationFormComponent, {
+      width: '40rem',
       disableClose: true,
       data: dataUpd ? dataUpd : null
     });
@@ -73,9 +73,8 @@ export class SectorListComponent implements OnInit {
     }
   }
 
-  Weather(idWeather: String) {
-    let weather = this.weatherService.GetItemtID(idWeather);
-    return weather ? weather.name : '';
+  Sector(idSector: String) {
+    return this.sectorService.GetItemtID(idSector) ? this.sectorService.GetItemtID(idSector).name : '';
   }
 
 }

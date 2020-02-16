@@ -1,200 +1,224 @@
-<mat-horizontal-stepper [linear]="data ? false : false" #stepper>
-  <mat-step [stepControl]="formSector">
-    <ng-template matStepLabel>Básico</ng-template>
-    <form [formGroup]="formSector">
-      <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <mat-form-field [appearance]="inputAppearance">
-            <mat-label>Nombre</mat-label>
-            <input matInput type="text" formControlName="name" name="name">
-            <mat-error *ngIf="MessageError('name')">
-              {{ MessageError('name') }}
-            </mat-error>
-          </mat-form-field>
+<h1 mat-dialog-title>{{ data == undefined ? 'Registar sector' : 'Modificar sector'}}</h1>
+<div mat-dialog-content>
+  <mat-horizontal-stepper [linear]="data ? false : false" #stepper>
+    <mat-step [stepControl]="formSector">
+      <ng-template matStepLabel>Básico</ng-template>
+      <form [formGroup]="formSector">
+        <div class="row">
+          <div class="col-sm-6 col-xs-12">
+            <mat-form-field [appearance]="inputAppearance">
+              <mat-label>Nombre</mat-label>
+              <input matInput type="text" formControlName="name" name="name">
+              <mat-error *ngIf="MessageError('name')">
+                {{ MessageError('name') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+            <mat-form-field [appearance]="inputAppearance">
+              <mat-label>Clima</mat-label>
+              <mat-select  name="weatherId" formControlName="weatherId" (selectionChange)="true">
+                <mat-option *ngFor="let weatherV of weathers" [value]="weatherV._id" >
+                  {{ weatherV.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="MessageError('weatherId')">
+                {{ MessageError('weatherId') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
-        <div class="col-sm-6 col-xs-12">
-          <mat-form-field [appearance]="inputAppearance">
-            <mat-label>Clima</mat-label>
-            <mat-select  name="weatherId" formControlName="weatherId" (selectionChange)="true">
-              <mat-option *ngFor="let weatherV of weathers" [value]="weatherV._id" >
-                {{ weatherV.name }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="MessageError('weatherId')">
-              {{ MessageError('weatherId') }}
-            </mat-error>
-          </mat-form-field>
+        <div class="row">
+          <div class="col-sm-6 col-xs-12">
+            <mat-form-field [appearance]="inputAppearance">
+              <mat-label>Pendiente mínima</mat-label>
+              <input matInput type="number" formControlName="pendingSince" name="pendingSince" min="0">
+              <mat-error *ngIf="MessageError('pendingSince')">
+                {{ MessageError('pendingSince') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+            <mat-form-field [appearance]="inputAppearance">
+              <mat-label>Pendiente máxima</mat-label>
+              <input matInput type="number" formControlName="pendingUntil" name="pendingUntil" min="0">
+              <mat-error *ngIf="MessageError('pendingUntil')">
+                {{ MessageError('pendingUntil') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
+      </form>
+      <div>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
-      <div class="row">
-        <div class="col-sm-6 col-xs-12">
-          <mat-form-field [appearance]="inputAppearance">
-            <mat-label>Pendiente mínima</mat-label>
-            <input matInput type="number" formControlName="pendingSince" name="pendingSince" min="0">
-            <mat-error *ngIf="MessageError('pendingSince')">
-              {{ MessageError('pendingSince') }}
-            </mat-error>
-          </mat-form-field>
+    </mat-step>
+    <mat-step [stepControl]="formSectorHumidity">
+      <ng-template matStepLabel>Humedad</ng-template>
+      <form [formGroup]="formSectorHumidity" >
+        <div class="row" *ngIf="getControls(humidityName).length > 0" class="scroll-65">
+          <div class="col-xs-12" formArrayName="humidity">
+              <div class="row" *ngFor="let ingredientCtrl of getControls(humidityName); let i = index" [formGroupName]="i" >
+                <div class="col-sm-6 col-xs-12">
+                  <mat-form-field [appearance]="inputAppearance" >
+                    <mat-label>Mes</mat-label>
+                    <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
+                      <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
+                        {{ monthV.name }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Minima</mat-label>
+                    <input matInput type="number" formControlName="min" name="min">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Maxima</mat-label>
+                    <input matInput type="text" formControlName="max" name="max">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+              </div>
+          </div>
         </div>
-        <div class="col-sm-6 col-xs-12">
-          <mat-form-field [appearance]="inputAppearance">
-            <mat-label>Pendiente máxima</mat-label>
-            <input matInput type="number" formControlName="pendingUntil" name="pendingUntil" min="0">
-            <mat-error *ngIf="MessageError('pendingUntil')">
-              {{ MessageError('pendingUntil') }}
-            </mat-error>
-          </mat-form-field>
-        </div>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Anterior</button>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
-    </form>
-    <div>
-      <button mat-button matStepperNext>Siguiente</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="formSectorHumidity">
-    <ng-template matStepLabel>Humedad</ng-template>
-    <form [formGroup]="formSectorHumidity" class="scroll-65">
-      <div class="row" *ngIf="getControls(humidityName).length > 0">
-        <div class="col-xs-12" formArrayName="humidity">
-            <div class="row" *ngFor="let ingredientCtrl of getControls(humidityName); let i = index" [formGroupName]="i" >
-              <div class="col-sm-6 col-xs-12">
-                <mat-form-field [appearance]="inputAppearance" >
-                  <mat-label>Mes</mat-label>
-                  <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
-                    <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
-                      {{ monthV.name }}
-                    </mat-option>
-                  </mat-select>
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
+    </mat-step>
+    <mat-step [stepControl]="formSectorTemperature">
+      <ng-template matStepLabel>Temperatura</ng-template>
+      <form [formGroup]="formSectorTemperature" class="scroll-65">
+        <div class="row" *ngIf="getControls(temperatureName).length > 0">
+          <div class="col-xs-12" formArrayName="temperature">
+              <div class="row" *ngFor="let ingredientCtrl of getControls(temperatureName); let i = index" [formGroupName]="i" >
+                <div class="col-sm-6 col-xs-12">
+                  <mat-form-field [appearance]="inputAppearance" >
+                    <mat-label>Mes</mat-label>
+                    <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
+                      <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
+                        {{ monthV.name }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Minima</mat-label>
+                    <input matInput type="number" formControlName="min" name="min">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Maxima</mat-label>
+                    <input matInput type="text" formControlName="max" name="max">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Minima</mat-label>
-                  <input matInput type="number" formControlName="min" name="min">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Maxima</mat-label>
-                  <input matInput type="text" formControlName="max" name="max">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-            </div>
+          </div>
         </div>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Anterior</button>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
-    </form>
-    <div>
-      <button mat-button matStepperPrevious>Anterior</button>
-      <button mat-button matStepperNext>Siguiente</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="formSectorTemperature">
-    <ng-template matStepLabel>Temperatura</ng-template>
-    <form [formGroup]="formSectorTemperature" class="scroll-65">
-      <div class="row" *ngIf="getControls(temperatureName).length > 0">
-        <div class="col-xs-12" formArrayName="temperature">
-            <div class="row" *ngFor="let ingredientCtrl of getControls(temperatureName); let i = index" [formGroupName]="i" >
-              <div class="col-sm-6 col-xs-12">
-                <mat-form-field [appearance]="inputAppearance" >
-                  <mat-label>Mes</mat-label>
-                  <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
-                    <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
-                      {{ monthV.name }}
-                    </mat-option>
-                  </mat-select>
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
+    </mat-step>
+    <mat-step [stepControl]="formSectorLight">
+      <ng-template matStepLabel>Horas de Luz</ng-template>
+      <form [formGroup]="formSectorLight" class="scroll-65">
+        <div class="row" *ngIf="getControls(lightName).length > 0">
+          <div class="col-xs-12" formArrayName="light">
+              <div class="row" *ngFor="let ingredientCtrl of getControls(lightName); let i = index" [formGroupName]="i" >
+                <div class="col-sm-6 col-xs-12">
+                  <mat-form-field [appearance]="inputAppearance" >
+                    <mat-label>Mes</mat-label>
+                    <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
+                      <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
+                        {{ monthV.name }}
+                      </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Minima</mat-label>
+                    <input matInput type="number" formControlName="min" name="min">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                  <mat-form-field [appearance]="inputAppearance">
+                    <mat-label>Maxima</mat-label>
+                    <input matInput type="text" formControlName="max" name="max">
+                    <!-- <mat-error *ngIf="MessageError('min')">
+                      {{ MessageError('min') }}
+                    </mat-error> -->
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Minima</mat-label>
-                  <input matInput type="number" formControlName="min" name="min">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Maxima</mat-label>
-                  <input matInput type="text" formControlName="max" name="max">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-            </div>
+          </div>
         </div>
+      </form>
+      <div>
+        <button mat-button matStepperPrevious>Anterior</button>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
-    </form>
-    <div>
-      <button mat-button matStepperPrevious>Anterior</button>
-      <button mat-button matStepperNext>Siguiente</button>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="formSectorLight">
-    <ng-template matStepLabel>Horas de Luz</ng-template>
-    <form [formGroup]="formSectorLight" class="scroll-65">
-      <div class="row" *ngIf="getControls(lightName).length > 0">
-        <div class="col-xs-12" formArrayName="light">
-            <div class="row" *ngFor="let ingredientCtrl of getControls(lightName); let i = index" [formGroupName]="i" >
-              <div class="col-sm-6 col-xs-12">
-                <mat-form-field [appearance]="inputAppearance" >
-                  <mat-label>Mes</mat-label>
-                  <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
-                    <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
-                      {{ monthV.name }}
-                    </mat-option>
-                  </mat-select>
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Minima</mat-label>
-                  <input matInput type="number" formControlName="min" name="min">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-              <div class="col-sm-3 col-xs-6">
-                <mat-form-field [appearance]="inputAppearance">
-                  <mat-label>Maxima</mat-label>
-                  <input matInput type="text" formControlName="max" name="max">
-                  <!-- <mat-error *ngIf="MessageError('min')">
-                    {{ MessageError('min') }}
-                  </mat-error> -->
-                </mat-form-field>
-              </div>
-            </div>
-        </div>
+    </mat-step>
+    <!--
+      <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      You are now done.
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
       </div>
-    </form>
-    <div>
-      <button mat-button matStepperPrevious>Anterior</button>
-      <button mat-button matStepperNext>Siguiente</button>
+    </mat-step>
+      -->
+    
+  </mat-horizontal-stepper>
+</div>
+<div mat-dialog-actions class="">
+  <div class="row width-100">
+    <div class="col-xs-4">
+      <button *ngIf="data != undefined " mat-button class="danger" type="button">
+        <span>ELIMINAR</span>
+      </button>
     </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+    <div class="col-xs-8 end-h">
+      <button mat-button class="gray" mat-dialog-close type="button">
+        <span>CANCELAR</span>
+      </button>
+      <button mat-button color="primary" type="submit" [disabled]="false" (click)="OnSubmit()">
+        <span>ACEPTAR</span>
+      </button>
     </div>
-  </mat-step>
-</mat-horizontal-stepper>
+  </div>
+  
+</div>

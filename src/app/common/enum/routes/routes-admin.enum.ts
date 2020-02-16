@@ -6,4 +6,5 @@ export enum RoutesAdmin {
   CROP = "/admin/crop",
   STUDY = "/admin/study",
   SECTOR = "/admin/sector",
+  LOCATION = "/admin/sector/location",
 }

@@ -37,6 +37,8 @@ import { SectorWizardComponent } from './pages/sector/wizard/wizard.component';
 import { StudyFormComponent } from './pages/study/form/form.component';
 import { StudyListComponent } from './pages/study/list/list.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { LocationListComponent } from './pages/location/list/list.component';
+import { LocationFormComponent } from './pages/location/form/form.component';
 
 
 export const DateFormats = {
@@ -66,6 +68,8 @@ export const DateFormats = {
     StudyListComponent,
     SectorListComponent,
     SectorWizardComponent,
+    LocationListComponent,
+    LocationFormComponent,
   ],
   imports: [
     CommonModule,
@@ -103,6 +107,7 @@ export const DateFormats = {
     WeatherFormComponent,
     UserFormComponent,
     SectorWizardComponent,
+    LocationFormComponent,
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

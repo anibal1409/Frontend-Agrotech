@@ -1,75 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Sector } from 'src/app/common/models/sector.model';
+import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
-import { Month } from 'src/app/common/models/month.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SectorService  {
+export class LocationService {
 
-  
-  private nameService = "SectorService";
-  private sectors: Sector[] = [];
-  private sectorsTrashed: Sector[] = [];
-  itemsChanged = new Subject<Sector[]>();
-  itemsTrashedChanged = new Subject<Sector[]>();
+  private nameService = "LocationService";
+  private items: SectorLocation[] = [];
+  private itemsTrashed: SectorLocation[] = [];
+  itemsChanged = new Subject<SectorLocation[]>();
+  itemsTrashedChanged = new Subject<SectorLocation[]>();
   private index: number;
   private indexTrashed: number;
   private requesetHttp = false;
-  private months: Month[] = [
-    new Month({
-      name: 'Enero',
-      numValue: '1'
-    }),
-    new Month({
-      name: 'Febrero',
-      numValue: '2'
-    }),
-    new Month({
-      name: 'Marzo',
-      numValue: '3'
-    }),
-    new Month({
-      name: 'Abril',
-      numValue: '4'
-    }),
-    new Month({
-      name: 'Mayo',
-      numValue: '5'
-    }),
-    new Month({
-      name: 'Junio',
-      numValue: '6'
-    }),
-    new Month({
-      name: 'Julio',
-      numValue: '7'
-    }),
-    new Month({
-      name: 'Agosto',
-      numValue: '8'
-    }),
-    new Month({
-      name: 'Septiembre',
-      numValue: '9'
-    }),
-    new Month({
-      name: 'Octubre',
-      numValue: '10'
-    }),
-    new Month({
-      name: 'Noviembre',
-      numValue: '11'
-    }),
-    new Month({
-      name: 'Diciembre',
-      numValue: '12'
-    }),
-
-  ];
 
   constructor(
     private http: HttpClient,
@@ -84,8 +31,7 @@ export class SectorService  {
     }
   }
 
-
-  Create(item: Sector) {
+  Create(item: SectorLocation) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -93,13 +39,13 @@ export class SectorService  {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.SECTOR_CREATE,
+            RoutesHttp.BASE + RoutesHttp.LOCATION_CREATE,
             item
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Add(response as Sector);
+          this.Add(response as SectorLocation);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Create: ' + err);
@@ -109,7 +55,7 @@ export class SectorService  {
     );
   }
 
-  Update(item: Sector) {
+  Update(item: SectorLocation) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -117,13 +63,13 @@ export class SectorService  {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.SECTOR_UPDATE,
+            RoutesHttp.BASE + RoutesHttp.LOCATION_UPDATE,
             item
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Add(response as Sector);
+          this.Add(response as SectorLocation);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Update: ' + err);
@@ -133,7 +79,7 @@ export class SectorService  {
     );
   }
 
-  Delete(item: Sector) {
+  Delete(item: SectorLocation) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -141,7 +87,7 @@ export class SectorService  {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.SECTOR_DELETE,
+            RoutesHttp.BASE + RoutesHttp.LOCATION_DELETE,
             item._id
             ).toPromise();
           if (!response) {
@@ -161,14 +107,14 @@ export class SectorService  {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<Sector[]>(
-            RoutesHttp.BASE + RoutesHttp.SECTOR_LIST
+          const response = await this.http.get<SectorLocation[]>(
+            RoutesHttp.BASE + RoutesHttp.LOCATION_LIST
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.sectors = response;
-          this.itemsChanged.next(this.sectors);
+          this.items = response;
+          this.itemsChanged.next(this.items);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error List: ' + err);
@@ -182,14 +128,14 @@ export class SectorService  {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<Sector[]>(
-            RoutesHttp.BASE + RoutesHttp.SECTOR_LIST_TRASHED
+          const response = await this.http.get<SectorLocation[]>(
+            RoutesHttp.BASE + RoutesHttp.LOCATION_LIST_TRASHED
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.sectorsTrashed = response;
-          this.itemsTrashedChanged.next(this.sectorsTrashed);
+          this.itemsTrashed = response;
+          this.itemsTrashedChanged.next(this.itemsTrashed);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error ListTrashed: ' + err);
@@ -200,19 +146,15 @@ export class SectorService  {
   }
 
   get Items() {
-    return this.sectors.slice();
+    return this.items.slice();
   }
 
   get ItemsTrashed() {
-    return this.sectorsTrashed.slice();
-  }
-
-  get Months() {
-    return this.months.slice();
+    return this.itemsTrashed.slice();
   }
 
   GetItemtID(idItem: String) {
-    return this.sectors.find(
+    return this.items.find(
       (itemValue, index: number, obj) => {
         if (itemValue._id === idItem) {
           this.index = index;
@@ -223,7 +165,7 @@ export class SectorService  {
   }
 
   GetItemtTrashedID(idItemTrashed: String) {
-    return this.sectorsTrashed.find(
+    return this.itemsTrashed.find(
       (itemTrashedValue, index: number, obj) => {
         if (itemTrashedValue._id === idItemTrashed) {
           this.indexTrashed = index;
@@ -233,42 +175,42 @@ export class SectorService  {
     );
   }
 
-  private Add(item: Sector) {
+  private Add(item: SectorLocation) {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
-      this.sectors[this.index] = item;
-      this.itemsChanged.next(this.sectors);
+      this.items[this.index] = item;
+      this.itemsChanged.next(this.items);
     } else {
-      this.sectors.push(item);
-      this.itemsChanged.next(this.sectors);
+      this.items.push(item);
+      this.itemsChanged.next(this.items);
     }
   }
 
-  private AddTrashed(itemTrashed: Sector) {
+  private AddTrashed(itemTrashed: SectorLocation) {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
-      this.sectorsTrashed[this.indexTrashed] = itemTrashed;
-      this.itemsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashed[this.indexTrashed] = itemTrashed;
+      this.itemsTrashedChanged.next(this.itemsTrashed);
     } else {
-      this.sectorsTrashed.push(itemTrashed);
-      this.itemsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashed.push(itemTrashed);
+      this.itemsTrashedChanged.next(this.itemsTrashed);
     }
   }
 
-  private Remove(item: Sector) {
+  private Remove(item: SectorLocation) {
     const itmeLocal = this.GetItemtID(item._id);
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
-      this.sectors.splice(this.index, 1);
-      this.itemsChanged.next(this.sectors);
+      this.items.splice(this.index, 1);
+      this.itemsChanged.next(this.items);
     }
   }
 
-  private RemoveTrashed(itemTrashed: Sector) {
+  private RemoveTrashed(itemTrashed: SectorLocation) {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
-      this.sectorsTrashed.splice(this.indexTrashed, 1);
-      this.itemsTrashedChanged.next(this.sectorsTrashed);
+      this.itemsTrashed.splice(this.indexTrashed, 1);
+      this.itemsTrashedChanged.next(this.itemsTrashed);
     }
   }
 }

@@ -142,11 +142,16 @@ export class SectorWizardComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.formSector.valid) {
+    console.log(this.formSector.valid && this.formSectorHumidity.valid && this.formSectorLight.valid && this.formSectorTemperature.valid);
+    if (this.formSector.valid && this.formSectorHumidity.valid && this.formSectorLight.valid && this.formSectorTemperature.valid) {
       if (this.data) {
         try {
           const registrytUpd = new Sector(this.formSector.value);
           registrytUpd._id = this.data._id;
+          registrytUpd.sectorHumidities = this.formSectorHumidity.value;
+          registrytUpd.sectorLights = this.formSectorLight.value;
+          registrytUpd.sectorTemperatures = this.formSectorTemperature.value;
+          console.log(registrytUpd);
           if (await this.sectorService.Update(registrytUpd)) {
             this.Close();
           }
@@ -155,9 +160,12 @@ export class SectorWizardComponent implements OnInit {
         }
       } else {
         try {
-          if (await this.sectorService.Create(
-            new Sector(this.formSector.value)
-          )) {
+          let mySector = new Sector(this.formSector.value);
+          mySector.sectorHumidities = this.formSectorHumidity.value.humidity;
+          mySector.sectorLights = this.formSectorLight.value.light;
+          mySector.sectorTemperatures = this.formSectorTemperature.value.temperature;
+          console.log(mySector);
+          if (await this.sectorService.Create(mySector)) {
             this.Close();
           }
         } catch (error) {

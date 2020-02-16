@@ -20,6 +20,7 @@ export class BaseAdminComponent implements OnInit {
   routeStudy = RoutesAdmin.STUDY;
   routeSector = RoutesAdmin.SECTOR;
   routeUser = RoutesAdmin.USER;
+  routeLocation = RoutesAdmin.LOCATION;
 
   constructor(
     private authService: AuthService,

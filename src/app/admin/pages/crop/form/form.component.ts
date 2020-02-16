@@ -57,7 +57,6 @@ export class CropFormComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     try {
       await this.weatherService.List();
-      
       await this.textureService.List();
       
     } catch (err) {
