@@ -39,6 +39,8 @@ import { StudyListComponent } from './pages/study/list/list.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { LocationListComponent } from './pages/location/list/list.component';
 import { LocationFormComponent } from './pages/location/form/form.component';
+import { AccountPasswordComponent } from '../core/pages/account-password/account-password.component';
+import { AccountUserComponent } from '../core/pages/account-user/account-user.component';
 
 
 export const DateFormats = {
@@ -108,6 +110,9 @@ export const DateFormats = {
     UserFormComponent,
     SectorWizardComponent,
     LocationFormComponent,
+    AccountPasswordComponent,
+    AccountUserComponent,
+    UserFormComponent,
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

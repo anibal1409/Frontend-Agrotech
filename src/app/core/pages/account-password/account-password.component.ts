@@ -1,54 +1,58 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { NoWhiteSpace } from 'src/app/common/validators/no-whithe-space.validator';
 import { textFieldAppearance } from 'src/app/common/constants/apaperance.constant';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserService } from 'src/app/core/services/user.service';
-import { User } from 'src/app/common/models/user.model';
+import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
-  selector: 'user-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  selector: 'app-account-password',
+  templateUrl: './account-password.component.html',
+  styleUrls: ['./account-password.component.scss']
 })
-export class UserFormComponent implements OnInit {
+export class AccountPasswordComponent implements OnInit {
 
-  nameClass = "UserFormComponent";
+  nameClass = "AccountPasswordComponent";
 
   form: FormGroup;
   noWhiteSpace =  new NoWhiteSpace();
+  visibility = false;
+  visibilityConfirm = false;
+  private uuid: string;
   inputAppearance: string = textFieldAppearance;
-  roles = []
+
 
   constructor(
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<UserFormComponent>,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBarService: SnackBarService,
+    public dialogRef: MatDialogRef<AccountPasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private userService: UserService,
   ) {
-    this.roles = this.userService.Roles;
     this.Form();
   }
 
   ngOnInit() {
+    
   }
 
   private Form() {
     this.form = this.formBuilder.group({
-      name: new FormControl( this.data ? this.data.name : null, [
+      password: new FormControl( '', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
-      email: new FormControl( this.data ? this.data.email :  null, [
+      confirm: new FormControl( '', [
         Validators.required,
-        Validators.email,
-        this.noWhiteSpace.Validator
-      ]),
-      role: new FormControl( this.data ? this.data.role :  'basic', [
-        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
     });
@@ -56,17 +60,7 @@ export class UserFormComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.form.valid) {
-        try {
-          if (await this.userService.Create(
-            new User(this.form.value)
-          )) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
-        }
-    }
+    this.Close();
   }
 
   MessageError(input: string) {
@@ -95,6 +89,26 @@ export class UserFormComponent implements OnInit {
         }
       }
     }
+  }
+
+  Login() {
+    this.authService.SignIn(this.form.value);
+  }
+
+  ChangeVisibility() {
+    this.visibility = !this.visibility;
+  }
+
+  ChangeVisibilityConfirm() {
+    this.visibilityConfirm = !this.visibilityConfirm;
+  }
+
+  ValidForm(): boolean {
+    if (this.form.invalid) {
+      return true;
+    }
+    
+    return this.form.value.password !== this.form.value.confirm;
   }
 
   Close() {

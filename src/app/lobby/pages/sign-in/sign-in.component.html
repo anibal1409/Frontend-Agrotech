@@ -1,10 +1,15 @@
 <mat-card class="width-100">
   <mat-card-content>
+    <div class="row">
+      <div class="col-12 center-all">
+        <img src="../../../../assets/img/logo.png" alt="LOGO" class="width-10r">
+      </div>
+    </div>
     <div class="row ">
       <div class="col-12 col-xs-12 center-all">
-        <h2>
-          Login
-        </h2>
+        <mat-label class="title-lobby" >
+          Identifíquese
+        </mat-label>
       </div>
     </div>
   <form
@@ -44,12 +49,12 @@
     <div class="row">
       <div class="col-4">
         <span class="primary bold cursor" [routerLink]="routeSignUp">
-          Registrarme
+          Registrarme aquí
         </span>
       </div>
       <div class="col-8 end-h">
         <span class="primary bold cursor" [routerLink]="routeForgotPassword">
-          Olvide mi contraseña
+          Recuperar contraseña
         </span>
       </div>
     </div>

@@ -1,29 +1,11 @@
 <form  [formGroup]="form" (ngSubmit)="OnSubmit()">
-  <h1 mat-dialog-title>{{ data == undefined ? 'Registar usuario' : 'Modificar usuario'}}</h1>
+  <h1 mat-dialog-title>{{ 'Mis datos'}}</h1>
   <div mat-dialog-content>
     <mat-form-field [appearance]="inputAppearance">
       <mat-label>Nombre</mat-label>
       <input matInput type="text" formControlName="name" name="name">
       <mat-error *ngIf="MessageError('name')">
         {{ MessageError('name') }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" name="email" formControlName="email">
-      <mat-error *ngIf="MessageError('email')">
-        {{ MessageError('email') }}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Rol</mat-label>
-      <mat-select name="texturesIds" formControlName="role"  (selectionChange)="true" >
-        <mat-option *ngFor="let rolV of roles" [value]="rolV.value" >
-          {{ rolV.name }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="MessageError('role')">
-        {{ MessageError('role') }}
       </mat-error>
     </mat-form-field>
     

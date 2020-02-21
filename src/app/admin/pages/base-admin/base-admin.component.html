@@ -46,14 +46,14 @@
       <!-- <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
     </div>
     <div class="row center-h margin-bt-1  cursor">
-      <span class="primary" matRipple>
+      <span class="primary" matRipple (click)="DialogeFormUser()">
         <!-- {{ User.name}} -->
         Mi cuenta
       </span>
     </div>
     <div class="row">
       <div class="col-6">
-        <button mat-icon-button color="primary" class="cursor" matRipple>
+        <button mat-icon-button color="primary" class="cursor" matRipple (click)="DialogeFormPassword()">
           <mat-icon color="primary">lock</mat-icon>
           <!-- <span>Salir</span> -->
         </button>

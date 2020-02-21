@@ -18,6 +18,11 @@ export class UserService {
   private indexTrashed: number;
   private requesetHttp = false;
 
+  private roles: {name: String, value: String}[] = [
+    {name: 'Administrador', value: 'admin'},
+    {name: 'Comunidad', value: 'basic'},
+  ];
+
   constructor(
     private http: HttpClient,
   ) {
@@ -108,8 +113,8 @@ export class UserService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<User[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST
+          const response = await this.http.post<User[]>(
+            RoutesHttp.BASE + RoutesHttp.LIST_USERS, null
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -129,8 +134,8 @@ export class UserService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<User[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST_TRASHED
+          const response = await this.http.post<User[]>(
+            RoutesHttp.BASE + RoutesHttp.LIST_USERS_TRASHED, null
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -148,6 +153,10 @@ export class UserService {
 
   get Items() {
     return this.items.slice();
+  }
+
+  get Roles() {
+    return this.roles.slice();
   }
 
   get ItemsTrashed() {

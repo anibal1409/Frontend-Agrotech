@@ -4,6 +4,9 @@ import { RoutesAdmin } from 'src/app/common/enum/routes/routes-admin.enum';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { AccountService } from 'src/app/core/services/account.service';
 import { AlertService } from 'src/app/common/alert/alert.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AccountUserComponent } from 'src/app/core/pages/account-user/account-user.component';
+import { AccountPasswordComponent } from 'src/app/core/pages/account-password/account-password.component';
 
 @Component({
   selector: 'app-base-admin',
@@ -26,6 +29,7 @@ export class BaseAdminComponent implements OnInit {
     private authService: AuthService,
     private alertService: AlertService,
     private accountService: AccountService,
+    private dialoge: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -49,6 +53,32 @@ export class BaseAdminComponent implements OnInit {
 
   get User() {
     return this.accountService.User();
+  }
+
+  DialogeFormUser() {
+    const dialogRef = this.dialoge.open(AccountUserComponent, {
+      width: '40rem',
+      disableClose: true,
+      data: this.User
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+
+  }
+
+  DialogeFormPassword() {
+    const dialogRef = this.dialoge.open(AccountPasswordComponent, {
+      width: '40rem',
+      disableClose: true,
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+
   }
 
 }

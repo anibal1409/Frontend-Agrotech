@@ -45,8 +45,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 .content-lobby {
-  padding-top: 10rem;
-  padding-bottom: 10rem;
+  padding-top: 6rem;
+  padding-bottom: 3rem;
   background: #eee;
   height: 100%;
 }
@@ -265,4 +265,14 @@ td, th {
 }
 .mat-horizontal-content-container {
   max-height: 50vh;
+}
+
+.width-10r {
+  width: 10rem;
+}
+
+.title-lobby {
+  font-size: 2rem;
+  font-weight: 500;
+  font-family: sans-serif;
 }

@@ -1,1 +1,34 @@
-<p>list works!</p>
+<mat-toolbar>Cultivos</mat-toolbar>
+<mat-form-field >
+  <mat-icon matPrefix class="primary icon-input">search</mat-icon>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+</mat-form-field>
+
+<div class="mat-elevation-z8  margin-lr-1">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Nombre</th>
+      <td mat-cell *matCellDef="let row" (click)="DialogeForm(row)" class="link-primary cursor" matRipple> {{row.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="scientificName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Nombre científico</th>
+      <td mat-cell *matCellDef="let row"> {{row.scientificName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="weather">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="mat-header-table">Clima</th>
+      <td mat-cell *matCellDef="let row"> {{Weather(row.weatherId)}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+<button mat-fab class="fab-button-br" color="primary"  (click)="DialogeForm()">
+  <mat-icon  class="white">add</mat-icon>
+</button>

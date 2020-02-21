@@ -18,11 +18,18 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountService } from './services/account.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptorService } from '../auth/services/auth-interceptor.service';
+import { AccountUserComponent } from './pages/account-user/account-user.component';
+import { AccountPasswordComponent } from './pages/account-password/account-password.component';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, AccountUserComponent, AccountPasswordComponent],
   imports: [
     CommonModule,
     CoreRoutingModule,
@@ -31,7 +38,14 @@ import { AuthInterceptorService } from '../auth/services/auth-interceptor.servic
     AuthModule,
     CommunityModule,
     AdminModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatDialogModule,
+    MatIconModule,
   ],
   exports: [
     CoreRoutingModule
