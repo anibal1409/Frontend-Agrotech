@@ -1,10 +1,9 @@
-export class User {
-  
+export class Document {
+
   public _id: string;
   public name: string;
-  public email: string;
-  public role: string;
-  public deleted: boolean;
+  public cropId: string;
+  public path: string;
 
   constructor(data: any) {
     Object.assign(this, data);

@@ -5,6 +5,7 @@ export class SectorLocation {
   public name: string;
   public ASNM: number;
   public texturesIds: string[];
+  public deleted: boolean;
 
   constructor(data: any) {
     Object.assign(this, data);

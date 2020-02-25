@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { CropService } from 'src/app/core/services/crop.service';
 import { WeatherService } from 'src/app/core/services/weather.service';
-import { CropFormComponent } from '../../crop/form/form.component';
+import { StudyFormComponent } from '../form/form.component';
 
 @Component({
   selector: 'study-list',
@@ -54,7 +54,7 @@ export class StudyListComponent implements OnInit {
   }
 
   DialogeForm(dataUpd?: Crop) {
-    const dialogRef = this.dialoge.open(CropFormComponent, {
+    const dialogRef = this.dialoge.open(StudyFormComponent, {
       width: '40rem',
       disableClose: true,
       data: dataUpd ? dataUpd : null

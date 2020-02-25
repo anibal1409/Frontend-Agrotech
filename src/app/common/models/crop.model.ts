@@ -21,6 +21,7 @@ export class Crop {
   public organicMaterialMaxPercentage: number;
   public texturesId: string[];
   public weatherId: string;
+  public deleted: boolean;
 
   constructor(data: any) {
     Object.assign(this, data);

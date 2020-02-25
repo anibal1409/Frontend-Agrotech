@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
+import { Study } from 'src/app/common/models/study.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LocationService {
+export class StudyService {
 
-  private nameService = "LocationService";
-  private items: SectorLocation[] = [];
-  private itemsTrashed: SectorLocation[] = [];
-  itemsChanged = new Subject<SectorLocation[]>();
-  itemsTrashedChanged = new Subject<SectorLocation[]>();
+  private nameService = "StudyService";
+  private items: Study[] = [];
+  private itemsTrashed: Study[] = [];
+  itemsChanged = new Subject<Study[]>();
+  itemsTrashedChanged = new Subject<Study[]>();
   private index: number;
   private indexTrashed: number;
   private requesetHttp = false;
@@ -31,7 +31,8 @@ export class LocationService {
     }
   }
 
-  Create(item: SectorLocation) {
+
+  Create(item: Study) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -39,13 +40,13 @@ export class LocationService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.LOCATION_CREATE,
+            RoutesHttp.BASE + RoutesHttp.TEXTURE_CREATE,
             item
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Add(response as SectorLocation);
+          this.Add(response as Study);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Create: ' + err);
@@ -55,7 +56,7 @@ export class LocationService {
     );
   }
 
-  Update(item: SectorLocation) {
+  Update(item: Study) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -63,13 +64,13 @@ export class LocationService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.LOCATION_UPDATE,
+            RoutesHttp.BASE + RoutesHttp.TEXTURE_UPDATE,
             item
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Add(response as SectorLocation);
+          this.Add(response as Study);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Update: ' + err);
@@ -79,7 +80,7 @@ export class LocationService {
     );
   }
 
-  Delete(item: SectorLocation) {
+  Delete(item: Study) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
@@ -87,7 +88,7 @@ export class LocationService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.LOCATION_DELETE,
+            RoutesHttp.BASE + RoutesHttp.TEXTURE_DELETE,
             item._id
             ).toPromise();
           if (!response) {
@@ -107,8 +108,8 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<SectorLocation[]>(
-            RoutesHttp.BASE + RoutesHttp.LOCATION_LIST
+          const response = await this.http.get<Study[]>(
+            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -128,8 +129,8 @@ export class LocationService {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          const response = await this.http.get<SectorLocation[]>(
-            RoutesHttp.BASE + RoutesHttp.LOCATION_LIST_TRASHED
+          const response = await this.http.get<Study[]>(
+            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST_TRASHED
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -164,10 +165,6 @@ export class LocationService {
     );
   }
 
-  GetItemsIDSector(idSector: String): SectorLocation[] {
-    return this.items.filter((itemV) => itemV.sectorId === idSector);
-  }
-
   GetItemtTrashedID(idItemTrashed: String) {
     return this.itemsTrashed.find(
       (itemTrashedValue, index: number, obj) => {
@@ -179,7 +176,7 @@ export class LocationService {
     );
   }
 
-  private Add(item: SectorLocation) {
+  private Add(item: Study) {
     const itemLocal = this.GetItemtID(item._id);
     if (itemLocal) {
       this.items[this.index] = item;
@@ -190,7 +187,7 @@ export class LocationService {
     }
   }
 
-  private AddTrashed(itemTrashed: SectorLocation) {
+  private AddTrashed(itemTrashed: Study) {
     const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itemTrashedLocal) {
       this.itemsTrashed[this.indexTrashed] = itemTrashed;
@@ -201,7 +198,7 @@ export class LocationService {
     }
   }
 
-  private Remove(item: SectorLocation) {
+  private Remove(item: Study) {
     const itmeLocal = this.GetItemtID(item._id);
     if (itmeLocal) {
       this.AddTrashed(itmeLocal);
@@ -210,7 +207,7 @@ export class LocationService {
     }
   }
 
-  private RemoveTrashed(itemTrashed: SectorLocation) {
+  private RemoveTrashed(itemTrashed: Study) {
     const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
     if (itmeTrashedLocal) {
       this.itemsTrashed.splice(this.indexTrashed, 1);

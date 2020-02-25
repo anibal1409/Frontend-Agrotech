@@ -29,7 +29,7 @@ export class AccountService {
     this.user = authData.user;
   }
 
-  public User() {
+  public User(): User {
     return this.user;
   }
   

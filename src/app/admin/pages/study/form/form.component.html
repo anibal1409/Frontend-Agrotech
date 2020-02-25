@@ -1,1 +1,96 @@
-<p>form works!</p>
+<form  [formGroup]="form" (ngSubmit)="OnSubmit()">
+  <h1 mat-dialog-title>{{ data == undefined ? 'Registar estudio' : 'Modificar estudio'}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" formControlName="name" name="name">
+      <mat-error *ngIf="MessageError('name')">
+        {{ MessageError('name') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Mes</mat-label>
+      <mat-select name="month" formControlName="month"  (selectionChange)="true">
+        <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
+          {{ monthV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('month')">
+        {{ MessageError('month') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Sector</mat-label>
+      <mat-select name="sectorId" formControlName="sectorId"  (selectionChange)="GetLocations($event.value)">
+        <mat-option *ngFor="let sectorV of sectors" [value]="sectorV._id" >
+          {{ sectorV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('sectorId')">
+        {{ MessageError('sectorId') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Localidad</mat-label>
+      <mat-select name="LocationId" formControlName="LocationId"  (selectionChange)="true">
+        <mat-option *ngFor="let locationV of locations" [value]="locationV._id" >
+          {{ locationV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('LocationId')">
+        {{ MessageError('LocationId') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Textura</mat-label>
+      <mat-select name="texturesId" formControlName="texturesId"  (selectionChange)="true">
+        <mat-option *ngFor="let textureV of textures" [value]="textureV._id" >
+          {{ textureV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('texturesId')">
+        {{ MessageError('texturesId') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>ph</mat-label>
+      <input matInput type="number" formControlName="ph" name="ph">
+      <mat-error *ngIf="MessageError('ph')">
+        {{ MessageError('ph') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>mo</mat-label>
+      <input matInput type="number" formControlName="mo" name="mo">
+      <mat-error *ngIf="MessageError('mo')">
+        {{ MessageError('mo') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>ce</mat-label>
+      <input matInput type="number" formControlName="ce" name="ce">
+      <mat-error *ngIf="MessageError('ce')">
+        {{ MessageError('ce') }}
+      </mat-error>
+    </mat-form-field>
+    
+  </div>
+  <div mat-dialog-actions class="">
+    <div class="row width-100">
+      <div class="col-xs-4">
+        <!-- <button *ngIf="data != undefined " mat-button class="danger" type="button">
+          <span>ELIMINAR</span>
+        </button> -->
+      </div>
+      <div class="col-xs-8 end-h">
+        <button mat-button class="gray" mat-dialog-close type="button">
+          <span>CANCELAR</span>
+        </button>
+        <button mat-button color="primary" type="submit" [disabled]="form.invalid">
+          <span>ACEPTAR</span>
+        </button>
+      </div>
+    </div>
+    
+  </div>
+</form>

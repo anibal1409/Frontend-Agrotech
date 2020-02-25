@@ -4,7 +4,6 @@ export class SectorTemperature {
   public month: string;
   public min: number;
   public max: number;
-  public average: number = 0;
 
   constructor(data: any) {
     Object.assign(this, data);

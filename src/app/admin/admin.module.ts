@@ -113,6 +113,7 @@ export const DateFormats = {
     AccountPasswordComponent,
     AccountUserComponent,
     UserFormComponent,
+    StudyFormComponent,
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

@@ -12,6 +12,7 @@ export class Sector {
   public sectorHumidities: SectorHumidity[];
   public sectorLights: SectorLight[];
   public sectorTemperatures: SectorTemperature[];
+  public deleted: boolean;
 
   constructor(data: any) {
     Object.assign(this, data);
