@@ -1,0 +1,49 @@
+<form  [formGroup]="form" (ngSubmit)="OnSubmit()">
+  <h1 mat-dialog-title>{{ data == undefined ? 'Registar textura' : 'Modificar textura'}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Nombre del documento</mat-label>
+      <input matInput type="text" formControlName="name" name="name">
+      <mat-error *ngIf="MessageError('name')">
+        {{ MessageError('name') }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Cultivo</mat-label>
+      <mat-select name="cropId" formControlName="cropId"  (selectionChange)="true">
+        <mat-option *ngFor="let cropV of crops" [value]="cropV._id" >
+          {{ cropV.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="MessageError('cropId')">
+        {{ MessageError('cropId') }}
+      </mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field [appearance]="inputAppearance">
+      <mat-label>Seleccione un archivo</mat-label> -->
+      <input type="file" name="mydocument" (change)="LoadFile($event)">
+      <!-- <mat-error *ngIf="MessageError('name')">
+        {{ MessageError('name') }}
+      </mat-error> -->
+    <!-- </mat-form-field> -->
+    
+  </div>
+  <div mat-dialog-actions class="">
+    <div class="row width-100">
+      <div class="col-xs-4">
+        <!-- <button *ngIf="data != undefined " mat-button class="danger" type="button">
+          <span>ELIMINAR</span>
+        </button> -->
+      </div>
+      <div class="col-xs-8 end-h">
+        <button mat-button class="gray" mat-dialog-close type="button">
+          <span>CANCELAR</span>
+        </button>
+        <button mat-button color="primary" type="submit" [disabled]="form.invalid">
+          <span>ACEPTAR</span>
+        </button>
+      </div>
+    </div>
+    
+  </div>
+</form>

@@ -3,6 +3,10 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
 import { Study } from 'src/app/common/models/study.model';
+import { SectorService } from './sector.service';
+import { LocationService } from './location.service';
+import { DocumentService } from './document.service';
+import { CropService } from './crop.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +24,10 @@ export class StudyService {
 
   constructor(
     private http: HttpClient,
+    private sectorService: SectorService,
+    private locationService: LocationService,
+    private documentService: DocumentService,
+    private cropService: CropService,
   ) {
     this.Init();
   }
@@ -40,7 +48,7 @@ export class StudyService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_CREATE,
+            RoutesHttp.BASE + RoutesHttp.STUDY_CREATE,
             item
             ).toPromise();
           if (!response) {
@@ -64,7 +72,7 @@ export class StudyService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_UPDATE,
+            RoutesHttp.BASE + RoutesHttp.STUDY_UPDATE,
             item
             ).toPromise();
           if (!response) {
@@ -88,13 +96,13 @@ export class StudyService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_DELETE,
+            RoutesHttp.BASE + RoutesHttp.STUDY_DELETE,
             item._id
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Delete(item);
+          this.Remove(item);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Delete: ' + err);
@@ -109,7 +117,7 @@ export class StudyService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Study[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST
+            RoutesHttp.BASE + RoutesHttp.STUDY_LIST
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -130,7 +138,7 @@ export class StudyService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Study[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST_TRASHED
+            RoutesHttp.BASE + RoutesHttp.STUDY_LIST_TRASHED
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -152,6 +160,50 @@ export class StudyService {
 
   get ItemsTrashed() {
     return this.itemsTrashed.slice();
+  }
+
+  Result(item: Study) {
+    if(!item) {
+      return;
+    }
+    let results = [];
+    let crops = this.cropService.Items;
+    let sector = this.sectorService.GetItemtID(item.sectorId);
+    if (sector) {
+      let humidity = this.sectorService.GetSectorHumidityMonth(item.sectorId, item.month);
+      let temperature = this.sectorService.GetSectorTemperatureMonth(item.sectorId, item.month);
+      let light = this.sectorService.GetSectorLightMonth(item.sectorId, item.month);
+      let ASNM = this.locationService.GetItemtID(item.LocationId).ASNM;
+      let texture = item.texturesId;
+      let ph = item.ph;
+      let mo = item.mo;
+      let ce = item.ce;
+      for (let myCrop of crops) {
+        let textureReady = false;
+        for (let textureMyCrop of myCrop.texturesId) {
+          if (textureMyCrop == texture) {
+            textureReady  = true;
+            break;
+          }
+        }
+        if (
+          textureReady &&
+          (myCrop.phSince >= ph && myCrop.phUntil <= ph) &&
+          (myCrop.organicMaterialMinPercentage >= mo && myCrop.organicMaterialMaxPercentage <= mo) &&
+          (myCrop.conductivitySince >= ce && myCrop.conductivityUntil <= ce) &&
+          (myCrop.altitudeSince >= ASNM && myCrop.altitudeUntil <= ASNM) &&
+          (myCrop.temperatureSince >= temperature.min && myCrop.temperatureUntil <= temperature.max) &&
+          (myCrop.hoursSince >= light.min && myCrop.hoursUntil <= light.max) &&
+          (myCrop.humiditySince >= humidity.min && myCrop.humidityUntil <= humidity.max) &&
+          (myCrop.typographySince >= sector.pendingSince && myCrop.typographyUntil <= sector.pendingUntil) &&
+          (myCrop.weatherId === sector.weatherId)
+        ) {
+          results.push(myCrop);
+        }
+      }
+    }
+    return results;
+    
   }
 
   GetItemtID(idItem: String) {

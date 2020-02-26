@@ -41,6 +41,11 @@ import { LocationListComponent } from './pages/location/list/list.component';
 import { LocationFormComponent } from './pages/location/form/form.component';
 import { AccountPasswordComponent } from '../core/pages/account-password/account-password.component';
 import { AccountUserComponent } from '../core/pages/account-user/account-user.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTreeModule } from '@angular/material/tree';
+import { DocumentFormComponent } from './pages/document/form/form.component';
+import { DocumentListComponent } from './pages/document/list/list.component';
+
 
 
 export const DateFormats = {
@@ -72,6 +77,8 @@ export const DateFormats = {
     SectorWizardComponent,
     LocationListComponent,
     LocationFormComponent,
+    DocumentFormComponent,
+    DocumentListComponent,
   ],
   imports: [
     CommonModule,
@@ -98,6 +105,8 @@ export const DateFormats = {
     MatMenuModule,
     MatRippleModule,
     MatStepperModule,
+    MatTabsModule,
+    MatTreeModule,
   ],
   exports: [
     AdminRoutingModule,
@@ -114,6 +123,7 @@ export const DateFormats = {
     AccountUserComponent,
     UserFormComponent,
     StudyFormComponent,
+    DocumentFormComponent,
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

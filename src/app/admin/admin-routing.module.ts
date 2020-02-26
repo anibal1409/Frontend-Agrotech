@@ -10,6 +10,7 @@ import { WeatherListComponent } from './pages/weather/list/list.component';
 import { SectorListComponent } from './pages/sector/list/list.component';
 import { StudyListComponent } from './pages/study/list/list.component';
 import { LocationListComponent } from './pages/location/list/list.component';
+import { DocumentListComponent } from './pages/document/list/list.component';
 
 
 export const adminRoutes: Routes = [
@@ -23,7 +24,21 @@ export const adminRoutes: Routes = [
       },
       {
         path: 'crop',
-        component: CropListComponent
+        children: [
+          {
+            path: '',
+            component: CropListComponent,
+          },
+          {
+            path: 'document',
+            component: DocumentListComponent,
+          },
+          {
+            path: '',
+            redirectTo: RoutesAdmin.CROP,
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: 'texture',

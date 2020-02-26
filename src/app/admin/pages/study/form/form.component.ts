@@ -17,6 +17,26 @@ import { Sector } from 'src/app/common/models/sector.model';
 import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { Month } from 'src/app/common/models/month.model';
 import { Subscription } from 'rxjs';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
+import { Document } from 'src/app/common/models/document.model';
+import { Crop } from 'src/app/common/models/crop.model';
+
+/**
+ * Food data with nested structure.
+ * Each node has a name and an optiona list of children.
+ */
+interface FoodNode {
+  crop: Crop;
+  documents?: FoodNode[];
+}
+
+/** Flat node with expandable and level information */
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: 'study-form',
@@ -37,8 +57,28 @@ export class StudyFormComponent implements OnInit {
 
   sectorsSubs = new Subscription();
   texturesSubs = new Subscription();
+  myResults = [];
+
+  readyStudy = false;
+
+  private _transformer = (node: FoodNode, level: number) => {
+    return {
+      expandable: !!node.documents && node.documents.length > 0,
+      name: node.crop.name,
+      level: level,
+    };
+  }
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+      node => node.level, node => node.expandable);
+
+  treeFlattener = new MatTreeFlattener(
+      this._transformer, node => node.level, node => node.expandable, node => node.documents);
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
 
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,9 +106,14 @@ export class StudyFormComponent implements OnInit {
         this.textures = newItems;
       }
     );
+    this.dataSource.data = this.myResults;
   }
 
   ngOnInit() {
+    if (this.data) {
+      this.readyStudy = true;
+      this.myResults = this.studyService.Result(this.data);
+    }
   }
 
   private Form() {
@@ -132,17 +177,21 @@ export class StudyFormComponent implements OnInit {
           const registrytUpd = new Study(this.form.value);
           registrytUpd._id = this.data._id;
           if (await this.studyService.Update(registrytUpd)) {
-            this.Close();
+            // this.Close();
           }
         } catch (error) {
           console.log(this.nameClass + ' update', error);
         }
       } else {
         try {
-          let myRegistry = new Study(this.form.value);
-          myRegistry.userId = this.accountService.User()._id;
-          if (await this.studyService.Create(myRegistry)) {
-            this.Close();
+          if (!this.readyStudy) {
+            let myRegistry = new Study(this.form.value);
+            myRegistry.userId = this.accountService.User()._id;
+            if (await this.studyService.Create(myRegistry)) {
+              this.readyStudy = true;
+              this.myResults = this.studyService.Result(myRegistry);
+              // this.Close();
+            }
           }
         } catch (error) {
           console.log(this.nameClass + ' create', error);
@@ -186,6 +235,7 @@ export class StudyFormComponent implements OnInit {
   GetLocations(idSector) {
     console.log('idSector', idSector);
     this.locations = this.locationService.GetItemsIDSector(idSector);
+    console.log(this.locations);
   }
 
 }

@@ -4,46 +4,41 @@ import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { StudyFormComponent } from '../form/form.component';
-import { SectorService } from 'src/app/core/services/sector.service';
-import { StudyService } from 'src/app/core/services/study.service';
-import { Study } from 'src/app/common/models/study.model';
-import { LocationService } from 'src/app/core/services/location.service';
-import { Month } from 'src/app/common/models/month.model';
+import { Document } from 'src/app/common/models/document.model';
+import { DocumentService } from 'src/app/core/services/document.service';
+import { DocumentFormComponent } from '../form/form.component';
+import { CropService } from 'src/app/core/services/crop.service';
 
 @Component({
-  selector: 'study-list',
+  selector: 'document-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class StudyListComponent implements OnInit {
+export class DocumentListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'sector', 'location', 'month'];
-  dataSource: MatTableDataSource<Study>;
-  items: Study[] = [];
+  displayedColumns: string[] = ['name', 'crop'];
+  dataSource: MatTableDataSource<Document>;
+  items: Document[] = [];
   itemsSubs = new Subscription();
-  months: Month[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     private dialoge: MatDialog,
-    private studyService: StudyService,
-    private sectorService: SectorService,
-    private locationService: LocationService,
+    private documentService: DocumentService,
+    private cropService: CropService,
   ) {
-    this.studyService.List();
-    this.months = this.sectorService.Months;
-    this.items = this.studyService.Items;
+    this.documentService.List();
+    this.items = this.documentService.Items;
     this.dataSource = new MatTableDataSource(this.items);
    }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.itemsSubs = this.studyService.itemsChanged.subscribe(
-      (newItems: Study[]) => {
+    this.itemsSubs = this.documentService.itemsChanged.subscribe(
+      (newItems: Document[]) => {
         if (newItems) {
           this.items = newItems;
           this.dataSource = new MatTableDataSource(newItems);
@@ -58,8 +53,8 @@ export class StudyListComponent implements OnInit {
     this.itemsSubs.unsubscribe();
   }
 
-  DialogeForm(dataUpd?: Study) {
-    const dialogRef = this.dialoge.open(StudyFormComponent, {
+  DialogeForm(dataUpd?: Document) {
+    const dialogRef = this.dialoge.open(DocumentFormComponent, {
       width: '40rem',
       disableClose: true,
       data: dataUpd ? dataUpd : null
@@ -78,18 +73,9 @@ export class StudyListComponent implements OnInit {
     }
   }
 
-  Sector(idSector: String) {
-    let sector = this.sectorService.GetItemtID(idSector);
-    return sector ? sector.name : '';
-  }
-
-  Month(numberValue: number) {
-    return this.months[numberValue] ? this.months[numberValue].name : '';
-  }
-
-  Location(idLocation: String) {
-    let location = this.locationService.GetItemtID(idLocation);
-    return location ? location.name : '';
+  Crop(idCrop: string) {
+    let myCrop = this.cropService.GetItemtID(idCrop);
+    return myCrop ? myCrop.name : '';
   }
 
 }

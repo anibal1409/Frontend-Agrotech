@@ -15,6 +15,7 @@ export enum RoutesHttp {
   CREATE_USER = 'admin/create-user',
   DELETE_USER = 'admin/delete-user',
   RESTORE_USER = 'admin/restore-user',
+  CHANGE_ROL_USER = 'admin/change-rol',
 
   // Crop
   CROP_LIST = 'crop/list',
@@ -31,9 +32,6 @@ export enum RoutesHttp {
   TEXTURE_UPDATE = 'textures/update',
   TEXTURE_DELETE = 'textures/delete',
   TEXTURE_RESTORE = 'textures/restore',
-
-  // Account
-  ACCOUNT_UPDATE = "users/update-user",
 
   // Weather
   WEATHER_LIST = 'weather/list',
@@ -59,4 +57,22 @@ export enum RoutesHttp {
   LOCATION_UPDATE = 'locations/update',
   LOCATION_DELETE = 'locations/delete',
   LOCATION_RESTORE = 'locations/restore',
+
+  // Dcoument
+    DOCUMENT_LIST = 'documents/list',
+    DOCUMENT_CREATE = 'documents/upload',
+    DOCUMENT_DELETE = 'documents/delete',
+
+  // Sector
+  STUDY_LIST = 'study/list',
+  STUDY_LIST_TRASHED = 'study/list-trashed',
+  STUDY_CREATE = 'study/create',
+  STUDY_UPDATE = 'study/update',
+  STUDY_DELETE = 'study/delete',
+  STUDY_RESTORE = 'study/restore',
+  STUDY_SHOW = 'study/show',
+
+  // Account 
+  ACCOUNT_UPDATE = 'users/update-user',
+  ACCOUNT_SHOW = 'users/show-user',
 }

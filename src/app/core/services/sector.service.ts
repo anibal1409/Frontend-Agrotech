@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
 import { Month } from 'src/app/common/models/month.model';
+import { SectorTemperature } from 'src/app/common/models/sector-temperature.model';
+import { SectorHumidity } from 'src/app/common/models/sector-humidity.model';
+import { SectorLight } from 'src/app/common/models/sector-light.model';
 
 @Injectable({
   providedIn: 'root'
@@ -147,7 +150,7 @@ export class SectorService  {
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Delete(item);
+          this.Remove(item);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Delete: ' + err);
@@ -220,6 +223,72 @@ export class SectorService  {
         }
       }
     );
+  }
+
+  GetSectorTemperatureMonth(idItem: String, monthValue: number): SectorTemperature {
+    if (!idItem || !monthValue) {
+      return;
+    }
+    let mySector = this.GetItemtID(idItem);
+    if (!mySector) {
+      return;
+    }
+    if (mySector.sectorTemperatures[monthValue] && mySector.sectorTemperatures[monthValue].month === monthValue) {
+      return mySector.sectorTemperatures[monthValue];
+    } else {
+      let temperature;
+      for (let temperatureV of mySector.sectorTemperatures) {
+        if (temperatureV.month === monthValue) {
+          temperature = temperatureV;
+          break;
+        }
+      }
+      return temperature;
+    }
+  }
+
+  GetSectorLightMonth(idItem: String, monthValue: number): SectorLight {
+    if (!idItem || !monthValue) {
+      return;
+    }
+    let mySector = this.GetItemtID(idItem);
+    if (!mySector) {
+      return;
+    }
+    if (mySector.sectorLights[monthValue] && mySector.sectorLights[monthValue].month === monthValue) {
+      return mySector.sectorLights[monthValue];
+    } else {
+      let light;
+      for (let lightV of mySector.sectorLights) {
+        if (lightV.month === monthValue) {
+          light = lightV;
+          break;
+        }
+      }
+      return light;
+    }
+  }
+
+  GetSectorHumidityMonth(idItem: String, monthValue: number): SectorHumidity {
+    if (!idItem || !monthValue) {
+      return;
+    }
+    let mySector = this.GetItemtID(idItem);
+    if (!mySector) {
+      return;
+    }
+    if (mySector.sectorHumidities[monthValue] && mySector.sectorHumidities[monthValue].month === monthValue) {
+      return mySector.sectorHumidities[monthValue];
+    } else {
+      let humidity;
+      for (let humidityV of mySector.sectorHumidities) {
+        if (humidityV.month === monthValue) {
+          humidity = humidityV;
+          break;
+        }
+      }
+      return humidity;
+    }
   }
 
   GetItemtTrashedID(idItemTrashed: String) {

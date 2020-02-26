@@ -94,7 +94,7 @@ export class WeatherService {
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Delete(item);
+          this.Remove(item);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Delete: ' + err);

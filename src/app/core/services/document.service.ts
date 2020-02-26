@@ -11,11 +11,9 @@ export class DocumentService {
 
   private nameService = "DocumentService";
   private items: Document[] = [];
-  private itemsTrashed: Document[] = [];
   itemsChanged = new Subject<Document[]>();
   itemsTrashedChanged = new Subject<Document[]>();
   private index: number;
-  private indexTrashed: number;
   private requesetHttp = false;
 
   constructor(
@@ -27,21 +25,29 @@ export class DocumentService {
   async Init() {
     if(!this.requesetHttp) {
       await this.List();
-      await this.ListTrashed();
     }
   }
 
 
-  Create(item: Document) {
+  Create(item: Document, data: any) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!item) {
             reject({message: 'No data'});
           }
+          let headersV = new Headers(); 
+          console.log('data', data);
+          headersV.set('Content-Type', 'multipart/form-data');
+          const myBlob = new Blob([data], {type: 'application/pdf'});
+          console.log('myBlob', myBlob);
+          const formData = new FormData();
+          formData.append('document', data, item.name + '.pdf');
+          formData.append('name', item.name);
+          formData.append('cropId', item.cropId);
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_CREATE,
-            item
+            RoutesHttp.BASE + RoutesHttp.DOCUMENT_CREATE,
+            formData
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -56,22 +62,16 @@ export class DocumentService {
     );
   }
 
-  Update(item: Document) {
+  Update(item: Document, data: File) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!item) {
             reject({message: 'No data'});
           }
-          const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_UPDATE,
-            item
-            ).toPromise();
-          if (!response) {
-            reject({message: 'No data back'});
-          }
-          this.Add(response as Document);
-          resolve(response);
+          await this.Delete(item);
+          await this.Create(item, data);
+          resolve(true);
         } catch (err) {
           console.log(this.nameService + 'Error Update: ' + err);
           reject(err);
@@ -88,13 +88,13 @@ export class DocumentService {
             reject({message: 'No data'});
           }
           const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_DELETE,
+            RoutesHttp.BASE + RoutesHttp.DOCUMENT_DELETE,
             item._id
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Delete(item);
+          this.Remove(item);
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Delete: ' + err);
@@ -109,7 +109,7 @@ export class DocumentService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Document[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST
+            RoutesHttp.BASE + RoutesHttp.DOCUMENT_LIST
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -125,33 +125,12 @@ export class DocumentService {
     );
   }
 
-  ListTrashed() {
-    return new Promise<any>(
-      async (resolve, reject) => {
-        try {
-          const response = await this.http.get<Document[]>(
-            RoutesHttp.BASE + RoutesHttp.TEXTURE_LIST_TRASHED
-            ).toPromise();
-          if (!response) {
-            reject({message: 'No data back'});
-          }
-          this.itemsTrashed = response;
-          this.itemsTrashedChanged.next(this.itemsTrashed);
-          resolve(response);
-        } catch (err) {
-          console.log(this.nameService + 'Error ListTrashed: ' + err);
-          reject(err);
-        }
-      }
-    );
-  }
-
   get Items() {
     return this.items.slice();
   }
 
-  get ItemsTrashed() {
-    return this.itemsTrashed.slice();
+  GetItemsIDCrop(idCrop: String): Document[] {
+    return this.items.filter((itemV) => itemV.cropId === idCrop).slice();
   }
 
   GetItemtID(idItem: String) {
@@ -159,17 +138,6 @@ export class DocumentService {
       (itemValue, index: number, obj) => {
         if (itemValue._id === idItem) {
           this.index = index;
-          return true;
-        }
-      }
-    );
-  }
-
-  GetItemtTrashedID(idItemTrashed: String) {
-    return this.itemsTrashed.find(
-      (itemTrashedValue, index: number, obj) => {
-        if (itemTrashedValue._id === idItemTrashed) {
-          this.indexTrashed = index;
           return true;
         }
       }
@@ -187,31 +155,11 @@ export class DocumentService {
     }
   }
 
-  private AddTrashed(itemTrashed: Document) {
-    const itemTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
-    if (itemTrashedLocal) {
-      this.itemsTrashed[this.indexTrashed] = itemTrashed;
-      this.itemsTrashedChanged.next(this.itemsTrashed);
-    } else {
-      this.itemsTrashed.push(itemTrashed);
-      this.itemsTrashedChanged.next(this.itemsTrashed);
-    }
-  }
-
   private Remove(item: Document) {
     const itmeLocal = this.GetItemtID(item._id);
     if (itmeLocal) {
-      this.AddTrashed(itmeLocal);
       this.items.splice(this.index, 1);
       this.itemsChanged.next(this.items);
-    }
-  }
-
-  private RemoveTrashed(itemTrashed: Document) {
-    const itmeTrashedLocal = this.GetItemtTrashedID(itemTrashed._id);
-    if (itmeTrashedLocal) {
-      this.itemsTrashed.splice(this.indexTrashed, 1);
-      this.itemsTrashedChanged.next(this.itemsTrashed);
     }
   }
 }

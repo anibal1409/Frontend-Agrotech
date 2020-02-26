@@ -24,6 +24,7 @@ export class BaseAdminComponent implements OnInit {
   routeSector = RoutesAdmin.SECTOR;
   routeUser = RoutesAdmin.USER;
   routeLocation = RoutesAdmin.LOCATION;
+  routeDocument = RoutesAdmin.DOCUMENT;
 
   constructor(
     private authService: AuthService,
