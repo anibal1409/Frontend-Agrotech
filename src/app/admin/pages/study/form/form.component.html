@@ -33,13 +33,13 @@
       </mat-form-field>
       <mat-form-field [appearance]="inputAppearance">
         <mat-label>Localidad</mat-label>
-        <mat-select name="LocationId" formControlName="LocationId"  (selectionChange)="true">
+        <mat-select name="locationId" formControlName="locationId"  (selectionChange)="true">
           <mat-option *ngFor="let locationV of locations" [value]="locationV._id" >
             {{ locationV.name }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="MessageError('LocationId')">
-          {{ MessageError('LocationId') }}
+        <mat-error *ngIf="MessageError('locationId')">
+          {{ MessageError('locationId') }}
         </mat-error>
       </mat-form-field>
       <mat-form-field [appearance]="inputAppearance">
@@ -76,24 +76,26 @@
       </mat-form-field>
     </mat-tab>
     <mat-tab label="Resultados" *ngIf="readyStudy">
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-        <!-- This is the tree node template for leaf nodes -->
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-          <!-- use a disabled button to provide padding for tree leaf -->
-          <button mat-icon-button disabled></button>
-          {{node.name}}
-        </mat-tree-node>
-        <!-- This is the tree node template for expandable nodes -->
-        <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
-          <button mat-icon-button matTreeNodeToggle
-                  [attr.aria-label]="'toggle ' + node.name">
-            <mat-icon class="mat-icon-rtl-mirror">
-              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-          </button>
-          {{node.name}}
-        </mat-tree-node>
-      </mat-tree>
+      <mat-list>
+        <h3 mat-subheader>Cultivos aptos</h3>
+        <mat-list-item *ngFor="let myResult of myResults">
+          <mat-icon mat-list-icon>spa</mat-icon>
+          <h4 mat-line>{{myResult.crop.name}}</h4>
+          <div *ngIf="myResult.document" class="flex">
+            <!-- <span>
+              {{myResult.document.name}}
+            </span> -->
+            <!-- <button mat-icon-button>
+                <mat-icon>remove_red_eye</mat-icon>
+            </button> -->
+            <button mat-icon-button (click)="downloadMyFile(myResult.document)">
+                <mat-icon>vertical_align_bottom</mat-icon>
+            </button>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+        
+      </mat-list>
     </mat-tab>
   </mat-tab-group>
   <div mat-dialog-actions class="">

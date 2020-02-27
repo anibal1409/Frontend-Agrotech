@@ -3,7 +3,7 @@ export class Study {
   public _id: string;
   public texturesId: string;
   public sectorId: string;
-  public LocationId: string;
+  public locationId: string;
   public userId: string;
   public name: string;
   public month: number;

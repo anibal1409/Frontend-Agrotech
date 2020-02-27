@@ -1,4 +1,5 @@
 export enum RoutesHttp {
+  IP = 'http://127.0.0.1:3000',
   BASE = 'http://127.0.0.1:3000/api/',
 
   // Auth

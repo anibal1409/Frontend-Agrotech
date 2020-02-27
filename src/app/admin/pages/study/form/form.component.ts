@@ -21,22 +21,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { Document } from 'src/app/common/models/document.model';
 import { Crop } from 'src/app/common/models/crop.model';
-
-/**
- * Food data with nested structure.
- * Each node has a name and an optiona list of children.
- */
-interface FoodNode {
-  crop: Crop;
-  documents?: FoodNode[];
-}
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
+import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
 
 @Component({
   selector: 'study-form',
@@ -60,25 +45,6 @@ export class StudyFormComponent implements OnInit {
   myResults = [];
 
   readyStudy = false;
-
-  private _transformer = (node: FoodNode, level: number) => {
-    return {
-      expandable: !!node.documents && node.documents.length > 0,
-      name: node.crop.name,
-      level: level,
-    };
-  }
-
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-      node => node.level, node => node.expandable);
-
-  treeFlattener = new MatTreeFlattener(
-      this._transformer, node => node.level, node => node.expandable, node => node.documents);
-
-  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,13 +72,14 @@ export class StudyFormComponent implements OnInit {
         this.textures = newItems;
       }
     );
-    this.dataSource.data = this.myResults;
   }
 
   ngOnInit() {
     if (this.data) {
       this.readyStudy = true;
       this.myResults = this.studyService.Result(this.data);
+      console.log('this.myResults', this.myResults);
+      this.GetLocations(this.data.sectorId);
     }
   }
 
@@ -126,43 +93,32 @@ export class StudyFormComponent implements OnInit {
       ]),
       texturesId: new FormControl( this.data ? this.data.texturesId : null, [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
       sectorId: new FormControl( this.data ? this.data.sectorId : null, [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
-      LocationId: new FormControl( this.data ? this.data.LocationId : null, [
+      locationId: new FormControl( this.data ? this.data.locationId : null, [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
-      month: new FormControl( this.data ? this.data.month : null, [
+      month: new FormControl( this.data ? this.data.month + '' : null, [
         Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
       ph: new FormControl( this.data ? this.data.ph : null, [
         Validators.required,
-        Validators.minLength(2),
         Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
       mo: new FormControl( this.data ? this.data.mo : null, [
         Validators.required,
-        Validators.minLength(2),
         Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
       ce: new FormControl( this.data ? this.data.ce : null, [
         Validators.required,
-        Validators.minLength(2),
         Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
@@ -186,6 +142,9 @@ export class StudyFormComponent implements OnInit {
         try {
           if (!this.readyStudy) {
             let myRegistry = new Study(this.form.value);
+            console.log('myRegistry', myRegistry);
+            myRegistry.month =( +this.form.value.month);
+            console.log('myRegistry', myRegistry);
             myRegistry.userId = this.accountService.User()._id;
             if (await this.studyService.Create(myRegistry)) {
               this.readyStudy = true;
@@ -237,5 +196,15 @@ export class StudyFormComponent implements OnInit {
     this.locations = this.locationService.GetItemsIDSector(idSector);
     console.log(this.locations);
   }
+
+  downloadMyFile(myDocument: Document){
+    const link = document.createElement('a');
+    link.setAttribute('target', '_self');
+    link.setAttribute('href', RoutesHttp.IP + myDocument.path);
+    link.setAttribute('download', myDocument.name + '.pdf');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+}
 
 }

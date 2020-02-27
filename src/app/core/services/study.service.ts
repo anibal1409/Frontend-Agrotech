@@ -7,6 +7,7 @@ import { SectorService } from './sector.service';
 import { LocationService } from './location.service';
 import { DocumentService } from './document.service';
 import { CropService } from './crop.service';
+import { IResultStudy } from 'src/app/common/interfaces/result-study.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -166,14 +167,14 @@ export class StudyService {
     if(!item) {
       return;
     }
-    let results = [];
+    let results: IResultStudy[] = [];
     let crops = this.cropService.Items;
     let sector = this.sectorService.GetItemtID(item.sectorId);
     if (sector) {
       let humidity = this.sectorService.GetSectorHumidityMonth(item.sectorId, item.month);
       let temperature = this.sectorService.GetSectorTemperatureMonth(item.sectorId, item.month);
       let light = this.sectorService.GetSectorLightMonth(item.sectorId, item.month);
-      let ASNM = this.locationService.GetItemtID(item.LocationId).ASNM;
+      let ASNM = this.locationService.GetItemtID(item.locationId).ASNM;
       let texture = item.texturesId;
       let ph = item.ph;
       let mo = item.mo;
@@ -186,19 +187,34 @@ export class StudyService {
             break;
           }
         }
+        console.log('textureReady', textureReady);
+        console.log(myCrop.phSince , ph , myCrop.phUntil , ph, myCrop.phSince <= ph && myCrop.phUntil >= ph);
+        console.log(myCrop.organicMaterialMinPercentage , mo , myCrop.organicMaterialMaxPercentage , mo, myCrop.organicMaterialMinPercentage <= mo && myCrop.organicMaterialMaxPercentage >= mo);
+        console.log(myCrop.conductivitySince , ce , myCrop.conductivityUntil , ce, myCrop.conductivitySince <= ce && myCrop.conductivityUntil >= ce);
+        console.log(myCrop.altitudeSince , ASNM , myCrop.altitudeUntil , ASNM, myCrop.altitudeSince <= ASNM && myCrop.altitudeUntil >= ASNM);
+        console.log(myCrop.temperatureSince , temperature.min , myCrop.temperatureUntil , temperature.max, myCrop.temperatureSince <= temperature.min && myCrop.temperatureUntil >= temperature.max);
+        console.log(myCrop.hoursSince , light.min , myCrop.hoursUntil , light.max, myCrop.hoursSince <= light.min && myCrop.hoursUntil >= light.max);
+        console.log(myCrop.humiditySince , humidity.min , myCrop.humidityUntil , humidity.max, myCrop.humiditySince <= humidity.min && myCrop.humidityUntil >= humidity.max);
+        console.log(myCrop.typographySince , sector.pendingSince , myCrop.typographyUntil , sector.pendingUntil, myCrop.typographySince <= sector.pendingSince && myCrop.typographyUntil >= sector.pendingUntil);
+        console.log(myCrop.weatherId , sector.weatherId, myCrop.weatherId === sector.weatherId);
         if (
           textureReady &&
-          (myCrop.phSince >= ph && myCrop.phUntil <= ph) &&
-          (myCrop.organicMaterialMinPercentage >= mo && myCrop.organicMaterialMaxPercentage <= mo) &&
-          (myCrop.conductivitySince >= ce && myCrop.conductivityUntil <= ce) &&
-          (myCrop.altitudeSince >= ASNM && myCrop.altitudeUntil <= ASNM) &&
-          (myCrop.temperatureSince >= temperature.min && myCrop.temperatureUntil <= temperature.max) &&
-          (myCrop.hoursSince >= light.min && myCrop.hoursUntil <= light.max) &&
-          (myCrop.humiditySince >= humidity.min && myCrop.humidityUntil <= humidity.max) &&
-          (myCrop.typographySince >= sector.pendingSince && myCrop.typographyUntil <= sector.pendingUntil) &&
+          (myCrop.phSince <= ph && myCrop.phUntil >= ph) &&
+          (myCrop.organicMaterialMinPercentage <= mo && myCrop.organicMaterialMaxPercentage >= mo) &&
+          (myCrop.conductivitySince <= ce && myCrop.conductivityUntil >= ce) &&
+          (myCrop.altitudeSince <= ASNM && myCrop.altitudeUntil >= ASNM) &&
+          (myCrop.temperatureSince <= temperature.min && myCrop.temperatureUntil >= temperature.max) &&
+          (myCrop.hoursSince <= light.min && myCrop.hoursUntil >= light.max) &&
+          (myCrop.humiditySince <= humidity.min && myCrop.humidityUntil >= humidity.max) &&
+          ((myCrop.typographySince >= sector.pendingSince && myCrop.typographySince <= sector.pendingUntil) || 
+          (myCrop.typographyUntil >= sector.pendingSince && myCrop.typographyUntil <= sector.pendingUntil))  &&
           (myCrop.weatherId === sector.weatherId)
         ) {
-          results.push(myCrop);
+          console.log(myCrop, this.documentService.GetItemIDCrop(myCrop._id));
+          results.push({
+            crop: myCrop,
+            document: this.documentService.GetItemIDCrop(myCrop._id)
+          });
         }
       }
     }

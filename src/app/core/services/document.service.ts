@@ -133,6 +133,17 @@ export class DocumentService {
     return this.items.filter((itemV) => itemV.cropId === idCrop).slice();
   }
 
+  GetItemIDCrop(idCrop: String) {
+    return this.items.find(
+      (itemValue, index: number, obj) => {
+        if (itemValue.cropId === idCrop) {
+          this.index = index;
+          return true;
+        }
+      }
+    );
+  }
+
   GetItemtID(idItem: String) {
     return this.items.find(
       (itemValue, index: number, obj) => {
