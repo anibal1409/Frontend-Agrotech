@@ -199,7 +199,7 @@ export class StudyFormComponent implements OnInit {
 
   downloadMyFile(myDocument: Document){
     const link = document.createElement('a');
-    link.setAttribute('target', '_self');
+    link.setAttribute('target', '_blank');
     link.setAttribute('href', RoutesHttp.IP + myDocument.path);
     link.setAttribute('download', myDocument.name + '.pdf');
     document.body.appendChild(link);
