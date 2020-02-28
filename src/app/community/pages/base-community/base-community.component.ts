@@ -14,6 +14,7 @@ export class BaseCommunityComponent implements OnInit {
 
   nameApp = nameApp;
   routeHome = RoutesCommunity.HOME;
+  routeStudy = RoutesCommunity.STUDY;
 
   constructor(
     private authService: AuthService,

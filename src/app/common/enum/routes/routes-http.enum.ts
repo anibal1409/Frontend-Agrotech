@@ -74,6 +74,7 @@ export enum RoutesHttp {
   STUDY_SHOW = 'study/show',
 
   // Account 
-  ACCOUNT_UPDATE = 'users/update-user',
-  ACCOUNT_SHOW = 'users/show-user',
+  ACCOUNT_UPDATE = 'auth/change-profile',
+  // ACCOUNT_SHOW = 'users/show-user',
+  ACCOUNT_CHANGE_PASSWORD = 'auth/change-password',
 }

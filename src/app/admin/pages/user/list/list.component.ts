@@ -71,4 +71,9 @@ export class UserListComponent implements OnInit {
     }
   }
 
+  GetRole(valueRole: String) {
+    let myRole = this.userService.GetRoleValue(valueRole);
+    return myRole ? myRole.name : '';
+  }
+
 }

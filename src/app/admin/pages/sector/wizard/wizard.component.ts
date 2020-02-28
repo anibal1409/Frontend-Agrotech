@@ -11,6 +11,13 @@ import { Weather } from 'src/app/common/models/weather.model';
 import { Subscription } from 'rxjs';
 import { Month } from 'src/app/common/models/month.model';
 
+
+enum SectorType {
+  HUMIDITY = '0',
+  TEMPERATURE = '1',
+  LIGHT = '2',
+}
+
 @Component({
   selector: 'sector-wizard',
   templateUrl: './wizard.component.html',
@@ -105,32 +112,47 @@ export class SectorWizardComponent implements OnInit {
 
   private FormsArray() {
     this.formSectorHumidity =  this.formBuilder.group({
-      humidity : this.FormArrayContruct(),
+      humidity : this.FormArrayContruct(SectorType.HUMIDITY),
     });
     this.formSectorTemperature =  this.formBuilder.group({
-      temperature : this.FormArrayContruct(),
+      temperature : this.FormArrayContruct(SectorType.TEMPERATURE),
     });
     this.formSectorLight =  this.formBuilder.group({
-      light : this.FormArrayContruct(),
+      light : this.FormArrayContruct(SectorType.LIGHT),
     });
   }
 
-  private FormArrayContruct(): FormArray {
+  private FormArrayContruct(opt: SectorType): FormArray {
     let myFormArray = new FormArray([]);
+    let myData;
+    switch (opt) {
+      case '0' :
+        myData = this.data? this.data.sectorHumidities : [];
+        break;
+      case '1' :
+        myData = this.data? this.data.sectorTemperatures : [];
+        break;
+      case '2' :
+        myData = this.data? this.data.sectorLights : [];
+        break;
+    }
     for (let item of this.months) {
+      console.log(myData[item.numValue-1]);
       myFormArray.push(
         new FormGroup({
-          month : new FormControl(item.numValue , [
+          month : new FormControl(+item.numValue , [
             Validators.required,
             Validators.maxLength(20),
             this.noWhiteSpace.Validator
           ]),
-          min : new FormControl(null, [
+          min : new FormControl(
+            this.data ? myData[item.numValue-1].min : null, [
             Validators.required,
             Validators.maxLength(20),
             this.noWhiteSpace.Validator
           ]),
-          max : new FormControl(null, [
+          max : new FormControl(
+            this.data ? myData[item.numValue-1].max : null, [
             Validators.required,
             Validators.maxLength(20),
             this.noWhiteSpace.Validator
@@ -148,9 +170,9 @@ export class SectorWizardComponent implements OnInit {
         try {
           const registrytUpd = new Sector(this.formSector.value);
           registrytUpd._id = this.data._id;
-          registrytUpd.sectorHumidities = this.formSectorHumidity.value;
-          registrytUpd.sectorLights = this.formSectorLight.value;
-          registrytUpd.sectorTemperatures = this.formSectorTemperature.value;
+          registrytUpd.sectorHumidities = this.formSectorHumidity.value.humidity;
+          registrytUpd.sectorLights = this.formSectorLight.value.light;
+          registrytUpd.sectorTemperatures = this.formSectorTemperature.value.temperature;
           console.log(registrytUpd);
           if (await this.sectorService.Update(registrytUpd)) {
             this.Close();

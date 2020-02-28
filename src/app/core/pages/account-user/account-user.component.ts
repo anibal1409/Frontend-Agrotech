@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from '../../services/user.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-account-user',
@@ -25,6 +26,7 @@ export class AccountUserComponent implements OnInit {
     public dialogRef: MatDialogRef<AccountUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User,
     private userService: UserService,
+    private accountService: AccountService,
   ) {
     this.Form();
   }
@@ -46,27 +48,13 @@ export class AccountUserComponent implements OnInit {
 
   async OnSubmit() {
     if (this.form.valid) {
-      // if (this.data) {
-      //   try {
-      //     const registrytUpd = new Texture(this.form.value);
-      //     registrytUpd._id = this.data._id;
-      //     if (await this.userService.Update(registrytUpd)) {
-      //       this.Close();
-      //     }
-      //   } catch (error) {
-      //     console.log(this.nameClass + ' update', error);
-      //   }
-      // } else {
-        // try {
-        //   if (await this.userService.Create(
-        //     new User(this.form.value)
-        //   )) {
-            this.Close();
-        //   }
-        // } catch (error) {
-        //   console.log(this.nameClass + ' create', error);
-        // }
-      // }
+      try {
+        if (await this.accountService.Update(this.form.value.name)) {
+          this.Close();
+        }
+      } catch (err) {
+        console.log(this.nameClass, 'Error OnSubmit', err);
+      } 
     }
   }
 

@@ -9,6 +9,7 @@ import { IUpdateAccount } from 'src/app/common/interfaces/update-account.interfa
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
 import { AuthData } from 'src/app/auth/models/auth-data.model';
 import { authStorage } from 'src/app/common/constants/storage.constant';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { authStorage } from 'src/app/common/constants/storage.constant';
 export class AccountService {
 
   private user: User;
+  userChange = new Subject<User>();
   private nameService = "AccountService";
 
   constructor(
@@ -47,7 +49,7 @@ export class AccountService {
           if (!newName) {
             reject({message: 'No data'});
           }
-          let myUser: IUpdateAccount = {_id: this.User()._id, name: newName}
+          let myUser: IUpdateAccount = { name: newName}
           const response = await this.http.post(
             RoutesHttp.BASE + RoutesHttp.ACCOUNT_UPDATE,
             myUser
@@ -55,6 +57,7 @@ export class AccountService {
           if (!response) {
             reject({message: 'No data back'});
           }
+          this.userChange.next(response as User);
           this.UpdateStorage(newName);
           resolve(response);
         } catch (err) {
@@ -73,6 +76,30 @@ export class AccountService {
     let loadedUser = new AuthData(authData.access_token, authData.expiresIn, authData.user);
     loadedUser.user.name = newName;
     StorageService.SetItem(authStorage, loadedUser);
+  }
+
+  ChangePassword(newPasswordV: string) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!newPasswordV) {
+            reject({message: 'No data'});
+          }
+          let myUser = {newPassword: newPasswordV}
+          const response = await this.http.post(
+            RoutesHttp.BASE + RoutesHttp.ACCOUNT_CHANGE_PASSWORD,
+            myUser
+            ).toPromise();
+          if (!response) {
+            reject({message: 'No data back'});
+          }
+          resolve(response);
+        } catch (err) {
+          console.log(this.nameService + 'Error ChangePassword: ' + err);
+          reject(err);
+        }
+      }
+    );
   }
 
   

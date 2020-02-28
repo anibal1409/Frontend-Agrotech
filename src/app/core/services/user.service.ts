@@ -3,6 +3,8 @@ import { User } from 'src/app/common/models/user.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
+import { IChangeRole } from 'src/app/common/interfaces/change-role.interface';
+import { UserSignIn } from 'src/app/auth/models/user-sign-in.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,17 +39,26 @@ export class UserService {
   }
 
 
-  Create(item: User) {
+  Create(item: UserSignIn) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
+          let response;
           if (!item) {
             reject({message: 'No data'});
           }
-          const response = await this.http.post(
-            RoutesHttp.BASE + RoutesHttp.CREATE_USER,
-            item
-            ).toPromise();
+          item.password = '12345678';
+          if (item.role === 'admin') {
+            response = await this.http.post(
+              RoutesHttp.BASE + RoutesHttp.CREATE_ADMIN,
+              item
+              ).toPromise();
+          } else {
+            response = await this.http.post(
+              RoutesHttp.BASE + RoutesHttp.CREATE_USER,
+              item
+              ).toPromise();
+          }
           if (!response) {
             reject({message: 'No data back'});
           }
@@ -61,29 +72,29 @@ export class UserService {
     );
   }
 
-  // Update(item: User) {
-  //   return new Promise<any>(
-  //     async (resolve, reject) => {
-  //       try {
-  //         if (!item) {
-  //           reject({message: 'No data'});
-  //         }
-  //         const response = await this.http.post(
-  //           RoutesHttp.BASE + RoutesHttp.USER,
-  //           item
-  //           ).toPromise();
-  //         if (!response) {
-  //           reject({message: 'No data back'});
-  //         }
-  //         this.Add(response as Weather);
-  //         resolve(response);
-  //       } catch (err) {
-  //         console.log(this.nameService + 'Error Update: ' + err);
-  //         reject(err);
-  //       }
-  //     }
-  //   );
-  // }
+  Update(item: IChangeRole) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!item) {
+            reject({message: 'No data'});
+          }
+          const response = await this.http.post(
+            RoutesHttp.BASE + RoutesHttp.CHANGE_ROL_USER,
+            item
+            ).toPromise();
+          if (!response) {
+            reject({message: 'No data back'});
+          }
+          this.Add(response as User);
+          resolve(response);
+        } catch (err) {
+          console.log(this.nameService + 'Error Update: ' + err);
+          reject(err);
+        }
+      }
+    );
+  }
 
   Delete(item: User) {
     return new Promise<any>(
@@ -222,5 +233,15 @@ export class UserService {
       this.itemsTrashed.splice(this.indexTrashed, 1);
       this.itemsTrashedChanged.next(this.itemsTrashed);
     }
+  }
+
+  GetRoleValue(valueItem: String) {
+    return this.roles.find(
+      (itemValue, index: number, obj) => {
+        if (itemValue.value === valueItem) {
+          return true;
+        }
+      }
+    );
   }
 }

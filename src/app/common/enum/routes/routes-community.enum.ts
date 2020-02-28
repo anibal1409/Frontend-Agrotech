@@ -1,3 +1,4 @@
 export enum RoutesCommunity {
-  HOME = "",
+  HOME = '/community/home',
+  STUDY = '/community/study',
 }

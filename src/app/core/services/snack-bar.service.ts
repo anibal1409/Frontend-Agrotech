@@ -15,7 +15,7 @@ export class SnackBarService {
     this.snackBar.open(message, action, 
       config ? config :
       {
-        duration: 5000,
+        duration: 3000,
         horizontalPosition: 'start',
         panelClass: 'background-success',
       }
@@ -26,7 +26,7 @@ export class SnackBarService {
     this.snackBar.open(message, action, 
       config ? config :
       {
-        duration: 5000,
+        duration: 3000,
         horizontalPosition: 'start',
         panelClass: 'background-danger',
       }
@@ -37,7 +37,7 @@ export class SnackBarService {
     this.snackBar.open(message, action, 
       config ? config :
       {
-        duration: 5000,
+        duration: 3000,
         horizontalPosition: 'start',
         panelClass: 'background-warning',
       }
@@ -48,7 +48,7 @@ export class SnackBarService {
     this.snackBar.open(message, action, 
       config ? config :
       {
-        duration: 5000,
+        duration: 3000,
         horizontalPosition: 'start',
         panelClass: 'background-info',
       }

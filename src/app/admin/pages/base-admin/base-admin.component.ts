@@ -7,6 +7,8 @@ import { AlertService } from 'src/app/common/alert/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountUserComponent } from 'src/app/core/pages/account-user/account-user.component';
 import { AccountPasswordComponent } from 'src/app/core/pages/account-password/account-password.component';
+import { Subscription } from 'rxjs';
+import { User } from 'src/app/common/models/user.model';
 
 @Component({
   selector: 'app-base-admin',
@@ -25,6 +27,9 @@ export class BaseAdminComponent implements OnInit {
   routeUser = RoutesAdmin.USER;
   routeLocation = RoutesAdmin.LOCATION;
   routeDocument = RoutesAdmin.DOCUMENT;
+  myUser: User;
+
+  userSubs = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -34,6 +39,12 @@ export class BaseAdminComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.myUser = this.accountService.User();
+    this.userSubs = this.accountService.userChange.subscribe(
+      (newUser: User) => {
+        this.myUser = newUser;
+      }
+    );
   }
 
   async Logout() {
@@ -44,6 +55,7 @@ export class BaseAdminComponent implements OnInit {
       }
     ).subscribe(
       async (resp) => {
+        console.log('resp', resp);
         if (resp) {
           await this.authService.Logout();
         }
@@ -52,15 +64,11 @@ export class BaseAdminComponent implements OnInit {
     );
   }
 
-  get User() {
-    return this.accountService.User();
-  }
-
   DialogeFormUser() {
     const dialogRef = this.dialoge.open(AccountUserComponent, {
       width: '40rem',
       disableClose: true,
-      data: this.User
+      data: this.myUser
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -3,16 +3,16 @@ import { User } from 'src/app/common/models/user.model';
 export class AuthData {
 
   constructor(
-    private token: string,
-    private exp: number,
+    private access_token: string,
+    private expiresIn: number,
     public user: User
   ) {}
 
   get Token() {
-    if (!this.exp  || (new Date().getTime() / 1000 ) > this.exp) {
+    if (!this.expiresIn  || (new Date().getTime() / 1000 ) > this.expiresIn) {
       return null;
     }
-    return this.token;
+    return this.access_token;
   }
 
 }

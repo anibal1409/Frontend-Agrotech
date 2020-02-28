@@ -4,9 +4,8 @@ import { NoWhiteSpace } from 'src/app/common/validators/no-whithe-space.validato
 import { textFieldAppearance } from 'src/app/common/constants/apaperance.constant';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { ActivatedRoute, Router, Params } from '@angular/router';
 import { SnackBarService } from '../../services/snack-bar.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-account-password',
@@ -27,12 +26,10 @@ export class AccountPasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router,
     private snackBarService: SnackBarService,
     public dialogRef: MatDialogRef<AccountPasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private accountService: AccountService,
   ) {
     this.Form();
   }
@@ -60,7 +57,13 @@ export class AccountPasswordComponent implements OnInit {
   }
 
   async OnSubmit() {
-    this.Close();
+    if (this.form.valid && this.form.value.password === this.form.value.confirm) {
+      if (await this.accountService.ChangePassword(this.form.value.password)) {
+        this.Close();
+      }
+    } else {
+
+    }
   }
 
   MessageError(input: string) {
@@ -89,10 +92,6 @@ export class AccountPasswordComponent implements OnInit {
         }
       }
     }
-  }
-
-  Login() {
-    this.authService.SignIn(this.form.value);
   }
 
   ChangeVisibility() {

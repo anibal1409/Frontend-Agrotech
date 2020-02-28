@@ -6,6 +6,9 @@ import { textFieldAppearance } from 'src/app/common/constants/apaperance.constan
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/common/models/user.model';
+import { UserSignIn } from 'src/app/auth/models/user-sign-in.model';
+import { IChangeRole } from 'src/app/common/interfaces/change-role.interface';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'user-form',
@@ -24,8 +27,9 @@ export class UserFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UserFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: User,
     private userService: UserService,
+    private snackBarService: SnackBarService,
   ) {
     this.roles = this.userService.Roles;
     this.Form();
@@ -36,13 +40,13 @@ export class UserFormComponent implements OnInit {
 
   private Form() {
     this.form = this.formBuilder.group({
-      name: new FormControl( this.data ? this.data.name : null, [
+      name: new FormControl( this.data ? {value: this.data.name, disabled: true} : null, [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
-      email: new FormControl( this.data ? this.data.email :  null, [
+      email: new FormControl( this.data ? {value: this.data.email, disabled: true} :  null, [
         Validators.required,
         Validators.email,
         this.noWhiteSpace.Validator
@@ -58,10 +62,18 @@ export class UserFormComponent implements OnInit {
   async OnSubmit() {
     if (this.form.valid) {
         try {
-          if (await this.userService.Create(
-            new User(this.form.value)
-          )) {
-            this.Close();
+          if (this.data) {
+            let myUser: IChangeRole = {rol : this.form.value.role, userId: this.data._id };
+            if (await this.userService.Update(myUser)) {
+              this.Close();
+            }
+          } else {
+            if (await this.userService.Create(
+              new UserSignIn(this.form.value)
+            )) {
+              this.snackBarService.Success('Usuario registrado con éxito. La contraseña temporal de este es 12345678.');
+              this.Close();
+            }
           }
         } catch (error) {
           console.log(this.nameClass + ' create', error);

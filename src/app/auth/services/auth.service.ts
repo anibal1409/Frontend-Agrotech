@@ -8,6 +8,8 @@ import { StorageService } from '../../core/services/storage.service';
 import { IAuthData } from '../../common/interfaces/auth-data.interface';
 import { UserSignIn } from '../models/user-sign-in.model';
 import { authStorage } from '../../common/constants/storage.constant';
+import { Router } from '@angular/router';
+import { RoutesLogin } from 'src/app/common/enum/routes/routes-login.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
+    private router: Router,
   ) { }
 
   async ChangePassword(uuidV: string, newPassword: string) {
@@ -163,10 +166,12 @@ export class AuthService {
       this.user.next(null);
       // this.userService.User(null);
       this.storageService.DeleteAuthorization();
+
       if (this.tokenExpiration) {
         clearTimeout(this.tokenExpiration);
       }
       this.tokenExpiration = null;
+      this.router.navigate([RoutesLogin.SIGN_IN]);
     } catch (error) {
 
     }

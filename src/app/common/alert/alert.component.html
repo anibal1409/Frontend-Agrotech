@@ -8,6 +8,7 @@
     mat-button
     *ngFor="let button of buttons"
     [ngClass]="[button.type]"
+    (click)="Close(button)"
     >
       {{button.label}}
     </button>

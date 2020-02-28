@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BaseCommunityComponent } from './pages/base-community/base-community.component';
 import { HomeComponent } from '../core/pages/home/home.component';
 import { RoutesCommunity } from '../common/enum/routes/routes-community.enum';
+import { StudyListComponent } from '../admin/pages/study/list/list.component';
 
 
 export const communityRoutes: Routes = [
@@ -13,6 +14,10 @@ export const communityRoutes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
+      },
+      {
+        path: 'study',
+        component: StudyListComponent,
       },
       {
         path: '',
