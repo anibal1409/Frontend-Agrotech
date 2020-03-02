@@ -17,68 +17,83 @@ import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 })
 export class UserFormComponent implements OnInit {
 
-  nameClass = "UserFormComponent";
+  nameClass = 'UserFormComponent';
 
   form: FormGroup;
   noWhiteSpace =  new NoWhiteSpace();
   inputAppearance: string = textFieldAppearance;
-  roles = []
+  roles = [];
 
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<UserFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: User,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private userService: UserService,
-    private snackBarService: SnackBarService,
+    private toast: SnackBarService,
   ) {
     this.roles = this.userService.Roles;
-    this.Form();
   }
 
   ngOnInit() {
+    this.Form();
   }
 
   private Form() {
-    this.form = this.formBuilder.group({
-      name: new FormControl( this.data ? {value: this.data.name, disabled: true} : null, [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(16),
-        this.noWhiteSpace.Validator
-      ]),
-      email: new FormControl( this.data ? {value: this.data.email, disabled: true} :  null, [
-        Validators.required,
-        Validators.email,
-        this.noWhiteSpace.Validator
-      ]),
-      role: new FormControl( this.data ? this.data.role :  'basic', [
-        Validators.required,
-        this.noWhiteSpace.Validator
-      ]),
-    });
-
+    if (this.data) {
+      this.form =  this.formBuilder.group({
+        role: new FormControl( this.data.role, [
+          Validators.required,
+          this.noWhiteSpace.Validator
+        ]),
+      });
+    } else {
+      this.form = this.formBuilder.group({
+        name: new FormControl( '', [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(16),
+          this.noWhiteSpace.Validator
+        ]),
+        email: new FormControl( '', [
+          Validators.required,
+          Validators.email,
+          this.noWhiteSpace.Validator
+        ]),
+        role: new FormControl('', [
+          Validators.required,
+          this.noWhiteSpace.Validator
+        ]),
+      });
+    }
   }
 
   async OnSubmit() {
     if (this.form.valid) {
         try {
-          if (this.data) {
-            let myUser: IChangeRole = {rol : this.form.value.role, userId: this.data._id };
-            if (await this.userService.Update(myUser)) {
-              this.Close();
+            if (this.data) {
+              await this.userService.ChangeRol(new User({_id: this.data._id, name: this.data.name, email: this.data.email, role: this.form.value.role}));
+              this.toast.Success('usuario actualizado exitosamente');
+            } else {
+              await this.userService.Create(new User(this.form.value));
+              this.toast.Success('usuario creado exitosamente');
             }
-          } else {
-            if (await this.userService.Create(
-              new UserSignIn(this.form.value)
-            )) {
-              this.snackBarService.Success('Usuario registrado con éxito. La contraseña temporal de este es 12345678.');
-              this.Close();
-            }
-          }
+            this.Close();
         } catch (error) {
+          this.toast.Danger(error);
           console.log(this.nameClass + ' create', error);
         }
     }
+  }
+
+  async deleteUser() {
+    try {
+      await this.userService.Delete(this.data);
+      this.toast.Success('usuario eliminado exitosamente');
+      this.Close();
+  } catch (error) {
+    this.toast.Danger(error);
+    console.log(this.nameClass + ' create', error);
+  }
   }
 
   MessageError(input: string) {
@@ -112,5 +127,4 @@ export class UserFormComponent implements OnInit {
   Close() {
     this.dialogRef.close();
   }
-
 }

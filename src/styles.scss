@@ -280,3 +280,62 @@ td, th {
 .flex {
   display: flex;
 }
+
+.wrapper{
+  padding: 30px;
+}
+
+.table-container {
+  .table-wrap {
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+  }
+  mat-paginator {
+    width: 100%;
+  }
+}
+
+.field-reduce{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+@media (max-width: 700px) {
+  .field-reduce {
+    width: 130px;
+  }
+}
+@media (max-width: 480px) {
+  .field-reduce {
+    width: 80px;
+  }
+}
+
+.clickeable {
+  color: #4caf50;
+  cursor: pointer;
+}
+
+.clickeable:hover{
+  color: #2f8633;
+}
+
+.content-header{
+  width: 100%;
+  font-size: 24px;
+  padding: 5px 0px;
+}
+.mat-dialog-actions{
+  justify-content: flex-end;
+}
+
+.mat-dialog-actions .mat-button-base+.mat-button-base {
+  margin-left: 0px !important;
+}
+@media screen and (max-width: 445px){
+  .modal-action-button{
+    width: 100%;
+  }
+}

@@ -39,26 +39,40 @@ export class UserService {
   }
 
 
-  Create(item: UserSignIn) {
+  Create(item: User) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          let response;
           if (!item) {
             reject({message: 'No data'});
           }
-          item.password = '12345678';
-          if (item.role === 'admin') {
-            response = await this.http.post(
-              RoutesHttp.BASE + RoutesHttp.CREATE_ADMIN,
-              item
-              ).toPromise();
-          } else {
-            response = await this.http.post(
-              RoutesHttp.BASE + RoutesHttp.CREATE_USER,
-              item
-              ).toPromise();
+          const response = await this.http.post(
+            RoutesHttp.BASE + RoutesHttp.CREATE_USER,
+            item
+            ).toPromise();
+          if (!response) {
+            reject({message: 'No data back'});
           }
+          this.Add(response as User);
+          resolve(response);
+        } catch (err) {
+          console.log(this.nameService + 'Error Create: ' + err);
+          reject(err);
+        }
+      }
+    );
+  }
+  ChangeRol(item: User) {
+    return new Promise<any>(
+      async (resolve, reject) => {
+        try {
+          if (!item) {
+            reject({message: 'No data'});
+          }
+          const response = await this.http.post(
+            RoutesHttp.BASE + RoutesHttp.  CHANGE_ROL_USER ,
+          {userId: item._id , rol: item.role}
+            ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
           }
@@ -105,7 +119,7 @@ export class UserService {
           }
           const response = await this.http.post(
             RoutesHttp.BASE + RoutesHttp.DELETE_USER,
-            item._id
+            {userId: item._id}
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
