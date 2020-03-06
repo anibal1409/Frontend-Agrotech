@@ -219,10 +219,7 @@ mat-icon {
   min-height: 100%;
 }
 
-.example-sidenav-content {
-  height: 100%;
-  min-height: 100%;
-}
+
 
 .example-sidenav {
   padding: 20px;
@@ -266,6 +263,51 @@ td, th {
 }
 .mat-horizontal-content-container {
   max-height: 50vh;
+}
+
+.nav-item-expansion{
+  box-shadow: none !important;
+  mat-expansion-panel-header{
+    padding: 0px !important;
+    padding-right: 20px !important;
+  }
+  .nav-expansion-tree{
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    padding: 10px 0px;
+    .nav-item-text{
+      padding-top: 2px;
+    }
+  }
+}
+
+.nav-item:hover,
+.nav-item-expansion
+.nav-item:hover,
+.nav-expansion-tree:hover{
+cursor: pointer;
+color: #2f8633;
+background-color: rgba(0, 0, 0, .05);
+}
+
+.nav-item{
+  display: flex;
+  align-content: center;
+  justify-content: flex-start;
+  padding: 10px 20px;
+}
+.nav-item-icon{
+  padding-right: 6px;
+}
+.nav-item-text{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+mat-sidenav{
+  min-width: 240px;
 }
 
 .width-10r {
@@ -326,6 +368,7 @@ td, th {
   width: 100%;
   font-size: 24px;
   padding: 5px 0px;
+  display: flex;
 }
 .mat-dialog-actions{
   justify-content: flex-end;
@@ -338,4 +381,77 @@ td, th {
   .modal-action-button{
     width: 100%;
   }
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+mat-toolbar{
+  position: relative !important;
+  justify-content: space-between;
+}
+
+.toolbar-left-container {
+  display: flex;
+  align-items: center;
+}
+.toolbar-right-container {
+  display: flex;
+  align-items: center;
+}
+.toolbar-title{
+  span{
+    color: white;
+    font-size: 24px;
+  }
+}
+.toolbar-toggle{
+  padding-right: 20px;
+  padding-top: 8px;
+  mat-icon{
+    color: white;
+  }
+}
+.toolbar-toggle:hover{
+  mat-icon{
+    cursor: pointer;
+  }
+}
+
+.user-profile{
+  padding-top: 8px;
+  padding-left: 10px;
+  mat-icon{
+    color: white;
+  }
+}
+.user-title{
+  span{
+    color: white;
+    font-size: 24px;
+  }
+}
+.user-profile:hover{
+  mat-icon{
+    cursor: pointer;
+  }
+}
+
+.app-toolbar {
+  position: fixed;
+  z-index: 2;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+.sidenav-container {
+  flex: 1;
 }

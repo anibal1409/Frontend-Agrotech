@@ -45,6 +45,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { DocumentFormComponent } from './pages/document/form/form.component';
 import { DocumentListComponent } from './pages/document/list/list.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 
@@ -107,6 +108,7 @@ export const DateFormats = {
     MatStepperModule,
     MatTabsModule,
     MatTreeModule,
+    MatExpansionModule
   ],
   exports: [
     AdminRoutingModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { nameApp } from 'src/app/common/constants/app.constant';
 import { RoutesAdmin } from 'src/app/common/enum/routes/routes-admin.enum';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -9,14 +9,18 @@ import { AccountUserComponent } from 'src/app/core/pages/account-user/account-us
 import { AccountPasswordComponent } from 'src/app/core/pages/account-password/account-password.component';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/common/models/user.model';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+
+
 
 @Component({
   selector: 'app-base-admin',
   templateUrl: './base-admin.component.html',
   styleUrls: ['./base-admin.component.scss']
 })
-export class BaseAdminComponent implements OnInit {
-
+export class BaseAdminComponent implements OnInit, OnDestroy {
+  @ViewChild('snav', {static: true}) sidenav: MatSidenav;
   nameApp = nameApp;
   routeHome = RoutesAdmin.HOME;
   routeCrop = RoutesAdmin.CROP;
@@ -30,13 +34,23 @@ export class BaseAdminComponent implements OnInit {
   myUser: User;
 
   userSubs = new Subscription();
-
   constructor(
     private authService: AuthService,
     private alertService: AlertService,
     private accountService: AccountService,
     private dialoge: MatDialog,
-  ) { }
+    private router: Router
+
+  ) {
+      this.closeSidenavOnRoutingEvent();
+   }
+
+  closeSidenavOnRoutingEvent() {
+    this.router.events.subscribe(event => {
+      // close sidenav on routing
+      this.sidenav.close();
+    });
+  }
 
   ngOnInit() {
     this.myUser = this.accountService.User();
@@ -45,6 +59,11 @@ export class BaseAdminComponent implements OnInit {
         this.myUser = newUser;
       }
     );
+  }
+
+
+  ngOnDestroy(): void {
+
   }
 
   async Logout() {

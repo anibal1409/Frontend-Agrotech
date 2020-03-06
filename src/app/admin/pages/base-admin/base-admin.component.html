@@ -1,40 +1,133 @@
-<mat-drawer-container class="admin-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p [routerLink]="routeHome" class="link-primary cursor">Inicio</p>
-    <p [routerLink]="routeCrop" class="link-primary cursor">Cultivos</p>
-    <p [routerLink]="routeWeather" class="link-primary cursor">Climas</p>
-    <p [routerLink]="routeStudy" class="link-primary cursor">Estudios</p>
-    <p [routerLink]="routeSector" class="link-primary cursor">Sectores</p>
-    <p [routerLink]="routeLocation" class="link-primary cursor">Localidades</p>
-    <p [routerLink]="routeTexture" class="link-primary cursor">Texturas</p>
-    <p [routerLink]="routeUser" class="link-primary cursor">Usuarios</p>
-    <p [routerLink]="routeDocument" class="link-primary cursor">Documentacion</p>
-  </mat-drawer>
-
-  <div class="example-sidenav-content">
-    <mat-toolbar color="primary">
-
-      <mat-toolbar-row>
-        <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon mat-button  (click)="drawer.toggle()" class="white">menu</mat-icon>
-        </div>
-        <span class="white" >
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <div  class="toolbar-left-container">
+      <div class="toolbar-toggle">
+        <mat-icon mat-button
+         matRipple
+         matRippleRadius="50"
+          (click)="snav.toggle()">
+          menu
+        </mat-icon>
+      </div>
+      <div class="toolbar-title">
+        <span>
           {{ nameApp }}
         </span>
-        <span class="example-spacer"></span>
-        <span class="white" >
+      </div>
+    </div>
+    <div  class="toolbar-right-container">
+      <div class="user-title">
+        <span>
           {{ myUser ?  myUser.name : 'User'}}
         </span>
-        <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon" class="white">more_vert</mat-icon>
-        </div>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <div class="wrapper">
-      <router-outlet></router-outlet>
+      </div>
+      <div class="user-profile">
+        <mat-icon matRipple [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon">account_circle</mat-icon>
+      </div>
     </div>
-  </div>
-</mat-drawer-container>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav>
+      <mat-nav-list>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeHome">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>home</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Inicio</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeCrop">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>local_florist</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Cultivos</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeWeather">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>wb_sunny</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Climas</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeStudy">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>assignment</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Estudios</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeSector">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>add_location</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Sectores</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeLocation">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>map</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Localidades</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeUser">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>assignment_ind</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Usuarios</span>
+          </div>
+        </div>
+          <mat-expansion-panel class="nav-item-expansion">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="nav-item" mat-list-item>
+                  <div class="nav-item-icon">
+                    <mat-icon matRipple>menu_book</mat-icon>
+                  </div>
+                  <div class="nav-item-text">
+                    <span>Documentacion</span>
+                  </div>
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+  
+            <div class="nav-expansion-tree" mat-list-item [routerLink]="routeDocument">
+              <div class="nav-item-icon">
+                <mat-icon matRipple>toc</mat-icon>
+              </div>
+              <div class="nav-item-text">
+                <span>Lista</span>
+              </div>
+            </div>
+            
+          </mat-expansion-panel>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="DialogeFormUser()">
     <span>
