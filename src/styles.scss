@@ -285,7 +285,8 @@ td, th {
 .nav-item:hover,
 .nav-item-expansion
 .nav-item:hover,
-.nav-expansion-tree:hover{
+.nav-expansion-tree:hover,
+.mat-menu-item:hover{
 cursor: pointer;
 color: #2f8633;
 background-color: rgba(0, 0, 0, .05);
@@ -296,6 +297,7 @@ background-color: rgba(0, 0, 0, .05);
   align-content: center;
   justify-content: flex-start;
   padding: 10px 20px;
+  outline: none;
 }
 .nav-item-icon{
   padding-right: 6px;
@@ -304,6 +306,10 @@ background-color: rgba(0, 0, 0, .05);
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 18px;
   font-weight: 400;
+}
+
+.mat-menu-item{
+  outline: none !important;
 }
 
 mat-sidenav{
