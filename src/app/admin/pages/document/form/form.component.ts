@@ -9,6 +9,8 @@ import { DocumentService } from 'src/app/core/services/document.service';
 import { Subscription } from 'rxjs';
 import { Crop } from 'src/app/common/models/crop.model';
 import { CropService } from 'src/app/core/services/crop.service';
+import { requiredFileType } from 'src/app/common/components/upload-file/upload-file-validator';
+
 
 @Component({
   selector: 'app-form',
@@ -25,6 +27,10 @@ export class DocumentFormComponent implements OnInit {
   crops: Crop[] = [];
   cropsSubs = new Subscription();
   private fileData = null;
+  uploading = false;
+
+
+  response: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,12 +44,14 @@ export class DocumentFormComponent implements OnInit {
     this.cropsSubs = this.cropService.itemsChanged.subscribe(
       (newItems) => {
         this.crops = newItems;
+        console.log(this.crops);
       }
     );
-  }
 
-  ngOnInit() {
   }
+  ngOnInit() {
+
+   }
 
   private Form() {
     this.form = this.formBuilder.group({
@@ -59,8 +67,16 @@ export class DocumentFormComponent implements OnInit {
         Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
+      document: new FormControl(null, [
+        Validators.required,
+        requiredFileType(['png', 'jpg', 'pdf'])
+      ])
     });
+  }
 
+  hasError( field: string, error: string ) {
+    const control = this.form.get(field);
+    return control.dirty && control.hasError(error);
   }
 
   async OnSubmit() {
@@ -77,7 +93,6 @@ export class DocumentFormComponent implements OnInit {
         }
       } else {
         try {
-          
             if (await this.documentService.Create(
               new Document(this.form.value),
               this.fileData
@@ -118,7 +133,9 @@ export class DocumentFormComponent implements OnInit {
       }
     }
   }
-
+test(){
+  console.log(this.form);
+}
   Close() {
     this.dialogRef.close();
   }

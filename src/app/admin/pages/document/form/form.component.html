@@ -19,13 +19,15 @@
         {{ MessageError('cropId') }}
       </mat-error>
     </mat-form-field>
-    <!-- <mat-form-field [appearance]="inputAppearance">
-      <mat-label>Seleccione un archivo</mat-label> -->
-      <input type="file" name="mydocument" (change)="LoadFile($event)">
-      <!-- <mat-error *ngIf="MessageError('name')">
-        {{ MessageError('name') }}
-      </mat-error> -->
-    <!-- </mat-form-field> -->
+
+    <div class="uploader">
+      <app-upload-file [uploading]= "uploading" formControlName="document" ></app-upload-file>
+      <div class="invalid-feedback" style="display: block">
+        <ng-container *ngIf="hasError('document', 'required')">El documento es requerido</ng-container>
+        <ng-container *ngIf="hasError('document', 'requiredFileType')">Solo se soporta png, jpg, pdf 🤡</ng-container>
+      </div>
+    </div>
+
     
   </div>
   <div mat-dialog-actions class="">
@@ -37,6 +39,9 @@
       </div>
       <div class="col-xs-8 end-h">
         <button mat-button class="gray" mat-dialog-close type="button">
+          <span>CANCELAR</span>
+        </button>
+        <button mat-button class="gray" (click)="test()" type="button">
           <span>CANCELAR</span>
         </button>
         <button mat-button color="primary" type="submit" [disabled]="form.invalid">
