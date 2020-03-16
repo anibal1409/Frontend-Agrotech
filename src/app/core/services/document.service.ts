@@ -23,26 +23,23 @@ export class DocumentService {
   }
 
   async Init() {
-    if(!this.requesetHttp) {
+    if (!this.requesetHttp) {
       await this.List();
     }
   }
 
 
-  Create(item: Document, data: any) {
+  Create(item: any, update = false) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!item) {
             reject({message: 'No data'});
           }
-          let headersV = new Headers(); 
-          console.log('data', data);
-          headersV.set('Content-Type', 'multipart/form-data');
-          const myBlob = new Blob([data], {type: 'application/pdf'});
-          console.log('myBlob', myBlob);
           const formData = new FormData();
-          formData.append('document', data, item.name + '.pdf');
+          if (item.document) {
+            formData.append('document', item.document, item.name + '.pdf');
+          }
           formData.append('name', item.name);
           formData.append('cropId', item.cropId);
           const response = await this.http.post(
@@ -52,7 +49,12 @@ export class DocumentService {
           if (!response) {
             reject({message: 'No data back'});
           }
-          this.Add(response as Document);
+          if (update) {
+            console.log('entro en el update');
+            this.UpdateSource(response as Document);
+          } else {
+            this.Add(response as Document);
+          }
           resolve(response);
         } catch (err) {
           console.log(this.nameService + 'Error Create: ' + err);
@@ -62,15 +64,14 @@ export class DocumentService {
     );
   }
 
-  Update(item: Document, data: File) {
+  Update(item: Document) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
           if (!item) {
             reject({message: 'No data'});
           }
-          await this.Delete(item);
-          await this.Create(item, data);
+          await this.Create(item, true);
           resolve(true);
         } catch (err) {
           console.log(this.nameService + 'Error Update: ' + err);
@@ -89,7 +90,7 @@ export class DocumentService {
           }
           const response = await this.http.post(
             RoutesHttp.BASE + RoutesHttp.DOCUMENT_DELETE,
-            item._id
+            { _id: item._id }
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -97,7 +98,6 @@ export class DocumentService {
           this.Remove(item);
           resolve(response);
         } catch (err) {
-          console.log(this.nameService + 'Error Delete: ' + err);
           reject(err);
         }
       }
@@ -164,6 +164,16 @@ export class DocumentService {
       this.items.push(item);
       this.itemsChanged.next(this.items);
     }
+  }
+  private UpdateSource(document: Document) {
+    this.items.map(( item: Document) => {
+      if (item._id === document._id) {
+        item.cropId = document.cropId;
+        item.name   = document.name;
+        item.path   = document.path;
+      }
+    });
+    this.itemsChanged.next(this.items);
   }
 
   private Remove(item: Document) {

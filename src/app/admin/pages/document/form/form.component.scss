@@ -8,3 +8,14 @@
     margin:0; 
     padding:0
 }
+
+.show-uploader-updater{
+    padding-bottom: 5px;
+    span{
+        color:#2f8633;
+    }
+    span:hover{
+        cursor: pointer;
+        color:#164d18;
+    }
+}

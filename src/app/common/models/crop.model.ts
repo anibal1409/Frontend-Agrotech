@@ -22,6 +22,7 @@ export class Crop {
   public texturesId: string[];
   public weatherId: string;
   public deleted: boolean;
+  public documentId?: string;
 
   constructor(data: any) {
     Object.assign(this, data);

@@ -8,6 +8,7 @@ import { Document } from 'src/app/common/models/document.model';
 import { DocumentService } from 'src/app/core/services/document.service';
 import { DocumentFormComponent } from '../form/form.component';
 import { CropService } from 'src/app/core/services/crop.service';
+import { RoutesHttp } from '../../../../common/enum/routes/routes-http.enum';
 
 @Component({
   selector: 'document-list',
@@ -16,10 +17,11 @@ import { CropService } from 'src/app/core/services/crop.service';
 })
 export class DocumentListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'crop'];
+  displayedColumns: string[] = ['name', 'crop', 'descargar'];
   dataSource: MatTableDataSource<Document>;
   items: Document[] = [];
   itemsSubs = new Subscription();
+  baseApp = RoutesHttp.IP;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;

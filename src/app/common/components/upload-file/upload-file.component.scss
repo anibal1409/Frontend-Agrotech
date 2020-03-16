@@ -28,8 +28,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding: 10px 0px;
   display: inline-block;
-  max-width: calc(100% - 130px);
+  max-width: calc(100% - 20px);
   vertical-align: middle;
 }
 

@@ -79,8 +79,14 @@ export class UserFormComponent implements OnInit {
             }
             this.Close();
         } catch (error) {
-          this.toast.Danger(error);
-          console.log(this.nameClass + ' create', error);
+          if (error.error.errorBag && error.error.errorBag === 'Email Already Taken') {
+            this.toast.Danger('Ya existe un usuario registrado con ese correo');
+          }
+          if (error.error.error && error.error.error === 'Email Already Taken') {
+            this.toast.Danger('Ya existe un usuario registrado con ese correo');
+          } else {
+            this.toast.Danger('Algo salio mal');
+          }
         }
     }
   }

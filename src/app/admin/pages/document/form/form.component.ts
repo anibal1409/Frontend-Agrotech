@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { Crop } from 'src/app/common/models/crop.model';
 import { CropService } from 'src/app/core/services/crop.service';
 import { requiredFileType } from 'src/app/common/components/upload-file/upload-file-validator';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 
 @Component({
@@ -26,34 +27,54 @@ export class DocumentFormComponent implements OnInit {
   inputAppearance: string = textFieldAppearance;
   crops: Crop[] = [];
   cropsSubs = new Subscription();
-  private fileData = null;
   uploading = false;
+  reWriteDocument = false;
 
 
   response: string;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Document,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<DocumentFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Document,
     private documentService: DocumentService,
     private cropService: CropService,
+    private snackBarService: SnackBarService
   ) {
     this.Form();
-    this.crops = this.cropService.Items;
     this.cropsSubs = this.cropService.itemsChanged.subscribe(
       (newItems) => {
         this.crops = newItems;
-        console.log(this.crops);
       }
     );
-
   }
-  ngOnInit() {
+  editMode() {
+    if (this.data) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  toggleUploadBox() {
+    this.reWriteDocument = !this.reWriteDocument;
+    if (!this.reWriteDocument) {
+      this.form.controls.document.setValue(null);
+    }
+  }
 
+  cropHasDocument(crop: Crop) {
+    if (crop.documentId) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  async ngOnInit() {
+    this.crops = await this.cropService.List();
    }
 
   private Form() {
+    const documentValidators = this.data ? [requiredFileType(['pdf'])] : [Validators.required, requiredFileType(['pdf'])];
     this.form = this.formBuilder.group({
       name: new FormControl( this.data ? this.data.name : null, [
         Validators.required,
@@ -67,10 +88,9 @@ export class DocumentFormComponent implements OnInit {
         Validators.maxLength(40),
         this.noWhiteSpace.Validator
       ]),
-      document: new FormControl(null, [
-        Validators.required,
-        requiredFileType(['png', 'jpg', 'pdf'])
-      ])
+      document: new FormControl(null,
+        documentValidators,
+      )
     });
   }
 
@@ -80,29 +100,40 @@ export class DocumentFormComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.form.valid && this.fileData) {
-      if (this.data) {
-        try {
+    if (this.form.valid) {
+      try {
+        if (this.data) {
           const registrytUpd = new Document(this.form.value);
           registrytUpd._id = this.data._id;
-          if (await this.documentService.Update(registrytUpd, this.fileData)) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' update', error);
+          await this.documentService.Update(registrytUpd);
+          this.snackBarService.Success('Documento editado con exito');
+          this.Close();
+        } else {
+          await this.documentService.Create(this.form.value);
+          this.snackBarService.Success('Documento creado con exito');
+          this.Close();
         }
-      } else {
-        try {
-            if (await this.documentService.Create(
-              new Document(this.form.value),
-              this.fileData
-            )) {
-              this.Close();
-            }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
+      } catch (error) {
+        if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+          this.snackBarService.Danger('Ya existe un documento con ese nombre');
+        }
+        if (error.error.error && error.error.error === 'Name already registered') {
+          this.snackBarService.Danger('Ya existe un documento con ese nombre');
+        } else {
+          this.snackBarService.Danger('Algo salio mal');
         }
       }
+    }
+  }
+
+  async delete() {
+    try {
+      await this.documentService.Delete(this.data);
+      this.crops = await this.cropService.List();
+      this.snackBarService.Success('Documento eliminado');
+      this.Close();
+    } catch (error) {
+      this.snackBarService.Danger('Algo salio mal');
     }
   }
 
@@ -133,15 +164,7 @@ export class DocumentFormComponent implements OnInit {
       }
     }
   }
-test(){
-  console.log(this.form);
-}
   Close() {
     this.dialogRef.close();
   }
-
-  LoadFile(event) {
-    this.fileData = event.target.files[0];
-  }
-
 }
