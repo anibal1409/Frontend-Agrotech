@@ -10,18 +10,15 @@ import { StudyService } from 'src/app/core/services/study.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { SectorService } from 'src/app/core/services/sector.service';
 import { TextureService } from 'src/app/core/services/texture.service';
-import { CropService } from 'src/app/core/services/crop.service';
-import { DocumentService } from 'src/app/core/services/document.service';
+
 import { Texture } from 'src/app/common/models/texture.model';
 import { Sector } from 'src/app/common/models/sector.model';
 import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { Month } from 'src/app/common/models/month.model';
 import { Subscription } from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { Document } from 'src/app/common/models/document.model';
-import { Crop } from 'src/app/common/models/crop.model';
 import { RoutesHttp } from 'src/app/common/enum/routes/routes-http.enum';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'study-form',
@@ -47,16 +44,15 @@ export class StudyFormComponent implements OnInit {
   readyStudy = false;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Study,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<StudyFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Study,
     private studyService: StudyService,
     private locationService: LocationService,
     private sectorService: SectorService,
     private textureService: TextureService,
     private accountService: AccountService,
-    private cropService: CropService,
-    private documentService: DocumentService,
+    private toast: SnackBarService,
   ) {
     this.months = this.sectorService.Months;
     this.sectors = this.sectorService.Items;
@@ -78,8 +74,8 @@ export class StudyFormComponent implements OnInit {
     if (this.data) {
       this.readyStudy = true;
       this.myResults = this.studyService.Result(this.data);
-      console.log('this.myResults', this.myResults);
       this.GetLocations(this.data.sectorId);
+      this.disableControls();
     }
   }
 
@@ -127,36 +123,45 @@ export class StudyFormComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.form.valid) {
-      if (this.data) {
-        try {
+    try {
+      if (this.form.valid) {
+        if (this.data) {
           const registrytUpd = new Study(this.form.value);
           registrytUpd._id = this.data._id;
-          if (await this.studyService.Update(registrytUpd)) {
-            // this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' update', error);
-        }
-      } else {
-        try {
+          await this.studyService.Update(registrytUpd);
+          this.toast.Success('Estudio actualizado exitosamente');
+          this.Close();
+        } else {
           if (!this.readyStudy) {
-            let myRegistry = new Study(this.form.value);
-            console.log('myRegistry', myRegistry);
-            myRegistry.month =( +this.form.value.month);
-            console.log('myRegistry', myRegistry);
+            const myRegistry = new Study(this.form.value);
+            myRegistry.month = (+this.form.value.month);
             myRegistry.userId = this.accountService.User()._id;
-            if (await this.studyService.Create(myRegistry)) {
-              this.readyStudy = true;
-              this.myResults = this.studyService.Result(myRegistry);
-              // this.Close();
-            }
+            await this.studyService.Create(myRegistry);
+            this.readyStudy = true;
+            this.myResults = this.studyService.Result(myRegistry);
+            this.toast.Success('Estudio creado exitosamente');
+            this.Close();
           }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
         }
       }
+    } catch (error) {
+      if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'Name already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre');
+        this.Close();
+      } else {
+        this.toast.Danger('Algo salio mal');
+        this.Close();
+      }
     }
+
+  }
+  disableControls() {
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.controls[key].disable();
+    });
   }
 
   MessageError(input: string) {
@@ -205,6 +210,6 @@ export class StudyFormComponent implements OnInit {
     document.body.appendChild(link);
     link.click();
     link.remove();
-}
+  }
 
 }

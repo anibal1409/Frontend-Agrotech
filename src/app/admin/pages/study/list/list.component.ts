@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { Month } from 'src/app/common/models/month.model';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class StudyListComponent implements OnInit {
+export class StudyListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'sector', 'location', 'month'];
   dataSource: MatTableDataSource<Study>;

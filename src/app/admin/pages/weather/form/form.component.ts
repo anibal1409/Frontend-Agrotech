@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { WeatherService } from 'src/app/core/services/weather.service';
 import { Weather } from 'src/app/common/models/weather.model';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'weather-form',
@@ -21,10 +22,11 @@ export class WeatherFormComponent implements OnInit {
   inputAppearance: string = textFieldAppearance;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<WeatherFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private weatherService: WeatherService,
+    private toast: SnackBarService
   ) {
     this.Form();
   }
@@ -45,27 +47,30 @@ export class WeatherFormComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.form.valid) {
-      if (this.data) {
-        try {
+    try {
+      if (this.form.valid) {
+        if (this.data) {
           const registrytUpd = new Weather(this.form.value);
           registrytUpd._id = this.data._id;
-          if (await this.weatherService.Update(registrytUpd)) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' update', error);
+          await this.weatherService.Update(registrytUpd);
+          this.toast.Success('Clima actualizado exitosamente');
+          this.Close();
+        } else {
+          await this.weatherService.Create( new Weather(this.form.value));
+          this.toast.Success('Clima creado exitosamente');
+          this.Close();
         }
+      }
+    } catch (error) {
+      if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+        this.toast.Danger('Ya existe un clima registrado con ese nombre');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'Name already registered') {
+        this.toast.Danger('Ya existe un clima registrado con ese nombre');
+        this.Close();
       } else {
-        try {
-          if (await this.weatherService.Create(
-            new Weather(this.form.value)
-          )) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
-        }
+        this.toast.Danger('Algo salio mal');
+        this.Close();
       }
     }
   }

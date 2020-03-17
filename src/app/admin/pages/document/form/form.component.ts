@@ -116,8 +116,7 @@ export class DocumentFormComponent implements OnInit {
       } catch (error) {
         if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
           this.snackBarService.Danger('Ya existe un documento con ese nombre');
-        }
-        if (error.error.error && error.error.error === 'Name already registered') {
+        } else if (error.error.error && error.error.error === 'Name already registered') {
           this.snackBarService.Danger('Ya existe un documento con ese nombre');
         } else {
           this.snackBarService.Danger('Algo salio mal');

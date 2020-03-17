@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { SectorService } from 'src/app/core/services/sector.service';
@@ -10,6 +10,7 @@ import { WeatherService } from 'src/app/core/services/weather.service';
 import { Weather } from 'src/app/common/models/weather.model';
 import { Subscription } from 'rxjs';
 import { Month } from 'src/app/common/models/month.model';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 
 enum SectorType {
@@ -23,13 +24,13 @@ enum SectorType {
   templateUrl: './wizard.component.html',
   styleUrls: ['./wizard.component.scss']
 })
-export class SectorWizardComponent implements OnInit {
+export class SectorWizardComponent implements OnInit, OnDestroy {
 
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   months: Month[] = [];
 
-  nameClass = "SectorWizardComponent";
+  nameClass = 'SectorWizardComponent';
   lightName = 'light';
   temperatureName = 'temperature';
   humidityName = 'humidity';
@@ -51,10 +52,10 @@ export class SectorWizardComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Sector,
     private sectorService: SectorService,
     private weatherService: WeatherService,
+    private toast: SnackBarService
     ) {
-      this.months = this.sectorService.Months;
       this.Form();
-      
+      this.months = this.sectorService.Months;
       this.weathersSubs = this.weatherService.itemsChanged.subscribe(
         (newItems) => {
           this.weathers = newItems;
@@ -72,11 +73,9 @@ export class SectorWizardComponent implements OnInit {
     });
     try {
       await this.weatherService.List();
-      
     } catch (err) {
       console.log(err);
     }
-    
   }
 
   ngOnDestroy() {
@@ -123,21 +122,20 @@ export class SectorWizardComponent implements OnInit {
   }
 
   private FormArrayContruct(opt: SectorType): FormArray {
-    let myFormArray = new FormArray([]);
+    const myFormArray = new FormArray([]);
     let myData;
     switch (opt) {
       case '0' :
-        myData = this.data? this.data.sectorHumidities : [];
+        myData = this.data ? this.data.sectorHumidities : [];
         break;
       case '1' :
-        myData = this.data? this.data.sectorTemperatures : [];
+        myData = this.data ? this.data.sectorTemperatures : [];
         break;
       case '2' :
-        myData = this.data? this.data.sectorLights : [];
+        myData = this.data ? this.data.sectorLights : [];
         break;
     }
-    for (let item of this.months) {
-      console.log(myData[item.numValue-1]);
+    for (const item of this.months) {
       myFormArray.push(
         new FormGroup({
           month : new FormControl(+item.numValue , [
@@ -146,13 +144,13 @@ export class SectorWizardComponent implements OnInit {
             this.noWhiteSpace.Validator
           ]),
           min : new FormControl(
-            this.data ? myData[item.numValue-1].min : null, [
+            this.data ? myData[item.numValue - 1].min : null, [
             Validators.required,
             Validators.maxLength(20),
             this.noWhiteSpace.Validator
           ]),
           max : new FormControl(
-            this.data ? myData[item.numValue-1].max : null, [
+            this.data ? myData[item.numValue - 1].max : null, [
             Validators.required,
             Validators.maxLength(20),
             this.noWhiteSpace.Validator
@@ -164,35 +162,37 @@ export class SectorWizardComponent implements OnInit {
   }
 
   async OnSubmit() {
-    console.log(this.formSector.valid && this.formSectorHumidity.valid && this.formSectorLight.valid && this.formSectorTemperature.valid);
-    if (this.formSector.valid && this.formSectorHumidity.valid && this.formSectorLight.valid && this.formSectorTemperature.valid) {
-      if (this.data) {
-        try {
+    try {
+      if (this.formSector.valid && this.formSectorHumidity.valid && this.formSectorLight.valid && this.formSectorTemperature.valid) {
+        if (this.data) {
           const registrytUpd = new Sector(this.formSector.value);
           registrytUpd._id = this.data._id;
           registrytUpd.sectorHumidities = this.formSectorHumidity.value.humidity;
           registrytUpd.sectorLights = this.formSectorLight.value.light;
           registrytUpd.sectorTemperatures = this.formSectorTemperature.value.temperature;
-          console.log(registrytUpd);
-          if (await this.sectorService.Update(registrytUpd)) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' update', error);
-        }
-      } else {
-        try {
-          let mySector = new Sector(this.formSector.value);
+          await this.sectorService.Update(registrytUpd);
+          this.toast.Success('Sector actualizado exitosamente');
+          this.Close();
+        } else {
+          const mySector = new Sector(this.formSector.value);
           mySector.sectorHumidities = this.formSectorHumidity.value.humidity;
           mySector.sectorLights = this.formSectorLight.value.light;
           mySector.sectorTemperatures = this.formSectorTemperature.value.temperature;
-          console.log(mySector);
-          if (await this.sectorService.Create(mySector)) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
+          await this.sectorService.Create(mySector);
+          this.toast.Success('Sector creado exitosamente');
+          this.Close();
         }
+      }
+    } catch (error) {
+      if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+        this.toast.Danger('Ya existe un sector registrado con ese nombre');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'Name already registered') {
+        this.toast.Danger('Ya existe un sector registrado registrada con ese nombre');
+        this.Close();
+      } else {
+        this.toast.Danger('Algo salio mal');
+        this.Close();
       }
     }
   }
@@ -229,17 +229,20 @@ export class SectorWizardComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getControls(nameArray: String) {
+  getControls(nameArray: string) {
     let result;
-    switch(nameArray) {
+    switch (nameArray) {
       case this.humidityName :
-        result = this.formSectorHumidity.get(this.humidityName) ? (this.formSectorHumidity.get(this.humidityName) as FormArray).controls : [];
+        result = this.formSectorHumidity
+        .get(this.humidityName) ? (this.formSectorHumidity.get(this.humidityName) as FormArray).controls : [];
         break;
       case this.temperatureName :
-        result = this.formSectorTemperature.get(this.temperatureName) ? (this.formSectorTemperature.get(this.temperatureName) as FormArray).controls : [];
+        result = this.formSectorTemperature
+        .get(this.temperatureName) ? (this.formSectorTemperature.get(this.temperatureName) as FormArray).controls : [];
         break;
       case this.lightName :
-        result = this.formSectorLight.get(this.lightName) ? (this.formSectorLight.get(this.lightName) as FormArray).controls : [];
+        result = this.formSectorLight
+        .get(this.lightName) ? (this.formSectorLight.get(this.lightName) as FormArray).controls : [];
         break;
       default:
         result = [];

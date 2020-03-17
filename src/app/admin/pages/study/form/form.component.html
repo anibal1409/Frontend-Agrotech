@@ -99,11 +99,19 @@
     </mat-tab>
   </mat-tab-group>
   <div mat-dialog-actions>
-    <button mat-button class="gray modal-action-button" mat-dialog-close type="button">
-      <span>CANCELAR</span>
-    </button>
-    <button mat-button class="modal-action-button" color="primary" type="submit" [disabled]="form.invalid || readyStudy">
-      <span>ACEPTAR</span>
-    </button>
+    <ng-container *ngIf="!data; else elseBlock">
+      <button mat-button class="gray modal-action-button" mat-dialog-close type="button">
+        <span>CANCELAR</span>
+      </button>
+      <button mat-button class="modal-action-button" color="primary" type="submit" [disabled]="form.invalid || readyStudy">
+        <span>ACEPTAR</span>
+      </button>
+    </ng-container>
+    <ng-template #elseBlock>
+      <button mat-button class="gray modal-action-button" mat-dialog-close type="button">
+        <span>CERRAR</span>
+      </button>
+    </ng-template>
+    
   </div>
 </form>

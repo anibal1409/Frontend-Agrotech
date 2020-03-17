@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { nameApp } from 'src/app/common/constants/app.constant';
 import { RoutesCommunity } from 'src/app/common/enum/routes/routes-community.enum';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { AlertService } from 'src/app/common/alert/alert.service';
 import { AccountService } from 'src/app/core/services/account.service';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-base-community',
@@ -11,7 +13,7 @@ import { AccountService } from 'src/app/core/services/account.service';
   styleUrls: ['./base-community.component.scss']
 })
 export class BaseCommunityComponent implements OnInit {
-
+  @ViewChild('snav', {static: true}) sidenav: MatSidenav;
   nameApp = nameApp;
   routeHome = RoutesCommunity.HOME;
   routeStudy = RoutesCommunity.STUDY;
@@ -20,11 +22,20 @@ export class BaseCommunityComponent implements OnInit {
     private authService: AuthService,
     private alertService: AlertService,
     private accountService: AccountService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.closeSidenavOnRoutingEvent();
   }
-  
+
+  closeSidenavOnRoutingEvent() {
+    this.router.events.subscribe(event => {
+      // close sidenav on routing
+      this.sidenav.close();
+    });
+  }
+
   async Logout() {
     this.alertService.showConfirm(
       {

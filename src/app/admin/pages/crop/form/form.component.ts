@@ -11,6 +11,7 @@ import { Crop } from 'src/app/common/models/crop.model';
 import { Weather } from 'src/app/common/models/weather.model';
 import { Subscription } from 'rxjs';
 import { Texture } from 'src/app/common/models/texture.model';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'crop-form',
@@ -30,12 +31,13 @@ export class CropFormComponent implements OnInit, OnDestroy {
   texturesSubs = new Subscription();
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<CropFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     private textureService: TextureService,
     private cropService: CropService,
     private weatherService: WeatherService,
+    private toast: SnackBarService
   ) {
     this.weathers = this.weatherService.Items;
     this.textures = this.textureService.Items;
@@ -58,11 +60,9 @@ export class CropFormComponent implements OnInit, OnDestroy {
     try {
       await this.weatherService.List();
       await this.textureService.List();
-      
     } catch (err) {
       console.log(err);
     }
-    
   }
 
   ngOnDestroy() {
@@ -188,13 +188,43 @@ export class CropFormComponent implements OnInit, OnDestroy {
         Validators.required,
         this.noWhiteSpace.Validator
       ]),
-      
     });
 
   }
 
   async OnSubmit() {
-    console.log(this.form.value);
+    try {
+      if (this.form.valid) {
+        if (this.data) {
+          const registrytUpd = new Crop(this.form.value);
+          registrytUpd._id = this.data._id;
+          await this.cropService.Update(registrytUpd);
+          this.toast.Success('Cultivo Actualizado exitosamente');
+          this.Close();
+        } else {
+          await this.cropService.Create( new Crop(this.form.value));
+          this.toast.Success('Cultivo creado exitosamente');
+          this.Close();
+        }
+      }
+    } catch (error) {
+      if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'Name already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre');
+        this.Close();
+      } else if (error.error.errorBag && error.error.errorBag === 'ScientificName already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre cientifico');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'ScientificName already registered') {
+        this.toast.Danger('Ya existe un estudio registrado con ese nombre cientifico');
+        this.Close();
+      } else {
+        this.toast.Danger('Algo salio mal');
+        this.Close();
+      }
+    }
     if (this.form.valid) {
       if (this.data) {
         try {

@@ -71,7 +71,8 @@ export class UserFormComponent implements OnInit {
     if (this.form.valid) {
         try {
             if (this.data) {
-              await this.userService.ChangeRol(new User({_id: this.data._id, name: this.data.name, email: this.data.email, role: this.form.value.role}));
+              await this.userService
+              .ChangeRol(new User({_id: this.data._id, name: this.data.name, email: this.data.email, role: this.form.value.role}));
               this.toast.Success('usuario actualizado exitosamente');
             } else {
               await this.userService.Create(new User(this.form.value));
@@ -81,11 +82,13 @@ export class UserFormComponent implements OnInit {
         } catch (error) {
           if (error.error.errorBag && error.error.errorBag === 'Email Already Taken') {
             this.toast.Danger('Ya existe un usuario registrado con ese correo');
-          }
-          if (error.error.error && error.error.error === 'Email Already Taken') {
+            this.Close();
+          } else if (error.error.error && error.error.error === 'Email Already Taken') {
             this.toast.Danger('Ya existe un usuario registrado con ese correo');
+            this.Close();
           } else {
             this.toast.Danger('Algo salio mal');
+            this.Close();
           }
         }
     }

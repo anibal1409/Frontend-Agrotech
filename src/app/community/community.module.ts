@@ -14,6 +14,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRippleModule } from '@angular/material/core';
 import { AlertModule } from '../common/alert/alert.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 
 
@@ -38,6 +42,10 @@ import { AlertModule } from '../common/alert/alert.module';
     MatMenuModule,
     MatRippleModule,
     AlertModule,
+    MatTabsModule,
+    MatTreeModule,
+    MatExpansionModule,
+    MatListModule,
   ],
   exports: [
     CommunityRoutingModule,

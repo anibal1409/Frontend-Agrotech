@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TextureService } from 'src/app/core/services/texture.service';
 import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum';
 import { Texture } from 'src/app/common/models/texture.model';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'texture-form',
@@ -21,10 +22,11 @@ export class TextureFormComponent implements OnInit {
   inputAppearance: string = textFieldAppearance;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Texture,
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<TextureFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Texture,
     private textureService: TextureService,
+    private toast: SnackBarService,
   ) {
     this.Form();
   }
@@ -45,27 +47,30 @@ export class TextureFormComponent implements OnInit {
   }
 
   async OnSubmit() {
-    if (this.form.valid) {
-      if (this.data) {
-        try {
+    try {
+      if (this.form.valid) {
+        if (this.data) {
           const registrytUpd = new Texture(this.form.value);
           registrytUpd._id = this.data._id;
-          if (await this.textureService.Update(registrytUpd)) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' update', error);
+          await this.textureService.Update(registrytUpd);
+          this.toast.Success('Textura actualizada exitosamente');
+          this.Close();
+        } else {
+          await this.textureService.Create(new Texture(this.form.value));
+          this.toast.Success('Textura creada exitosamente');
+          this.Close();
         }
+      }
+    } catch (error) {
+      if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
+        this.toast.Danger('Ya existe una textura registrado con ese nombre');
+        this.Close();
+      } else if (error.error.error && error.error.error === 'Name already registered') {
+        this.toast.Danger('Ya existe una textura registrado con ese nombre');
+        this.Close();
       } else {
-        try {
-          if (await this.textureService.Create(
-            new Texture(this.form.value)
-          )) {
-            this.Close();
-          }
-        } catch (error) {
-          console.log(this.nameClass + ' create', error);
-        }
+        this.toast.Danger('Algo salio mal');
+        this.Close();
       }
     }
   }

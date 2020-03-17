@@ -1,58 +1,82 @@
-<mat-drawer-container class="admin-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p [routerLink]="routeHome" class="link-primary cursor">Inicio</p>
-    <p [routerLink]="routeStudy" class="link-primary cursor">Mis estudios</p>
-  </mat-drawer>
-
-  <div class="example-sidenav-content">
-    <mat-toolbar color="primary">
-
-      <mat-toolbar-row>
-        <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon mat-button  (click)="drawer.toggle()">menu</mat-icon>
-        </div>
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <div  class="toolbar-left-container">
+      <div class="toolbar-toggle">
+        <mat-icon mat-button
+         matRipple
+         matRippleRadius="50"
+          (click)="snav.toggle()">
+          menu
+        </mat-icon>
+      </div>
+      <div class="toolbar-title">
         <span>
           {{ nameApp }}
         </span>
-        <span class="example-spacer"></span>
-        <div matRipple class="center-all icon-toolbar cursor">
-          <mat-icon [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon">person</mat-icon>
-        </div>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <div class="content-admin">
-      <div class="row">
-        <div class="col-12 height-100">
-          <router-outlet></router-outlet>
-        </div>
       </div>
     </div>
-  </div>
-</mat-drawer-container>
+    <div  class="toolbar-right-container">
+      <div class="user-title">
+        <span>
+          {{ myUser ?  myUser.name : 'User'}}
+        </span>
+      </div>
+      <div class="user-profile">
+        <mat-icon matRipple [matMenuTriggerFor]="menu" aria-hidden="false" aria-label="Example heart icon">account_circle</mat-icon>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav>
+      <mat-nav-list>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeHome">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>home</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Inicio</span>
+          </div>
+        </div>
+
+        <div class="nav-item" mat-list-item [routerLink]="routeStudy">
+          <div class="nav-item-icon">
+            <mat-icon matRipple>assignment</mat-icon>
+          </div>
+          <div class="nav-item-text">
+            <span>Mis Estudios</span>
+          </div>
+        </div>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
 <mat-menu #menu="matMenu">
-  <div mat-menu-item class="height-auto" matRipple  [matRippleDisabled]="true">
-    <div class="row center-h margin-bt-1">
-      <mat-icon class="avatar">account_circle</mat-icon>
-      <!-- <img class="avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-    </div>
-    <div class="row center-h margin-bt-1  cursor">
-      <span class="link-primary" matRipple>
-        {{ User.name}}
-      </span>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <button mat-icon-button color="primary" class="cursor" matRipple>
-          <mat-icon color="primary">lock</mat-icon>
-          <!-- <span>Salir</span> -->
-        </button>
-      </div>
-      <div class="col-6">
-        <button mat-icon-button color="primary" class="cursor" (click)="Logout()" matRipple>
-          <mat-icon color="primary">exit_to_app</mat-icon>
-          <!-- <span>Salir</span> -->
-        </button>
-      </div>
-    </div>
-  </div>
+  <button mat-menu-item (click)="DialogeFormUser()">
+    <span>
+      <mat-icon color="primary">account_circle</mat-icon>
+      Mi cuenta
+    </span>
+  </button>
+  <button mat-menu-item (click)="DialogeFormUser()">
+    <span>
+      <mat-icon color="primary">lock</mat-icon>
+      Contraseña
+    </span>
+  </button>
+  <button mat-menu-item (click)="Logout()">
+    <span>
+      <mat-icon color="primary">exit_to_app</mat-icon>
+      Salir
+    </span>
+  </button>
 </mat-menu>
+
