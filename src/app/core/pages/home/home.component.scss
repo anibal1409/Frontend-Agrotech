@@ -1,0 +1,31 @@
+.welcome-logo{
+    background-image: url(../../../../assets/img/logo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 150px;
+    width: 250px;
+    height: 250px;
+}
+
+
+.welcome-container {
+    min-height: 450px;
+    max-height: 800px;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    padding: 20px;
+}
+
+
+.welcome-text{
+    font-size: 46px;
+    text-align: center;
+    opacity: 0.6;
+    word-wrap: break-word;
+}

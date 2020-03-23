@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SectorService } from 'src/app/core/services/sector.service';
 import { SectorWizardComponent } from '../wizard/wizard.component';
 import { WeatherService } from 'src/app/core/services/weather.service';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'sector-list',
@@ -28,6 +29,7 @@ export class SectorListComponent implements OnInit {
     private dialoge: MatDialog,
     private sectorService: SectorService,
     private weatherService: WeatherService,
+    private loaderService: LoaderService
   ) {
     this.sectorService.List();
     this.items = this.sectorService.Items;
@@ -35,6 +37,7 @@ export class SectorListComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.sectorService.itemsChanged.subscribe(
@@ -47,6 +50,9 @@ export class SectorListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

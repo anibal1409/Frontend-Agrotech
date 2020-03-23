@@ -10,6 +10,7 @@ import { StudyService } from 'src/app/core/services/study.service';
 import { Study } from 'src/app/common/models/study.model';
 import { LocationService } from 'src/app/core/services/location.service';
 import { Month } from 'src/app/common/models/month.model';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'study-list',
@@ -32,6 +33,7 @@ export class StudyListComponent implements OnInit, OnDestroy {
     private studyService: StudyService,
     private sectorService: SectorService,
     private locationService: LocationService,
+    private loaderService: LoaderService,
   ) {
     this.studyService.List();
     this.months = this.sectorService.Months;
@@ -40,6 +42,7 @@ export class StudyListComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.studyService.itemsChanged.subscribe(
@@ -52,6 +55,9 @@ export class StudyListComponent implements OnInit, OnDestroy {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Texture } from 'src/app/common/models/texture.model';
 import { TextureService } from 'src/app/core/services/texture.service';
 import { TextureFormComponent } from '../form/form.component';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'texture-list',
@@ -26,6 +27,7 @@ export class TextureListComponent implements OnInit {
   constructor(
     private dialoge: MatDialog,
     private textureService: TextureService,
+    private loaderService: LoaderService,
   ) {
     this.textureService.List();
     this.items = this.textureService.Items;
@@ -33,6 +35,7 @@ export class TextureListComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.textureService.itemsChanged.subscribe(
@@ -45,6 +48,9 @@ export class TextureListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

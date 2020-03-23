@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,13 +9,14 @@ import { DocumentService } from 'src/app/core/services/document.service';
 import { DocumentFormComponent } from '../form/form.component';
 import { CropService } from 'src/app/core/services/crop.service';
 import { RoutesHttp } from '../../../../common/enum/routes/routes-http.enum';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'document-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class DocumentListComponent implements OnInit {
+export class DocumentListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'crop', 'descargar'];
   dataSource: MatTableDataSource<Document>;
@@ -30,6 +31,7 @@ export class DocumentListComponent implements OnInit {
     private dialoge: MatDialog,
     private documentService: DocumentService,
     private cropService: CropService,
+    private loaderService: LoaderService,
   ) {
     this.documentService.List();
     this.items = this.documentService.Items;
@@ -37,6 +39,7 @@ export class DocumentListComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.documentService.itemsChanged.subscribe(
@@ -49,6 +52,9 @@ export class DocumentListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

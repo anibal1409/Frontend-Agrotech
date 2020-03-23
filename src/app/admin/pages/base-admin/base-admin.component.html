@@ -131,6 +131,8 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <app-loader [ngClass]="{'loader-hidden': !show}">
+      </app-loader>
       <div class="wrapper">
         <router-outlet></router-outlet>
       </div>

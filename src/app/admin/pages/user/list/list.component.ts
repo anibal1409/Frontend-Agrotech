@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,13 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'user-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'email', 'role'];
   dataSource: MatTableDataSource<User>;
@@ -26,6 +27,7 @@ export class UserListComponent implements OnInit {
   constructor(
     private dialoge: MatDialog,
     private userService: UserService,
+    private loaderService: LoaderService,
   ) {
     this.userService.List();
     this.items = this.userService.Items;
@@ -33,6 +35,7 @@ export class UserListComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.userService.itemsChanged.subscribe(
@@ -45,6 +48,9 @@ export class UserListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

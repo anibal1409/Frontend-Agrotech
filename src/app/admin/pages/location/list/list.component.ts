@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { SectorLocation } from 'src/app/common/models/sector-location.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
@@ -8,13 +8,14 @@ import { MatSort } from '@angular/material/sort';
 import { LocationService } from 'src/app/core/services/location.service';
 import { LocationFormComponent } from '../form/form.component';
 import { SectorService } from 'src/app/core/services/sector.service';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'location-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class LocationListComponent implements OnInit {
+export class LocationListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'asnm', 'sector'];
   dataSource: MatTableDataSource<SectorLocation>;
@@ -28,6 +29,7 @@ export class LocationListComponent implements OnInit {
     private dialoge: MatDialog,
     private locationService: LocationService,
     private sectorService: SectorService,
+    private loaderService: LoaderService,
   ) {
     this.locationService.List();
     this.items = this.locationService.Items;
@@ -35,6 +37,7 @@ export class LocationListComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.locationService.itemsChanged.subscribe(
@@ -47,6 +50,9 @@ export class LocationListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy() {
@@ -73,7 +79,7 @@ export class LocationListComponent implements OnInit {
     }
   }
 
-  Sector(idSector: String) {
+  Sector(idSector: string) {
     return this.sectorService.GetItemtID(idSector) ? this.sectorService.GetItemtID(idSector).name : '';
   }
 

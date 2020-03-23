@@ -47,6 +47,7 @@ import { DocumentFormComponent } from './pages/document/form/form.component';
 import { DocumentListComponent } from './pages/document/list/list.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { UploadFileModule } from '../common/components/upload-file/upload-file.module';
+import { LoaderModule } from '../common/components/loader/loader.module';
 
 
 
@@ -110,7 +111,8 @@ export const DateFormats = {
     MatTabsModule,
     MatTreeModule,
     MatExpansionModule,
-    UploadFileModule
+    UploadFileModule,
+    LoaderModule,
 
 
   ],

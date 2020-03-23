@@ -11,8 +11,8 @@ import { Subscription } from 'rxjs';
 import { User } from 'src/app/common/models/user.model';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
-
-
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
+import { LoaderState } from 'src/app/common/components/loader/loader';
 
 @Component({
   selector: 'app-base-admin',
@@ -32,6 +32,8 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
   routeLocation = RoutesAdmin.LOCATION;
   routeDocument = RoutesAdmin.DOCUMENT;
   myUser: User;
+  show = false;
+  private subscription: Subscription;
 
   userSubs = new Subscription();
   constructor(
@@ -39,10 +41,16 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private accountService: AccountService,
     private dialoge: MatDialog,
-    private router: Router
+    private router: Router,
+    private loader: LoaderService
 
   ) {
       this.closeSidenavOnRoutingEvent();
+      this.subscription = this.loader.loaderState.subscribe((state: LoaderState) => {
+        setTimeout(() => {
+          this.show = state.show;
+        });
+      });
    }
 
   closeSidenavOnRoutingEvent() {

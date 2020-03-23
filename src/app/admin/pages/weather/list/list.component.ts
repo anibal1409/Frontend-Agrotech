@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Weather } from 'src/app/common/models/weather.model';
 import { WeatherService } from 'src/app/core/services/weather.service';
 import { WeatherFormComponent } from '../form/form.component';
@@ -7,13 +7,14 @@ import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'weather-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class WeatherListComponent implements OnInit {
+export class WeatherListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name'];
   dataSource: MatTableDataSource<Weather>;
@@ -26,13 +27,15 @@ export class WeatherListComponent implements OnInit {
   constructor(
     private dialoge: MatDialog,
     private weatherService: WeatherService,
+    private loaderService: LoaderService
   ) {
     this.weatherService.List();
     this.items = this.weatherService.Items;
     this.dataSource = new MatTableDataSource(this.items);
    }
 
-  ngOnInit() {
+   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.weatherService.itemsChanged.subscribe(
@@ -45,6 +48,9 @@ export class WeatherListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {

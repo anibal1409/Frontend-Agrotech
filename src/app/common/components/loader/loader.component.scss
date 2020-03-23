@@ -1,0 +1,29 @@
+
+:host {
+    --loading-size: 150px;
+    position: absolute;
+    top: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: 1500;
+    img {
+      width: var(--loading-size);
+      height: var(--loading-size);
+      user-select: none;
+      touch-action: none;
+      margin-bottom: 400px;
+      margin: auto;
+      filter: invert(54%) sepia(53%) saturate(511%) hue-rotate(73deg) brightness(99%) contrast(85%);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    :host {
+      --loading-size: 120px;
+    }
+  }
+  

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,13 +8,14 @@ import { Crop } from 'src/app/common/models/crop.model';
 import { CropService } from 'src/app/core/services/crop.service';
 import { CropFormComponent } from '../form/form.component';
 import { WeatherService } from 'src/app/core/services/weather.service';
+import { LoaderService } from 'src/app/common/components/loader/loader.service';
 
 @Component({
   selector: 'crop-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class CropListComponent implements OnInit {
+export class CropListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'scientificName', 'weather'];
   dataSource: MatTableDataSource<Crop>;
@@ -28,13 +29,15 @@ export class CropListComponent implements OnInit {
     private dialoge: MatDialog,
     private cropService: CropService,
     private weatherService: WeatherService,
-  ) {
+    private loaderService: LoaderService,
+    ) {
     this.cropService.List();
     this.items = this.cropService.Items;
     this.dataSource = new MatTableDataSource(this.items);
    }
 
   ngOnInit() {
+    this.loaderService.show();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.itemsSubs = this.cropService.itemsChanged.subscribe(
@@ -47,6 +50,9 @@ export class CropListComponent implements OnInit {
         }
       }
     );
+    setTimeout(() => {
+      this.loaderService.hide();
+    }, 100);
   }
 
   ngOnDestroy(): void {
