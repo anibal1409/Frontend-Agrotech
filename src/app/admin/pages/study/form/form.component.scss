@@ -1,0 +1,13 @@
+.title-result {
+  font-size: 24px;
+  font-weight: bold;
+  justify-content: center;
+  color: black;
+}
+::ng-deep {
+  empty {
+    .empty {
+      min-height: 40vh !important;
+    }
+  }
+}

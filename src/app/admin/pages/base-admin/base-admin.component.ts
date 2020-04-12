@@ -31,6 +31,7 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
   routeUser = RoutesAdmin.USER;
   routeLocation = RoutesAdmin.LOCATION;
   routeDocument = RoutesAdmin.DOCUMENT;
+  routeStatistics = RoutesAdmin.STATISTICS;
   myUser: User;
   show = false;
   private subscription: Subscription;
@@ -45,12 +46,12 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
     private loader: LoaderService
 
   ) {
-      this.closeSidenavOnRoutingEvent();
-      this.subscription = this.loader.loaderState.subscribe((state: LoaderState) => {
-        setTimeout(() => {
-          this.show = state.show;
-        });
+    this.closeSidenavOnRoutingEvent();
+    this.subscription = this.loader.loaderState.subscribe((state: LoaderState) => {
+      setTimeout(() => {
+        this.show = state.show;
       });
+    });
    }
 
   closeSidenavOnRoutingEvent() {
@@ -82,11 +83,9 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
       }
     ).subscribe(
       async (resp) => {
-        console.log('resp', resp);
         if (resp) {
           await this.authService.Logout();
         }
-        console.log('response', resp);
       }
     );
   }

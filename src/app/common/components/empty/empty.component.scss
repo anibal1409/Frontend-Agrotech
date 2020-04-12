@@ -1,0 +1,21 @@
+.empty {
+  // align-self: center;
+  // justify-self: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  // padding-top: 0.6rem;
+  // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  min-height: 68vh;
+  > mat-icon {
+      font-size: 5rem;
+      width: 100%;
+      margin: 1rem auto auto auto !important;
+      color: #c7c7c7;
+  }
+  > p {
+      font-size: 1.5rem;
+      color: #c7c7c7;
+      margin: auto auto 0 auto !important;
+    }
+}

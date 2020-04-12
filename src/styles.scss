@@ -278,6 +278,7 @@ td, th {
     padding: 10px 0px;
     .nav-item-text{
       padding-top: 2px;
+      width: 100%;
     }
   }
 }
@@ -298,6 +299,7 @@ background-color: rgba(0, 0, 0, .05);
   justify-content: flex-start;
   padding: 10px 20px;
   outline: none;
+  width: 100%;
 }
 .nav-item-icon{
   padding-right: 6px;

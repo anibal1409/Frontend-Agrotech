@@ -1,0 +1,37 @@
+<div class="content-header">
+  <span>{{ 'Sector: ' }}</span>
+  <mat-form-field [appearance]="inputAppearance">
+    <!-- <mat-label>Sector</mat-label> -->
+    <mat-select 
+      name="sectorId"
+      (selectionChange)="changeSector($event)"
+    >
+      <mat-option *ngFor="let sectorV of sectors" [value]="sectorV" >
+        {{ sectorV.name }}
+      </mat-option>
+      <mat-option *ngIf="sectors.length === 0" [value]="null" >
+        No hay sectores registrados
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="chart-wrapper content-canvas"
+  *ngIf="mySector"
+>
+  <canvas baseChart 
+  [datasets]="barChartData"
+  [labels]="barChartLabels"
+  [options]="barChartOptions"
+  [plugins]="barChartPlugins"
+  [legend]="barChartLegend"
+  [chartType]="barChartType">
+</canvas>
+</div>
+
+<empty
+  *ngIf="!mySector"
+  [text]="'Debe seleccionar un sector'"
+  [icon]="'location_off'"
+>
+</empty>

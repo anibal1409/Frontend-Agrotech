@@ -25,11 +25,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
+import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { ChartsModule } from 'ng2-charts';
+import { MatSelectModule } from '@angular/material/select';
+import { EmptyModule } from '../common/components/empty/empty.module';
 
 
 @NgModule({
-  declarations: [HomeComponent, AccountUserComponent, AccountPasswordComponent],
+  declarations: [
+    HomeComponent,
+    AccountUserComponent,
+    AccountPasswordComponent,
+    StatisticsComponent,
+  ],
   imports: [
     CommonModule,
     CoreRoutingModule,
@@ -46,6 +54,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatDialogModule,
     MatIconModule,
+    ChartsModule,
+    MatSelectModule,
+    EmptyModule,
   ],
   exports: [
     CoreRoutingModule

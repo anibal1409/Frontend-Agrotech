@@ -8,4 +8,5 @@ export enum RoutesAdmin {
   STUDY = "/admin/study",
   SECTOR = "/admin/sector",
   LOCATION = "/admin/sector/location",
+  STATISTICS = "/admin/statistics",
 }

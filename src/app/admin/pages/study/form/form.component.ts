@@ -43,6 +43,8 @@ export class StudyFormComponent implements OnInit {
 
   readyStudy = false;
 
+  selected = 0;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Study,
     private formBuilder: FormBuilder,
@@ -129,8 +131,10 @@ export class StudyFormComponent implements OnInit {
           const registrytUpd = new Study(this.form.value);
           registrytUpd._id = this.data._id;
           await this.studyService.Update(registrytUpd);
+          this.myResults = this.studyService.Result(registrytUpd);
           this.toast.Success('Estudio actualizado exitosamente');
-          this.Close();
+          this.selected = 1;
+          // this.Close();
         } else {
           if (!this.readyStudy) {
             const myRegistry = new Study(this.form.value);
@@ -140,20 +144,21 @@ export class StudyFormComponent implements OnInit {
             this.readyStudy = true;
             this.myResults = this.studyService.Result(myRegistry);
             this.toast.Success('Estudio creado exitosamente');
-            this.Close();
+            this.selected = 1;
+            // this.Close();
           }
         }
       }
     } catch (error) {
       if (error.error.errorBag && error.error.errorBag === 'Name already registered') {
         this.toast.Danger('Ya existe un estudio registrado con ese nombre');
-        this.Close();
+        // this.Close();
       } else if (error.error.error && error.error.error === 'Name already registered') {
         this.toast.Danger('Ya existe un estudio registrado con ese nombre');
-        this.Close();
+        // this.Close();
       } else {
         this.toast.Danger('Algo salio mal');
-        this.Close();
+        // this.Close();
       }
     }
 

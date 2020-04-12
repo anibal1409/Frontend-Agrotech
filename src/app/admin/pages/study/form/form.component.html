@@ -1,6 +1,10 @@
 <form  [formGroup]="form" (ngSubmit)="OnSubmit()">
   <h1 mat-dialog-title>{{ data == undefined ? 'Registar estudio' : 'Modificar estudio'}}</h1>
-  <mat-tab-group  mat-dialog-content>
+  <mat-tab-group  
+    mat-dialog-content
+    [selectedIndex]="selected"
+    (selectedIndexChange)="selected = $event"
+  >
     <mat-tab label="Datos del suelo">
       <mat-form-field [appearance]="inputAppearance">
         <mat-label>Nombre</mat-label>
@@ -77,23 +81,28 @@
     </mat-tab>
     <mat-tab label="Resultados" *ngIf="readyStudy">
       <mat-list>
-        <h3 mat-subheader>Cultivos aptos</h3>
-        <mat-list-item *ngFor="let myResult of myResults">
-          <mat-icon mat-list-icon>spa</mat-icon>
-          <h4 mat-line>{{myResult.crop.name}}</h4>
-          <div *ngIf="myResult.document" class="flex">
-            <!-- <span>
-              {{myResult.document.name}}
-            </span> -->
-            <!-- <button mat-icon-button>
-                <mat-icon>remove_red_eye</mat-icon>
-            </button> -->
-            <button mat-icon-button (click)="downloadMyFile(myResult.document)">
-                <mat-icon>vertical_align_bottom</mat-icon>
-            </button>
-          </div>
-          <mat-divider></mat-divider>
-        </mat-list-item>
+        <div *ngIf="myResults.length">
+          <h3 mat-subheader class="title-result">Cultivos aptos</h3>
+          <mat-list-item *ngFor="let myResult of myResults">
+            <mat-icon mat-list-icon>spa</mat-icon>
+            <h4 mat-line>{{myResult.crop.name}}</h4>
+            <div *ngIf="myResult.document" class="flex">
+              <button mat-icon-button (click)="downloadMyFile(myResult.document)">
+                <mat-icon matRipple  color="primary">cloud_download</mat-icon>
+              </button>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </div>
+
+        <div *ngIf="!myResults.length">
+          <empty
+            [text]="'No hay coincidencias'"
+            [icon]="'find_in_page'"
+          >
+
+          </empty>
+        </div>
         
       </mat-list>
     </mat-tab>

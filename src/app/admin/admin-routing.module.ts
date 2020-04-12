@@ -11,6 +11,7 @@ import { SectorListComponent } from './pages/sector/list/list.component';
 import { StudyListComponent } from './pages/study/list/list.component';
 import { LocationListComponent } from './pages/location/list/list.component';
 import { DocumentListComponent } from './pages/document/list/list.component';
+import { StatisticsComponent } from '../core/pages/statistics/statistics.component';
 
 
 export const adminRoutes: Routes = [
@@ -54,7 +55,6 @@ export const adminRoutes: Routes = [
       },
       {
         path: 'sector',
-        // component: SectorListComponent,
         children: [
           {
             path: '',
@@ -74,6 +74,10 @@ export const adminRoutes: Routes = [
       {
         path: 'study',
         component: StudyListComponent
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent,
       },
       {
         path: '',

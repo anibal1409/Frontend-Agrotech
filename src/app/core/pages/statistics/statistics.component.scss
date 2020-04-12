@@ -1,0 +1,18 @@
+.content-canvas {
+  display: flex;
+  justify-content: center;
+}
+canvas {
+  max-height: 68vh !important;
+  width: auto !important;
+}
+
+.content-header {
+  span {
+    align-items: center;
+    display: flex;
+  }
+  mat-form-field {
+    margin-left: .5rem;
+  }
+}

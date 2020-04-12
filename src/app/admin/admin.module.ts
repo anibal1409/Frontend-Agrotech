@@ -48,6 +48,7 @@ import { DocumentListComponent } from './pages/document/list/list.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { UploadFileModule } from '../common/components/upload-file/upload-file.module';
 import { LoaderModule } from '../common/components/loader/loader.module';
+import { EmptyModule } from '../common/components/empty/empty.module';
 
 
 
@@ -113,7 +114,7 @@ export const DateFormats = {
     MatExpansionModule,
     UploadFileModule,
     LoaderModule,
-
+    EmptyModule,
 
   ],
   exports: [
