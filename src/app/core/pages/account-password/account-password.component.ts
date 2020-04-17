@@ -42,13 +42,13 @@ export class AccountPasswordComponent implements OnInit {
     this.form = this.formBuilder.group({
       password: new FormControl( '', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.minLength(8),
         Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
       confirm: new FormControl( '', [
         Validators.required,
-        Validators.minLength(4),
+        Validators.minLength(8),
         Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
@@ -90,6 +90,21 @@ export class AccountPasswordComponent implements OnInit {
           case 'whitespace':
             return MessageErrorForms.WHITE_SPACE;
         }
+      }
+    }
+  }
+
+  get match(): boolean {
+    if (this.form.invalid) {
+      console.log('invalid');
+      return false;
+    } else {
+      if (this.form.valid && this.form.value.password === this.form.value.confirm) {
+        console.log('false');
+        return false;
+      } else {
+        console.log('true');
+        return true;
       }
     }
   }

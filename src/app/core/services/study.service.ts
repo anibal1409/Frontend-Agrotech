@@ -118,7 +118,7 @@ export class StudyService {
       async (resolve, reject) => {
         try {
           const response = await this.http.get<Study[]>(
-            RoutesHttp.BASE + RoutesHttp.STUDY_LIST
+            RoutesHttp.BASE + RoutesHttp.STUDY_SHOW
             ).toPromise();
           if (!response) {
             reject({message: 'No data back'});
@@ -187,16 +187,16 @@ export class StudyService {
             break;
           }
         }
-        console.log('textureReady', textureReady);
-        console.log(myCrop.phSince , ph , myCrop.phUntil , ph, myCrop.phSince <= ph && myCrop.phUntil >= ph);
-        console.log(myCrop.organicMaterialMinPercentage , mo , myCrop.organicMaterialMaxPercentage , mo, myCrop.organicMaterialMinPercentage <= mo && myCrop.organicMaterialMaxPercentage >= mo);
-        console.log(myCrop.conductivitySince , ce , myCrop.conductivityUntil , ce, myCrop.conductivitySince <= ce && myCrop.conductivityUntil >= ce);
-        console.log(myCrop.altitudeSince , ASNM , myCrop.altitudeUntil , ASNM, myCrop.altitudeSince <= ASNM && myCrop.altitudeUntil >= ASNM);
-        console.log(myCrop.temperatureSince , temperature.min , myCrop.temperatureUntil , temperature.max, myCrop.temperatureSince <= temperature.min && myCrop.temperatureUntil >= temperature.max);
-        console.log(myCrop.hoursSince , light.min , myCrop.hoursUntil , light.max, myCrop.hoursSince <= light.min && myCrop.hoursUntil >= light.max);
-        console.log(myCrop.humiditySince , humidity.min , myCrop.humidityUntil , humidity.max, myCrop.humiditySince <= humidity.min && myCrop.humidityUntil >= humidity.max);
-        console.log(myCrop.typographySince , sector.pendingSince , myCrop.typographyUntil , sector.pendingUntil, myCrop.typographySince <= sector.pendingSince && myCrop.typographyUntil >= sector.pendingUntil);
-        console.log(myCrop.weatherId , sector.weatherId, myCrop.weatherId === sector.weatherId);
+        // console.log('textureReady', textureReady);
+        // console.log(myCrop.phSince , ph , myCrop.phUntil , ph, myCrop.phSince <= ph && myCrop.phUntil >= ph);
+        // console.log(myCrop.organicMaterialMinPercentage , mo , myCrop.organicMaterialMaxPercentage , mo, myCrop.organicMaterialMinPercentage <= mo && myCrop.organicMaterialMaxPercentage >= mo);
+        // console.log(myCrop.conductivitySince , ce , myCrop.conductivityUntil , ce, myCrop.conductivitySince <= ce && myCrop.conductivityUntil >= ce);
+        // console.log(myCrop.altitudeSince , ASNM , myCrop.altitudeUntil , ASNM, myCrop.altitudeSince <= ASNM && myCrop.altitudeUntil >= ASNM);
+        // console.log(myCrop.temperatureSince , temperature.min , myCrop.temperatureUntil , temperature.max, myCrop.temperatureSince <= temperature.min && myCrop.temperatureUntil >= temperature.max);
+        // console.log(myCrop.hoursSince , light.min , myCrop.hoursUntil , light.max, myCrop.hoursSince <= light.min && myCrop.hoursUntil >= light.max);
+        // console.log(myCrop.humiditySince , humidity.min , myCrop.humidityUntil , humidity.max, myCrop.humiditySince <= humidity.min && myCrop.humidityUntil >= humidity.max);
+        // console.log(myCrop.typographySince , sector.pendingSince , myCrop.typographyUntil , sector.pendingUntil, myCrop.typographySince <= sector.pendingSince && myCrop.typographyUntil >= sector.pendingUntil);
+        // console.log(myCrop.weatherId , sector.weatherId, myCrop.weatherId === sector.weatherId);
         if (
           textureReady &&
           (myCrop.phSince <= ph && myCrop.phUntil >= ph) &&

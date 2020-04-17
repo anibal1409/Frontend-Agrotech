@@ -18,6 +18,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { AdminModule } from '../admin/admin.module';
 
 
 
@@ -46,6 +47,7 @@ import { MatListModule } from '@angular/material/list';
     MatTreeModule,
     MatExpansionModule,
     MatListModule,
+    AdminModule,
   ],
   exports: [
     CommunityRoutingModule,

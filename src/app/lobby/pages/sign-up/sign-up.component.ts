@@ -48,7 +48,7 @@ export class SignUpComponent implements OnInit {
       password: new FormControl( null, [
         Validators.required,
         Validators.minLength(8),
-        Validators.maxLength(8),
+        Validators.maxLength(16),
         this.noWhiteSpace.Validator
       ]),
       name: new FormControl( null, [
