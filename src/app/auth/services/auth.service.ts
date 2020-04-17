@@ -17,7 +17,6 @@ import { RoutesLogin } from 'src/app/common/enum/routes/routes-login.enum';
 export class AuthService {
 
   user = new BehaviorSubject<AuthData>(null);
-  usuario: User = null;
   private tokenExpiration: any;
 
   constructor(
@@ -31,7 +30,7 @@ export class AuthService {
       async (resolve, reject) => {
         try {
           if (!uuidV || !newPassword) {
-            reject({message: 'No data'});
+            reject({ message: 'No data' });
           }
           const response = await this.http.post<IAuthData>(
             RoutesHttp.BASE + RoutesHttp.CHANGE_PASSWORD,
@@ -39,9 +38,9 @@ export class AuthService {
               uuid: uuidV,
               password: newPassword
             }
-            ).toPromise();
+          ).toPromise();
           if (!response) {
-            reject({message: 'No data back'});
+            reject({ message: 'No data back' });
           }
           resolve(response);
         } catch (err) {
@@ -57,16 +56,16 @@ export class AuthService {
       async (resolve, reject) => {
         try {
           if (!emailV) {
-            reject({message: 'No email'});
+            reject({ message: 'No email' });
           }
           const response = await this.http.post<IAuthData>(
             RoutesHttp.BASE + RoutesHttp.PASSWORD_RESET,
             {
               email: emailV
             }
-            ).toPromise();
+          ).toPromise();
           if (!response) {
-            reject({message: 'No data back'});
+            reject({ message: 'No data back' });
           }
           resolve(response);
         } catch (err) {
@@ -82,16 +81,16 @@ export class AuthService {
       async (resolve, reject) => {
         try {
           if (!user) {
-            reject({message: 'No user'});
+            reject({ message: 'No user' });
           }
           const response = await this.http.post<IAuthData>(RoutesHttp.BASE + RoutesHttp.SIGN_IN, user).toPromise();
           if (!response) {
-            reject({message: 'No data back'});
+            reject({ message: 'No data back' });
           }
           if (this.Login(response)) {
             resolve(response);
           } else {
-            reject({message: 'token expirate'});
+            reject({ message: 'token expirate' });
           }
         } catch (err) {
           console.log('Error SignIn: ' + err);
@@ -106,17 +105,17 @@ export class AuthService {
       async (resolve, reject) => {
         try {
           if (!user) {
-            reject({message: 'No user'});
+            reject({ message: 'No user' });
           }
           const response = await this.http.post<IAuthData>(RoutesHttp.BASE + RoutesHttp.SIGN_UP, user).toPromise();
           console.log('SignUp', response);
           if (!response) {
-            reject({message: 'No data back'});
+            reject({ message: 'No data back' });
           }
           if (this.Login(response)) {
             resolve(response);
           } else {
-            reject({message: 'token expirate'});
+            reject({ message: 'token expirate' });
           }
         } catch (err) {
           console.log('Error SignUp: ' + err);
@@ -134,7 +133,7 @@ export class AuthService {
         this.user.next(loadedUser);
         // this.userService.User(loadedUser.user);
         StorageService.SetItem(authStorage, data);
-        const expDuration =  data.expiresIn - (new Date().getTime() / 1000);
+        const expDuration = data.expiresIn - (new Date().getTime() / 1000);
         this.AutoLogout(expDuration * 1000);
         return true;
       } else {
@@ -193,7 +192,7 @@ export class AuthService {
   }
 
   AutoLogout(expDuration: number) {
-    this.tokenExpiration = setTimeout( () => {
+    this.tokenExpiration = setTimeout(() => {
       this.Logout();
     }, expDuration);
   }

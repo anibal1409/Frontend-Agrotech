@@ -17,6 +17,7 @@ export class SnackBarService {
       {
         duration: 3000,
         horizontalPosition: 'start',
+        verticalPosition: 'top',
         panelClass: 'background-success',
       }
     );
@@ -28,6 +29,7 @@ export class SnackBarService {
       {
         duration: 3000,
         horizontalPosition: 'start',
+        verticalPosition: 'top',
         panelClass: 'background-danger',
       }
     );
@@ -39,6 +41,7 @@ export class SnackBarService {
       {
         duration: 3000,
         horizontalPosition: 'start',
+        verticalPosition: 'top',
         panelClass: 'background-warning',
       }
     );
@@ -50,6 +53,7 @@ export class SnackBarService {
       {
         duration: 3000,
         horizontalPosition: 'start',
+        verticalPosition: 'top',
         panelClass: 'background-info',
       }
     );

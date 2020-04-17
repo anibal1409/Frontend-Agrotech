@@ -12,12 +12,14 @@ import { StudyListComponent } from './pages/study/list/list.component';
 import { LocationListComponent } from './pages/location/list/list.component';
 import { DocumentListComponent } from './pages/document/list/list.component';
 import { StatisticsComponent } from '../core/pages/statistics/statistics.component';
+import { AdminGuard } from './guards/admin.guard';
 
 
 export const adminRoutes: Routes = [
   {
     path: 'admin',
     component: BaseAdminComponent,
+    canActivate: [AdminGuard],
     children: [
       {
         path: 'home',

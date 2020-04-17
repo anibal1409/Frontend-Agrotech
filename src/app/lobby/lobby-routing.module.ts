@@ -6,12 +6,14 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { RoutesLogin } from '../common/enum/routes/routes-login.enum';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { PasswordResetComponent } from './pages/password-reset/password-reset.component';
+import { LoginGuard } from './guards/login.guard';
 
 
 export const lobbyRoutes: Routes = [
   {
     path: 'auth',
     component: LobbyComponent,
+    canActivate: [LoginGuard],
     children: [
       {
         path: 'sign-in',

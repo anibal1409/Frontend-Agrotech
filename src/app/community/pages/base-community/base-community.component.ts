@@ -23,11 +23,11 @@ import { AccountPasswordComponent } from 'src/app/core/pages/account-password/ac
 export class BaseCommunityComponent implements OnInit {
   @ViewChild('snav', {static: true}) sidenav: MatSidenav;
   nameApp = nameApp;
-  routeHome = RoutesAdmin.HOME;
+  routeHome = RoutesCommunity.HOME;
   routeCrop = RoutesAdmin.CROP;
   routeTexture = RoutesAdmin.TEXTURE;
   routeWeather = RoutesAdmin.WEATHER;
-  routeStudy = RoutesAdmin.STUDY;
+  routeStudy = RoutesCommunity.STUDY;
   routeSector = RoutesAdmin.SECTOR;
   routeUser = RoutesAdmin.USER;
   routeLocation = RoutesAdmin.LOCATION;

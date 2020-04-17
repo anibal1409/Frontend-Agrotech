@@ -7,8 +7,8 @@ import { textFieldAppearance } from 'src/app/common/constants/apaperance.constan
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router } from '@angular/router';
 import { UserSignIn } from 'src/app/auth/models/user-sign-in.model';
-import { RoutesAdmin } from 'src/app/common/enum/routes/routes-admin.enum';
 import { RoutesCommunity } from 'src/app/common/enum/routes/routes-community.enum';
+import { SnackBarService } from 'src/app/core/services/snack-bar.service';
 
 @Component({
   selector: 'sign-up',
@@ -29,6 +29,7 @@ export class SignUpComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private snackBarService: SnackBarService,
   ) {
     this.Form();
   }
@@ -99,6 +100,7 @@ export class SignUpComponent implements OnInit {
     try {
       const response = await this.authService.SignUp(new UserSignIn(this.form.value));
       if (response) {
+        this.snackBarService.Success('Registro exitoso.');
         if(response.user && response.user.role) {
           switch (response.user.role) {
             case 'basic': 
