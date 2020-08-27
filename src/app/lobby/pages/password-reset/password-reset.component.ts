@@ -80,7 +80,7 @@ export class PasswordResetComponent implements OnInit {
   MessageError(input: string) {
     const control = this.form.get(input);
     const { dirty, pristine, errors, touched } = control;
-    if (dirty && touched && !pristine) {
+    if (dirty && touched && !pristine && errors) {
       // return errors;
       let prop;
       Object.keys(errors).forEach(

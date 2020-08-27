@@ -65,7 +65,7 @@ export class SignInComponent implements OnInit {
   MessageError(input: string) {
     const control = this.form.get(input);
     const { dirty, pristine, errors, touched } = control;
-    if (dirty && touched && !pristine) {
+    if (dirty && touched && !pristine && errors) {
       // return errors;
       let prop;
       Object.keys(errors).forEach(
@@ -128,15 +128,14 @@ export class SignInComponent implements OnInit {
           () => {
             if(response.user && response.user.role) {
               switch (response.user.role) {
-                case 'admin': 
+                case 'admin':
                 this.router.navigate([RoutesAdmin.HOME]);
                 break;
-                case 'basic': 
+                case 'basic':
                 this.router.navigate([RoutesCommunity.HOME]);
                 break;
               }
             }
-            
           }, 3000);
       }
     } catch (error) {
@@ -146,6 +145,10 @@ export class SignInComponent implements OnInit {
 
   ChangeVisibility() {
     this.visibility = !this.visibility;
+  }
+
+  print(data) {
+    console.log();
   }
 
 }
