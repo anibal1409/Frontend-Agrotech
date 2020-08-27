@@ -69,10 +69,12 @@ export class SignUpComponent implements OnInit {
   }
 
   MessageError(input: string) {
-    if (this.form.controls[input] && this.form.controls[input].errors && this.form.controls[input].touched) {
-      const obj = this.form.controls[input].errors;
+    const control = this.form.get(input);
+    const { dirty, pristine, errors, touched } = control;
+    if (dirty && touched && !pristine) {
+      // return errors;
       let prop;
-      Object.keys(obj).forEach(
+      Object.keys(errors).forEach(
         (key) => {
           prop = key;
         }
@@ -94,6 +96,33 @@ export class SignUpComponent implements OnInit {
         }
       }
     }
+
+    return null;
+    // if (this.form.controls[input] && this.form.controls[input].errors && this.form.controls[input].touched) {
+    //   const obj = this.form.controls[input].errors;
+    //   let prop;
+    //   Object.keys(obj).forEach(
+    //     (key) => {
+    //       prop = key;
+    //     }
+    //   );
+    //   if (prop) {
+    //     switch (prop) {
+    //       case 'required':
+    //         return MessageErrorForms.REQUIRED;
+    //       case 'email':
+    //         return MessageErrorForms.EMAIL;
+    //       case 'minlength':
+    //         return MessageErrorForms.MINIMUM;
+    //       case 'maxlength':
+    //         return MessageErrorForms.MAXIMUM;
+    //       case 'pattern':
+    //         return MessageErrorForms.CHARACTER;
+    //       case 'whitespace':
+    //         return MessageErrorForms.WHITE_SPACE;
+    //     }
+    //   }
+    // }
   }
 
   async SignUp() {
@@ -101,9 +130,9 @@ export class SignUpComponent implements OnInit {
       const response = await this.authService.SignUp(new UserSignIn(this.form.value));
       if (response) {
         this.snackBarService.Success('Registro exitoso.');
-        if(response.user && response.user.role) {
+        if (response.user && response.user.role) {
           switch (response.user.role) {
-            case 'basic': 
+            case 'basic':
             this.router.navigate([RoutesCommunity.HOME]);
             break;
           }

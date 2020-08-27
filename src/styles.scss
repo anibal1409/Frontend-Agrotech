@@ -467,3 +467,9 @@ h1.example-app-name {
 .loader-hidden {
   display: none !important;
 }
+
+.text {
+  &.end {
+    text-align: end;
+  }
+}
