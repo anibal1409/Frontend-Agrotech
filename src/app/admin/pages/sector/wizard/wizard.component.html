@@ -63,7 +63,7 @@
                   <mat-form-field [appearance]="inputAppearance" >
                     <mat-label>Mes</mat-label>
                     <mat-select  name="month" formControlName="month" (selectionChange)="true" disabled="true">
-                      <mat-option *ngFor="let monthV of months" [value]="monthV.numValue" >
+                      <mat-option *ngFor="let monthV of months" [value]="monthV.numValue.toString()" >
                         {{ monthV.name }}
                       </mat-option>
                     </mat-select>

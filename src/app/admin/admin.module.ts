@@ -45,7 +45,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { DocumentFormComponent } from './pages/document/form/form.component';
 import { DocumentListComponent } from './pages/document/list/list.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { UploadFileModule } from '../common/components/upload-file/upload-file.module';
 import { LoaderModule } from '../common/components/loader/loader.module';
 import { EmptyModule } from '../common/components/empty/empty.module';

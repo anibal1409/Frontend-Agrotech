@@ -119,6 +119,7 @@ export class SectorWizardComponent implements OnInit, OnDestroy {
     this.formSectorLight =  this.formBuilder.group({
       light : this.FormArrayContruct(SectorType.LIGHT),
     });
+    console.log(this.formSectorHumidity);
   }
 
   private FormArrayContruct(opt: SectorType): FormArray {
@@ -135,29 +136,53 @@ export class SectorWizardComponent implements OnInit, OnDestroy {
         myData = this.data ? this.data.sectorLights : [];
         break;
     }
-    for (const item of this.months) {
-      myFormArray.push(
-        new FormGroup({
-          month : new FormControl(+item.numValue , [
-            Validators.required,
-            Validators.maxLength(20),
-            this.noWhiteSpace.Validator
-          ]),
-          min : new FormControl(
-            this.data ? myData[item.numValue - 1].min : null, [
-            Validators.required,
-            Validators.maxLength(20),
-            this.noWhiteSpace.Validator
-          ]),
-          max : new FormControl(
-            this.data ? myData[item.numValue - 1].max : null, [
-            Validators.required,
-            Validators.maxLength(20),
-            this.noWhiteSpace.Validator
-          ]),
-        })
-      );
-    }
+    console.log(this.months);
+    this.months.forEach(
+      (month, index) => {
+        myFormArray.push(
+          new FormGroup({
+            month : new FormControl(month.numValue.toString() , [
+              Validators.required,
+            ]),
+            min : new FormControl(
+              this.data ? myData[index].min : null, [
+              Validators.required,
+              Validators.maxLength(20),
+              this.noWhiteSpace.Validator
+            ]),
+            max : new FormControl(
+              this.data ? myData[index].max : null, [
+              Validators.required,
+              Validators.maxLength(20),
+              this.noWhiteSpace.Validator
+            ]),
+          })
+        );
+      }
+    );
+    // for (const item of this.months) {
+    //   myFormArray.push(
+    //     new FormGroup({
+    //       month : new FormControl(+item.numValue , [
+    //         Validators.required,
+    //         Validators.maxLength(20),
+    //         this.noWhiteSpace.Validator
+    //       ]),
+    //       min : new FormControl(
+    //         this.data ? myData[item.numValue - 1].min : null, [
+    //         Validators.required,
+    //         Validators.maxLength(20),
+    //         this.noWhiteSpace.Validator
+    //       ]),
+    //       max : new FormControl(
+    //         this.data ? myData[item.numValue - 1].max : null, [
+    //         Validators.required,
+    //         Validators.maxLength(20),
+    //         this.noWhiteSpace.Validator
+    //       ]),
+    //     })
+    //   );
+    // }
     return myFormArray;
   }
 
