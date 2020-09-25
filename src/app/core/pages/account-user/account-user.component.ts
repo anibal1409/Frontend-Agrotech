@@ -7,6 +7,7 @@ import { MessageErrorForms } from 'src/app/common/enum/message-error-forms.enum'
 import { User } from 'src/app/common/models/user.model';
 import { UserService } from '../../services/user.service';
 import { AccountService } from '../../services/account.service';
+import { SnackBarService } from '../../services/snack-bar.service';
 
 @Component({
   selector: 'app-account-user',
@@ -27,6 +28,7 @@ export class AccountUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: User,
     private userService: UserService,
     private accountService: AccountService,
+    private toast: SnackBarService,
   ) {
     this.Form();
   }
@@ -50,11 +52,12 @@ export class AccountUserComponent implements OnInit {
     if (this.form.valid) {
       try {
         if (await this.accountService.Update(this.form.value.name)) {
+          this.toast.Success('Los datos fueron modificados con éxito.');
           this.Close();
         }
       } catch (err) {
         console.log(this.nameClass, 'Error OnSubmit', err);
-      } 
+      }
     }
   }
 

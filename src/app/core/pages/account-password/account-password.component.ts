@@ -30,6 +30,7 @@ export class AccountPasswordComponent implements OnInit {
     public dialogRef: MatDialogRef<AccountPasswordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private accountService: AccountService,
+    private toast: SnackBarService,
   ) {
     this.Form();
   }
@@ -59,6 +60,7 @@ export class AccountPasswordComponent implements OnInit {
   async OnSubmit() {
     if (this.form.valid && this.form.value.password === this.form.value.confirm) {
       if (await this.accountService.ChangePassword(this.form.value.password)) {
+        this.toast.Success('Contraseña modificada con éxito.');
         this.Close();
       }
     } else {

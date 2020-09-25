@@ -43,7 +43,7 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private dialoge: MatDialog,
     private router: Router,
-    private loader: LoaderService
+    private loader: LoaderService,
 
   ) {
     this.closeSidenavOnRoutingEvent();
