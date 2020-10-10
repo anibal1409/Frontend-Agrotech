@@ -84,6 +84,7 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
     ).subscribe(
       async (resp) => {
         if (resp) {
+          this.accountService.clear();
           await this.authService.Logout();
         }
       }
@@ -114,6 +115,10 @@ export class BaseAdminComponent implements OnInit, OnDestroy {
       console.log('The dialog was closed', result);
     });
 
+  }
+
+  print(data) {
+    console.log(data);
   }
 
 }

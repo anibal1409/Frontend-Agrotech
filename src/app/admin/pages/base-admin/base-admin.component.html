@@ -17,7 +17,7 @@
     </div>
     <div  class="toolbar-right-container">
       <div class="user-title">
-        <span>
+        <span (click)="print(myUser)">
           {{ myUser ?  myUser.name : 'User'}}
         </span>
       </div>

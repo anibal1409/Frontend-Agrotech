@@ -18,14 +18,14 @@ export class AccountService {
 
   private user: User;
   userChange = new Subject<User>();
-  private nameService = "AccountService";
+  private nameService = 'AccountService';
 
   constructor(
     private storageService: StorageService,
     private router: Router,
     private http: HttpClient
   ) {
-    if(!this.user) {
+    if (!this.user) {
       this.SearchUser();
     }
   }
@@ -36,10 +36,11 @@ export class AccountService {
       this.router.navigate([RoutesLogin.SIGN_IN]);
     }
     this.user = authData.user;
+    return this.user;
   }
 
   public User(): User {
-    return this.user;
+    return !!this.user ? this.user : this.SearchUser();
   }
 
   Update(newName: string) {
@@ -49,7 +50,7 @@ export class AccountService {
           if (!newName) {
             reject({message: 'No data'});
           }
-          let myUser: IUpdateAccount = { name: newName}
+          const myUser: IUpdateAccount = { name: newName };
           const response = await this.http.post(
             RoutesHttp.BASE + RoutesHttp.ACCOUNT_UPDATE,
             myUser
@@ -73,19 +74,19 @@ export class AccountService {
     if (!authData) {
       return;
     }
-    let loadedUser = new AuthData(authData.access_token, authData.expiresIn, authData.user);
+    const loadedUser = new AuthData(authData.access_token, authData.expiresIn, authData.user);
     loadedUser.user.name = newName;
     StorageService.SetItem(authStorage, loadedUser);
   }
 
-  ChangePassword(newPasswordV: string) {
+  ChangePassword(newPassword: string) {
     return new Promise<any>(
       async (resolve, reject) => {
         try {
-          if (!newPasswordV) {
+          if (!newPassword) {
             reject({message: 'No data'});
           }
-          let myUser = {newPassword: newPasswordV}
+          const myUser = { newPassword };
           const response = await this.http.post(
             RoutesHttp.BASE + RoutesHttp.ACCOUNT_CHANGE_PASSWORD,
             myUser
@@ -102,5 +103,9 @@ export class AccountService {
     );
   }
 
-  
+  clear() {
+    this.user = null;
+    this.storageService.DeleteAuthorization();
+  }
+
 }
