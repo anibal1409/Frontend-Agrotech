@@ -126,7 +126,7 @@ export class SignInComponent implements OnInit {
         this.snackBarService.Success('Login exitoso.');
         setTimeout(
           () => {
-            if(response.user && response.user.role) {
+            if (response.user && response.user.role) {
               switch (response.user.role) {
                 case 'admin':
                 this.router.navigate([RoutesAdmin.HOME]);
@@ -136,7 +136,7 @@ export class SignInComponent implements OnInit {
                 break;
               }
             }
-          }, 3000);
+          }, 500);
       }
     } catch (error) {
 
