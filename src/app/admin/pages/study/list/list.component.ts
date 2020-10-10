@@ -84,17 +84,17 @@ export class StudyListComponent implements OnInit, OnDestroy {
     }
   }
 
-  Sector(idSector: String) {
-    let sector = this.sectorService.GetItemtID(idSector);
+  Sector(idSector: string) {
+    const sector = this.sectorService.GetItemtID(idSector);
     return sector ? sector.name : '';
   }
 
   Month(numberValue: number) {
-    return this.months[numberValue] ? this.months[numberValue].name : '';
+    return this.months[numberValue - 1] ? this.months[numberValue - 1].name : '';
   }
 
-  Location(idLocation: String) {
-    let location = this.locationService.GetItemtID(idLocation);
+  Location(idLocation: string) {
+    const location = this.locationService.GetItemtID(idLocation);
     return location ? location.name : '';
   }
 
